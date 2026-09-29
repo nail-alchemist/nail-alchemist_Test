@@ -1,0 +1,11 @@
+# Einheitliche Zeilenenden im Repository (LF), egal von welchem Rechner
+# committet wird. Ohne das taucht dieselbe Datei je nach Windows-Einstellung
+# als komplett geaendert auf, obwohl sich kein Zeichen geaendert hat.
+* text=auto eol=lf
+
+# Binaerdateien nie anfassen - eine Zeilenenden-Umwandlung wuerde sie zerstoeren.
+*.mp4  binary
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script>
+/* Wer im Betriebssystem "Bewegung reduzieren" eingeschaltet hat, bekommt das
+   Prozess-Video nicht von selbst abgespielt, sondern das stehende Posterbild.
+   Ueber die Bedienelemente laesst es sich trotzdem jederzeit starten.
+
+   Warum ein Ereignis-Lauscher am Dokument und kein Code neben dem <video>:
+   Die dc-Runtime baut die Seite erst beim Rendern zusammen, das Element gibt es
+   zum Zeitpunkt dieses Skripts noch gar nicht. Der Lauscher in der Capture-Phase
+   greift deshalb unabhaengig davon, wann die Runtime das Video einhaengt.
+
+   Der erste Abspielversuch ist immer der automatische - nur der wird gestoppt.
+   Danach steht die Markierung, und ein Klick der Besucherin laeuft normal durch. */
+document.addEventListener('play', function (e) {
+  var v = e.target;
+  if (!v || v.tagName !== 'VIDEO' || v.dataset.naAutoplayGeprueft) return;
+  v.dataset.naAutoplayGeprueft = '1';
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    v.pause();
+    v.currentTime = 0;
+  }
+}, true);
+</script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="stylesheet" href="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/styles.css">
+  <script src="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<nav class="nav" style="padding:14px clamp(16px,5vw,72px);gap:12px;position:sticky;top:0;background:var(--color-bg);z-index:20;border-bottom:1px solid var(--color-divider)">
+  <a href="index.html" class="nav-brand" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+    Nail Alchemist
+  </a>
+  <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+    <div style="position:relative">
+      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" class="btn btn-ghost btn-icon" style="cursor:pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+      </button>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div class="card elev-md" style="position:absolute;top:calc(100% + 10px);right:0;min-width:230px;z-index:30;padding:8px;display:flex;flex-direction:column;gap:2px">
+        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;color:var(--color-text);background:var(--color-accent-2-100)" style-hover="background:var(--color-accent-2-100)">Home</a>
+        <a href="about.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">About</a>
+        <a href="services.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Services</a>
+        <a href="gallery.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Gallery</a>
+        <a href="contact.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Contact</a>
+        <a href="booking-info.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Booking Information</a>
+        <a href="policies.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Studio Policies</a>
+        <a href="terms.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Terms &amp; Conditions</a>
+        <a href="privacy.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Privacy Policy</a>
+        <a href="imprint.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Imprint</a>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</nav>
+
+<div style="position:relative;overflow:hidden">
+  <div style="position:absolute;right:-140px;top:-180px;width:380px;height:380px;border-radius:50%;background:var(--color-accent-2-200);z-index:0"></div>
+  <section style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(20px,5vw,72px) clamp(40px,6vw,72px);position:relative;z-index:1">
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:16px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+      Nail studio · Vienna
+    </span>
+    <h1 style="font-size:clamp(40px,5.5vw,68px);line-height:1.08;max-width:14ch;margin:0 0 20px">Nails, mixed like a little potion.</h1>
+    <p style="font-size:17px;line-height:1.65;max-width:52ch;color:color-mix(in srgb, var(--color-text) 80%, transparent);margin:0 0 28px">Nail Alchemist is a one-chair studio in Vienna's 9th district, where color, care and a steady hand turn into something you want to look at all day. Book a session and see what I mix up for you.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+      <a href="gallery.dc.html" class="btn btn-ghost">See the gallery</a>
+    </div>
+  </section>
+</div>
+
+<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 64px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+    <div class="card elev-sm">
+      <div class="card-kicker">Every visit</div>
+      <div class="card-title">One artist, one chair</div>
+      <p class="card-body">You always work with the same hands and the same eye for what suits you, no rotating staff, no repeating your story.</p>
+    </div>
+    <div class="card elev-sm">
+      <div class="card-kicker">On your nails</div>
+      <div class="card-title">Care before color</div>
+      <p class="card-body">Gentle prep, breathable gels, and honest advice about what your nails need to recover between sets.</p>
+    </div>
+    <div class="card elev-sm">
+      <div class="card-kicker">Made to order</div>
+      <div class="card-title">Color mixed on the spot</div>
+      <p class="card-body">When nothing on the wall is quite right, we blend a custom shade until it is.</p>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px">
+  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:10px">How a set comes together</span>
+  <h2 style="font-size:30px;line-height:1.2;margin:0 0 14px">From bare nails to wearable art</h2>
+  <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:52ch;margin:0 0 24px">Long almonds, hand-painted patterns, 3D gel flowers and charms: every step of a full set, in under a minute.</p>
+  <!-- controls ist keine Kosmetik: Bewegtbild, das laenger als 5 Sekunden
+       automatisch laeuft, braucht eine Moeglichkeit zum Anhalten (WCAG 2.2.2).
+       Das Video laeuft 57 Sekunden in Schleife.
+       aspect-ratio haelt den Platz schon vor dem Laden frei, damit beim
+       Nachladen nichts auf der Seite springt. -->
+  <video src="media/nageldesign-prozess.mp4" poster="media/nageldesign-prozess-poster.jpg" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" controls="controls" preload="metadata" aria-label="Illustrated animation of a full nail set, from consultation and extensions to hand-painted art, 3D flowers, charms and top coat" style="display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);background:var(--color-accent-2-100)"></video>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 72px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,48px);align-items:center">
+    <figure class="washed" style="margin:0;border-radius:clamp(28px,5vw,56px);overflow:hidden">
+      <image-slot id="home-artist" shape="rect" placeholder="Studio or artist photo" style="width:100%;aspect-ratio:4/3"></image-slot>
+    </figure>
+    <div>
+      <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:10px">The studio</span>
+      <h2 style="font-size:30px;line-height:1.2;margin:0 0 14px">A small space, built for slow appointments</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:44ch;margin:0 0 18px">Every booking gets a full chair and a full hour of attention<br>&nbsp;no double-booked slots, no rush at the end.</p>
+      <a href="about.dc.html" class="btn btn-secondary">Meet the artist</a>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 72px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+    <h2 style="font-size:28px;margin:0">A peek at the work</h2>
+    <a href="gallery.dc.html" class="btn btn-ghost">View full gallery<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">
+    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-1" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
+    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-2" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
+    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-3" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
+    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-4" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
+  </div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 80px">
+  <div style="background:var(--color-accent-2-200);border-radius:clamp(28px,5vw,56px);padding:clamp(28px,4vw,48px) clamp(24px,4vw,64px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+    <div>
+      <h3 style="font-size:26px;margin:0 0 8px">Ready for your next set?</h3>
+      <p style="font-size:15.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0;max-width:46ch">Book online, or DM <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> on Instagram!<br>We'll sort a time either way.</p>
+    </div>
+    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+  </div>
+</section>
+
+<footer style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-size:13px;color:color-mix(in srgb, var(--color-text) 65%, transparent);border-top:1px solid var(--color-divider)">
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <span class="nav-brand" style="font-size:16px">Nail Alchemist</span>
+    <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <a href="about.dc.html">About</a>
+    <a href="services.dc.html">Services</a>
+    <a href="gallery.dc.html">Gallery</a>
+    <a href="contact.dc.html">Contact</a>
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <a href="booking-info.dc.html">Booking Information</a>
+    <a href="policies.dc.html">Studio Policies</a>
+    <a href="terms.dc.html">Terms &amp; Conditions</a>
+    <a href="privacy.dc.html">Privacy Policy</a>
+    <a href="imprint.dc.html">Imprint</a>
+  </div>
+  <div style="display:flex;gap:16px">
+    <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
+    <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>class Component extends DCLogic {
+  state = { menuOpen: false };
+  toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen }));
+  renderVals() {
+    return { menuOpen: this.state.menuOpen, toggleMenu: this.toggleMenu };
+  }
+}
+</script>
+</body>
+</html>

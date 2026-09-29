@@ -1,0 +1,319 @@
+/* Organic — design-system tokens and component classes. This file is the source of truth for the system's look; retune it here and see readme.md. */
+@import url('https://fonts.googleapis.com/css2?family=Caprasimo:wght@400&family=Figtree:wght@400;600;700&display=swap');
+
+:root {
+  /* Palette „Nail Alchemist“ — Vintage Grape trägt. Grund und Fläche sind
+     aufgehellte Traubentöne, zweite Stimme ist ein Blush-Rosa, die Neutralen
+     sind ein warmes Sandgrau — farblich weit genug weg, dass .tag-neutral,
+     .tag-accent und .tag-accent-2 auf einen Blick unterscheidbar bleiben. */
+  --color-bg: #edd9f4;        /* Vintage Grape, stark aufgehellt */
+  --color-surface: #e0c6e9;   /* eine Stufe tiefer */
+  --color-text: #2b1f2f;      /* Traubenschwarz — 11.8:1 auf dem Grund */
+  --color-accent: #56415d;    /* Vintage Grape */
+  --color-accent-2: #c2829e;  /* Blush — aus Dusty Mauve entwickelt, rosiger und kräftiger */
+  --color-divider: color-mix(in srgb, #2b1f2f 16%, transparent);
+
+  /* Tonal ramps — generated in OKLCH on one shared lightness scale, so the
+     same step of any role matches the others in visual value. Die L-Stufen sind
+     unveraendert — nur Farbton und Chroma folgen der neuen Palette. */
+  --color-neutral-100: #f7f5f0;
+  --color-neutral-200: #ece7e0;
+  --color-neutral-300: #d9d3ca;
+  --color-neutral-400: #bdb7ac;
+  --color-neutral-500: #9e978d;
+  --color-neutral-600: #7f7970;
+  --color-neutral-700: #615d55;
+  --color-neutral-800: #45423c;
+  --color-neutral-900: #2d2b27;
+
+  --color-accent-100: #f8f3f9;
+  --color-accent-200: #efe3f3;
+  --color-accent-300: #e1cbe8;
+  --color-accent-400: #cba9d6;
+  --color-accent-500: #ac8ab7;
+  --color-accent-600: #8c6d96;
+  --color-accent-700: #6c5275;
+  --color-accent-800: #4d3a53;
+  --color-accent-900: #322636;
+
+  --color-accent-2-100: #fff1f6;
+  --color-accent-2-200: #ffddeb;
+  --color-accent-2-300: #fcc1d9;
+  --color-accent-2-400: #e2a2bd;
+  --color-accent-2-500: #c2829e;
+  --color-accent-2-600: #a0657f;
+  --color-accent-2-700: #7d4b62;
+  --color-accent-2-800: #5b3446;
+  --color-accent-2-900: #3c222d;
+
+  --font-heading: "Caprasimo", system-ui, sans-serif;
+  --font-heading-weight: 400;
+  --font-body: "Figtree", system-ui, sans-serif;
+
+  --space-1: 4.4px;
+  --space-2: 8.8px;
+  --space-3: 13.2px;
+  --space-4: 17.6px;
+  --space-6: 26.4px;
+  --space-8: 35.2px;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+
+  /* Elevation — derived from the ground: soft ink-tinted shadows on a
+     light theme, a hairline edge + ambient darkness on a dark one. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b27 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b27 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b27 22%, transparent);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); }
+
+.washed{filter:saturate(0.6) contrast(0.85) brightness(1.1) opacity(0.94)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Components — built with the tokens above. Plain CSS
+   on plain HTML: no JavaScript, no build step. Each class is documented in
+   readme.md and demonstrated in foundations/ and components/.
+   ══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+}
+h1 { font-size: 42px; }
+h2 { font-size: 32px; }
+h3 { font-size: 25px; }
+h4 { font-size: 20px; }
+h5 { font-size: 16px; }
+h6 { font-size: 13px; }
+h6 { letter-spacing: 0.08em; text-transform: uppercase; }
+p { margin: 0 0 var(--space-3); }
+a { color: var(--color-accent); text-underline-offset: 3px; }
+img { display: block; max-width: 100%; }
+figure { margin: 0; }
+figcaption {
+  font-size: 11px; margin-top: var(--space-1);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+.text-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+
+/* — rules — */
+.hr {
+  height: 1px; border: 0; margin: var(--space-4) 0;
+  background: var(--color-divider);
+}
+
+/* — buttons — */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; line-height: 1.2; color: var(--color-text); /* matches the .input's 14px —
+     the pair sits side by side in sign-up rows */
+  background: transparent; border: 1px solid transparent;
+  padding: var(--space-2) calc(var(--space-3) * 1.2);
+  border-radius: var(--radius-md);
+}
+.btn svg { display: block; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--color-accent); color: var(--color-bg); }
+/* Vintage Grape liegt auf der Skala zwischen Stufe 700 und 800 — -600 wuerde
+   den Button aufhellen statt abdunkeln, daher zwei Stufen tiefer. */
+.btn-primary:hover { background: var(--color-accent-800); }
+.btn-primary:active { background: var(--color-accent-900); }
+.btn-secondary { border-color: var(--color-divider); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+.btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+.btn-ghost:active { background: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+.btn-icon { width: 36px; height: 36px; padding: 0; }
+.btn-block { width: 100%; margin-top: var(--space-2); }
+
+/* — forms — */
+.field > label {
+  display: block; font-size: 12px; margin-bottom: 5px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.input {
+  width: 100%; min-height: 36px; padding: 6px 10px; font: inherit;
+  font-size: 14px; color: var(--color-text); caret-color: var(--color-accent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.input:hover { border-color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.input:focus-visible { border-color: var(--color-accent); outline-offset: 0; }
+textarea.input { min-height: 90px; resize: vertical; }
+.radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+.radio input, .seg-opt input {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.radio .dot {
+  width: 16px; height: 16px; flex: none; border-radius: 50%;
+  border: 1.5px solid var(--color-divider);
+}
+.radio:hover .dot { border-color: var(--color-accent); }
+.radio input:checked + .dot {
+  border-color: var(--color-accent); background: var(--color-accent);
+  box-shadow: inset 0 0 0 4px var(--color-bg);
+}
+.radio input:focus-visible + .dot { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.seg {
+  display: inline-flex; overflow: hidden;
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.seg-opt {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; font-size: 13px; cursor: pointer;
+}
+.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.seg-opt:has(input:checked) { background: var(--color-accent); color: var(--color-bg); }
+.seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.seg-opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+
+/* — cards — */
+.card {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface);
+}
+.card-kicker { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
+.card-title {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 17px; line-height: 1.2;
+}
+.card-body { margin: 0; font-size: 13px; opacity: 0.8; flex: 1; }
+.card-meta {
+  display: flex; align-items: center; gap: 6px; font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+.elev-sm { box-shadow: var(--shadow-sm); }
+.elev-md { box-shadow: var(--shadow-md); }
+.elev-lg { box-shadow: var(--shadow-lg); }
+
+/* — tags — */
+.tag {
+  display: inline-flex; align-items: center; font-size: 11px;
+  letter-spacing: 0.02em; padding: 3px 10px;
+  border-radius: calc(var(--radius-md) * 0.75);
+}
+.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+/* Blush ist hell — als Textfarbe nur ab --color-accent-2-700 verwenden. */
+.tag-accent-2 { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
+.tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+.tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent); }
+
+/* — navigation — */
+.nav {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: none;
+}
+.nav-brand {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 18px; margin-right: auto;
+}
+.nav a { color: inherit; text-decoration: none; font-size: 14px; }
+.nav a:hover, .nav a[aria-current='page'] { color: var(--color-accent); }
+
+/* — tables — */
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th {
+  text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  padding: var(--space-2); border-bottom: 1px solid var(--color-divider);
+}
+.table td {
+  padding: var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+.table tbody tr:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+
+/* — dialog — */
+.dialog-backdrop {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
+}
+.dialog {
+  width: min(440px, 100%); display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); border-radius: var(--radius-lg);
+  background: var(--color-surface); box-shadow: var(--shadow-lg);
+}
+.dialog-title {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px;
+}
+.dialog-body { font-size: 14px; opacity: 0.85; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); }
+
+/* — rounded frame: everything softens, small controls go pill — */
+.card, .dialog { border-radius: calc(var(--radius-lg) * 1.15); }
+.btn, .tag, .seg, .input { border-radius: 999px; }
+.input { padding-inline: 14px; }
+
+
+/* — Daumenziele: Bedienelemente auf Finger-Geraeten (2026-09-29) —————————
+
+   Befund des Mobil-Tests vom 25.09.2026: Das Layout haelt auf jeder Breite bis
+   herunter auf 320 px, aber saemtliche Bedienelemente sind auf Mausmasse gebaut.
+   Buttons und Eingabefelder waren 36 px hoch, Fusszeilen-Links 20 px, der
+   Hamburger-Knopf 36x36 px. Apples Richtwert und WCAG 2.5.5 nennen 44x44 px.
+
+   Bewusst `pointer: coarse` und KEIN Breiten-Breakpoint:
+   Das Problem ist die Eingabeart, nicht die Bildschirmbreite. Ein schmales
+   Browserfenster am Desktop wird weiterhin mit der Maus bedient und braucht
+   die groesseren Flaechen nicht. Damit bleibt das Design-System frei von
+   Breiten-Media-Queries - es haelt weiter allein ueber clamp() und Flexbox.
+
+   Nachweisbar: `Emulation.setTouchEmulationEnabled` in mobil-testen.py laesst
+   `pointer: coarse` greifen (am 29.09.2026 gemessen), der Test sieht diese
+   Regeln also wirklich. */
+@media (pointer: coarse) {
+  /* Buttons: Hoehe kommt bisher allein aus dem Innenabstand -> Mindestmass setzen.
+     Die Breite bleibt inhaltsgesteuert, Pill-Form und Abstaende aendern sich nicht. */
+  .btn { min-height: 44px; }
+
+  /* Der Hamburger-Knopf ist auf dem Handy der einzige Weg zu sieben von acht
+     Seiten - und war gleichzeitig das kleinste Ziel der Seite. `height` wird vom
+     `min-height` oben ohnehin hochgezogen, die Breite muss aber eigens mit. */
+  .btn-icon { width: 44px; height: 44px; }
+
+  /* Eingabefelder inkl. des Auswahlknopfs `button.input` im Kontaktformular. */
+  .input { min-height: 44px; }
+
+  /* Segment-Auswahl ("Yes"/"No" bei der Foto-Freigabe). */
+  .seg-opt { min-height: 44px; }
+
+  /* Fusszeilen-Links: neun Stueck dicht nebeneinander, bisher 20 px hoch.
+     inline-flex + Mindesthoehe vergroessert die Trefferflaeche, ohne den Text
+     zu verschieben. Der Zeilenabstand der umgebrochenen Reihen wird dafuer
+     zurueckgenommen, sonst wird die Fusszeile unnoetig hoch.
+     Die Mindestbreite ist nicht ueberfluessig: Nach der Hoehenkorrektur blieb
+     "About" mit 36x44 px als einziger Befund uebrig - kurze Beschriftungen sind
+     schmaler als der Daumen. Der Text wird dafuer in der Flaeche zentriert. */
+  footer a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; min-width: 44px;
+  }
+  footer > div { row-gap: 0; }
+
+  /* Wortmarke in der Kopfzeile ist zugleich der Weg zurueck zur Startseite. */
+  .nav-brand { min-height: 44px; }
+
+  /* Schriftgroessen: unter 12 px wird am Handy unlesbar.
+     Beides sind Beschriftungen, keine Tippziele - nur die Groesse aendert sich. */
+  .card-kicker { font-size: 12px; }
+  .tag { font-size: 12px; }
+}

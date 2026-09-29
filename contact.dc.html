@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./slots.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="stylesheet" href="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/styles.css">
+  <script src="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; }
+    /* Checkbox im Stil des Design-Systems. Das System liefert nur .radio
+       (runder Punkt, Einfachauswahl) - fuer die Zustimmungen braucht es
+       Kaestchen zum Mehrfach-Anhaken. Ausschliesslich DS-Variablen,
+       keine festen Farben, keine eigene Schrift. */
+    .na-check { display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:14px; line-height:1.5; }
+    .na-check input { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+    .na-check .box {
+      width:18px; height:18px; flex:none; margin-top:2px; border-radius:6px;
+      border:1.5px solid var(--color-divider); background:var(--color-surface);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .na-check .box svg { width:12px; height:12px; opacity:0; color:var(--color-bg); }
+    .na-check:hover .box { border-color: var(--color-accent); }
+    .na-check input:checked + .box { border-color: var(--color-accent); background: var(--color-accent); }
+    .na-check input:checked + .box svg { opacity:1; }
+    .na-check input:focus-visible + .box { outline:2px solid var(--color-accent); outline-offset:2px; }
+    /* Auf Finger-Geraeten fehlten dem Kaestchen 2 px auf das 44-px-Daumenziel
+       (Mobil-Test 25.09.2026: 42 px gemessen). Gleiche Begruendung und gleiche
+       Bedingung wie der Block am Ende von styles.css - hier lokal, weil
+       .na-check eine Klasse dieser Seite ist und nicht des Design-Systems.
+       align-items bleibt bewusst flex-start: Die Zustimmungstexte brechen am
+       Handy um, das Kaestchen gehoert dann an die erste Zeile. */
+    @media (pointer: coarse) { .na-check { min-height:44px; } }
+    .na-fieldset {
+      border:1px solid var(--color-divider); border-radius:var(--radius-md);
+      margin:0; padding:16px 18px; display:flex; flex-direction:column; gap:12px;
+    }
+    .na-fieldset > legend {
+      font-size:12px; padding:0 6px;
+      color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    }
+    .na-sub {
+      display:block; margin-left:28px; font-size:12.5px; line-height:1.5;
+      color: color-mix(in srgb, var(--color-text) 65%, transparent);
+    }
+  </style>
+</helmet>
+
+<nav class="nav" style="padding:14px clamp(16px,5vw,72px);gap:12px;position:sticky;top:0;background:var(--color-bg);z-index:20;border-bottom:1px solid var(--color-divider)">
+  <a href="index.html" class="nav-brand" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+    Nail Alchemist
+  </a>
+  <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+    <div style="position:relative">
+      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" class="btn btn-ghost btn-icon" style="cursor:pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+      </button>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div class="card elev-md" style="position:absolute;top:calc(100% + 10px);right:0;min-width:230px;z-index:30;padding:8px;display:flex;flex-direction:column;gap:2px">
+        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Home</a>
+        <a href="about.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">About</a>
+        <a href="services.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Services</a>
+        <a href="gallery.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Gallery</a>
+        <a href="contact.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;color:var(--color-text);background:var(--color-accent-2-100)" style-hover="background:var(--color-accent-2-100)">Contact</a>
+        <a href="booking-info.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Booking Information</a>
+        <a href="policies.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Studio Policies</a>
+        <a href="terms.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Terms &amp; Conditions</a>
+        <a href="privacy.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Privacy Policy</a>
+        <a href="imprint.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Imprint</a>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</nav>
+
+<section style="max-width:1200px;margin:0 auto;padding:clamp(40px,7vw,64px) clamp(20px,5vw,72px) 40px">
+  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:12px">Contact</span>
+  <h1 style="font-size:clamp(34px,4.5vw,52px);line-height:1.12;max-width:18ch;margin:0 0 16px">Contact &amp; booking</h1>
+  <p style="font-size:16px;line-height:1.65;max-width:52ch;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">Fill in the form below. It puts your request together, copies it, and opens a DM to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> &mdash; you only have to paste it in.</p>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 80px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,48px);align-items:start">
+    <form style="display:flex;flex-direction:column;gap:16px">
+      <sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border-radius:var(--radius-md);background:var(--color-accent-2-100)">
+          <span class="tag tag-accent-2">Demo</span>
+          <span style="font-size:13.5px;line-height:1.5">Sample appointments from the test calendar &mdash; not real availability.</span>
+        </div>
+      </sc-if>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+        <div class="field"><label for="c-first">First name *</label><input class="input" id="c-first" autocomplete="given-name" placeholder="Your first name"></div>
+        <div class="field"><label for="c-last">Surname *</label><input class="input" id="c-last" autocomplete="family-name" placeholder="Your surname"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+        <div class="field"><label for="c-phone">Phone</label><input class="input" id="c-phone" autocomplete="tel" placeholder="+43 …"></div>
+        <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      </div>
+      <div class="field"><label>Service</label>
+        <div style="position:relative">
+          <button type="button" onclick="{{ toggleService }}" class="input" style="display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;text-align:left">
+            <span>{{ serviceLabel }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <sc-if value="{{ serviceOpen }}" hint-placeholder-val="{{ false }}">
+            <div class="card elev-md" style="position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:20;padding:8px;display:flex;flex-direction:column;gap:2px;max-height:280px;overflow:auto">
+              <sc-for list="{{ serviceOptions }}" as="opt" hint-placeholder-count="6">
+                <div onclick="{{ opt.select }}" style="padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;background:{{ opt.bg }}" style-hover="background:var(--color-accent-2-100)">{{ opt.label }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      <sc-if value="{{ hasSlots }}" hint-placeholder-val="{{ true }}">
+        <div class="field"><label>Available appointment</label>
+          <div style="position:relative">
+            <button type="button" onclick="{{ toggleSlot }}" class="input" style="display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;text-align:left">
+              <span>{{ slotLabel }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <sc-if value="{{ slotOpen }}" hint-placeholder-val="{{ false }}">
+              <div class="card elev-md" style="position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:20;padding:8px;display:flex;flex-direction:column;gap:2px;max-height:280px;overflow:auto">
+                <sc-for list="{{ slotOptions }}" as="opt" hint-placeholder-count="3">
+                  <div onclick="{{ opt.select }}" style="padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;background:{{ opt.bg }}" style-hover="background:var(--color-accent-2-100)">{{ opt.label }}</div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <span style="font-size:13px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 65%, transparent)">{{ slotHint }}</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ !hasSlots }}">
+        <div class="field"><label>Available appointments</label>
+          <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">{{ emptyText }}</p>
+        </div>
+      </sc-if>
+      <div class="field"><label for="c-allergy">Allergies, nail or skin conditions *</label><textarea class="input" id="c-allergy" rows="2" placeholder="Anything I should know about — or simply “none”" style="padding: 12px 14px; border-radius: 18px"></textarea></div>
+      <div class="field"><label for="c-message">Anything else?</label><textarea class="input" id="c-message" rows="4" placeholder="Inspiration photos, length, color ideas…" style="padding: 12px 14px; border-radius: 18px"></textarea></div>
+
+      <fieldset class="na-fieldset">
+        <legend>Consent *</legend>
+        <label class="na-check">
+          <input type="checkbox" id="c-consent-correct">
+          <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <span>I confirm that all information provided is correct.</span>
+        </label>
+        <div>
+          <label class="na-check">
+            <input type="checkbox" id="c-consent-terms">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <span>I have read and agree to the Terms &amp; Conditions and Studio Policies.</span>
+          </label>
+          <span class="na-sub">Read them here: <a href="terms.dc.html">Terms &amp; Conditions</a> &middot; <a href="policies.dc.html">Studio Policies</a></span>
+        </div>
+        <!-- Erledigt 29.09.2026: Die Datenschutzerklaerung liegt als eigene Seite
+             vor und ist hier verlinkt. Vorher zeigte diese Zustimmung auf nichts -
+             eine Einwilligung in ein Dokument, das es nicht gibt, ist wertlos. -->
+        <div>
+          <label class="na-check">
+            <input type="checkbox" id="c-consent-privacy">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <span>I agree to the Privacy Policy and data processing.</span>
+          </label>
+          <span class="na-sub">Read it here: <a href="privacy.dc.html">Privacy Policy</a> &middot; <a href="imprint.dc.html">Imprint</a></span>
+        </div>
+      </fieldset>
+
+      <fieldset class="na-fieldset">
+        <legend>Photo consent *</legend>
+        <p style="font-size:14px;line-height:1.55;margin:0">Do you allow me to use photos and videos of your nails for social media?</p>
+        <div class="seg" style="align-self:flex-start">
+          <label class="seg-opt" style="padding:8px 22px"><input type="radio" name="c-photo" id="c-photo-yes">Yes</label>
+          <label class="seg-opt" style="padding:8px 22px"><input type="radio" name="c-photo" id="c-photo-no">No</label>
+        </div>
+        <span style="font-size:12.5px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 65%, transparent)">Either answer is fine &mdash; it changes nothing about your appointment.</span>
+      </fieldset>
+
+      <sc-if value="{{ hasFehler }}" hint-placeholder-val="{{ false }}">
+        <div role="alert" style="padding:14px 16px;border-radius:var(--radius-md);background:var(--color-accent-2-100);border:1px solid var(--color-accent-2);font-size:14px;line-height:1.55">{{ fehler }}</div>
+      </sc-if>
+
+      <span style="font-size:12.5px;color:color-mix(in srgb, var(--color-text) 65%, transparent)">* required</span>
+      <button type="button" class="btn btn-primary btn-block" onclick="{{ handleSubmit }}">{{ submitLabel }}</button>
+
+      <sc-if value="{{ dmOffen }}" hint-placeholder-val="{{ false }}">
+        <div id="na-dm-panel" class="card elev-sm" style="padding:20px;gap:12px;border:1px solid var(--color-accent)">
+          <h3 style="font-size:17px;margin:0">Almost there</h3>
+          <p style="font-size:14px;line-height:1.6;margin:0;color:color-mix(in srgb, var(--color-text) 78%, transparent)">{{ dmHinweis }}</p>
+          <!-- user-select:all -> ein Klick markiert alles. Bewusst ohne Hoehenbegrenzung:
+               wenn die Zwischenablage versagt, muss der ganze Text lesbar sein. -->
+          <div style="white-space:pre-wrap;font-size:13px;line-height:1.55;background:var(--color-bg);border:1px solid var(--color-divider);border-radius:18px;padding:12px 14px;user-select:all">{{ dmText }}</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-primary" href="{{ dmLink }}" target="_blank" rel="noopener">Open Instagram DM</a>
+            <button type="button" class="btn btn-secondary" onclick="{{ nochmalKopieren }}">Copy again</button>
+          </div>
+          <span style="font-size:12.5px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 65%, transparent)">If the DM doesn&rsquo;t open, go to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> and send the text from there. Your appointment is only booked once I reply to confirm it.</span>
+        </div>
+      </sc-if>
+    </form>
+
+    <div class="card elev-sm" style="padding:28px;display:flex;flex-direction:column;gap:24px">
+      <div>
+        <h3 style="font-size:18px;margin:0 0 8px">Location</h3>
+        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">Hebragasse 7 Top 1+2<br>1090 Vienna, Austria</p>
+      </div>
+        <sc-if value="{{ showMapPlaceholder }}" hint-placeholder-val="{{ true }}">
+          <figure class="card elev-sm" style="margin:0;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;aspect-ratio:16/10;background:var(--color-accent-2-100);text-align:center;padding:24px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-700);flex:none"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <p style="font-size:13.5px;line-height:1.5;max-width:32ch;margin:0;color:color-mix(in srgb, var(--color-text) 78%, transparent)">Loading the map connects to Google and sets cookies. Click to load it, or open the address directly instead.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+              <button type="button" class="btn btn-primary" onclick="{{ loadMap }}">Show map</button>
+              <a class="btn btn-ghost" href="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17" target="_blank" rel="noopener">Open in Google Maps</a>
+            </div>
+          </figure>
+        </sc-if>
+        <sc-if value="{{ showMapEmbed }}" hint-placeholder-val="{{ false }}">
+          <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden">
+            <iframe
+              src="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17&output=embed"
+              title="Karte: Hebragasse 7 Top 1+2, 1090 Wien"
+              style="width:100%;aspect-ratio:16/10;border:0;display:block"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </figure>
+        </sc-if>
+      <div>
+        <h3 style="font-size:18px;margin:0 0 8px">Get in touch</h3>
+        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">
+          <a href="tel:+4316000000">+43 1 600 00 00</a><br>
+          <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a><br>
+          <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-size:13px;color:color-mix(in srgb, var(--color-text) 65%, transparent);border-top:1px solid var(--color-divider)">
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <span class="nav-brand" style="font-size:16px">Nail Alchemist</span>
+    <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <a href="about.dc.html">About</a>
+    <a href="services.dc.html">Services</a>
+    <a href="gallery.dc.html">Gallery</a>
+    <a href="contact.dc.html">Contact</a>
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <a href="booking-info.dc.html">Booking Information</a>
+    <a href="policies.dc.html">Studio Policies</a>
+    <a href="terms.dc.html">Terms &amp; Conditions</a>
+    <a href="privacy.dc.html">Privacy Policy</a>
+    <a href="imprint.dc.html">Imprint</a>
+  </div>
+  <div style="display:flex;gap:16px">
+    <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
+    <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showMap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contact page&quot;},&quot;submitAction&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;instagram&quot;,&quot;options&quot;:[&quot;instagram&quot;,&quot;whatsapp&quot;,&quot;mailto&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact page&quot;}}">/* ------------------------------------------------------------------
+   Instagram ist der Hauptkanal (Drop-Modell: Slots werden per Story
+   angekuendigt, gebucht wird per DM).
+
+   Wichtiger Unterschied zu WhatsApp: Instagram kennt KEINEN Parameter,
+   mit dem sich der Nachrichtentext vorausfuellen laesst. "ig.me/m/<handle>"
+   oeffnet nur den leeren Chat. Deshalb legt das Formular den fertigen Text
+   in die Zwischenablage und zeigt ihn zusaetzlich an - die Kundin fuegt ihn
+   im DM nur noch ein. Anzeigen ist der ehrliche Teil daran: die
+   Zwischenablage kann fehlschlagen, der sichtbare Text nicht.
+------------------------------------------------------------------ */
+const INSTAGRAM_HANDLE = "nail_alchemist_";
+const INSTAGRAM_DM = "https://ig.me/m/" + INSTAGRAM_HANDLE;
+
+/* ------------------------------------------------------------------
+   WhatsApp-Nummer der Studioinhaberin - nur noch Ausweichweg, aktiv
+   ueber die Eigenschaft "submitAction".
+   Format: Laendervorwahl ohne "+" und ohne Leerzeichen, z. B. 436641234567
+   Solange hier Platzhalter-X stehen, faellt das Formular automatisch
+   auf E-Mail zurueck - es entsteht kein toter wa.me-Link.
+------------------------------------------------------------------ */
+const WHATSAPP_NUMBER = "436765020096";
+const WHATSAPP_READY = /^[0-9]{8,15}$/.test(WHATSAPP_NUMBER);
+
+class Component extends DCLogic {
+  toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen, serviceOpen: false, slotOpen: false }));
+  /* Google Maps wird erst nach diesem Klick eingebettet - vorher laedt der
+     Browser nichts von Google, setzt keine Cookies und uebertraegt keine IP.
+     Genau der Punkt, den die Datenschutzerklaerung behauptet (siehe Teil 6
+     der Slot-Anleitung im Vault). */
+  loadMap = () => this.setState({ mapLoaded: true });
+  state = {
+    menuOpen: false,
+    serviceOpen: false,
+    slotOpen: false,
+    service: "Gel-X Extensions — Minimal (€80)",
+    slotIso: "",
+    slots: [],
+    stand: "",
+    demo: false,
+    mapLoaded: false,
+    fehler: "",
+    dmText: "",
+    dmOffen: false,
+    kopiert: false,
+  };
+
+  serviceList = [
+    "Gel-X Extensions — Minimal (€80)",
+    "Gel-X Extensions — Simple (€90)",
+    "Gel-X Extensions — Medium (€100)",
+    "Gel-X Extensions — Advanced (€110)",
+    "Gel-X Removal (€15)",
+    "Not sure yet",
+  ];
+
+  /* slots.js wird im <head> geladen. Steht es dort nicht (oder wurde die Seite
+     in einen Kontext eingebettet, der den Head neu aufbaut), wird es hier
+     nachgeladen - deshalb kein Verlass auf die Ladereihenfolge. */
+  componentDidMount() {
+    if (window.NA_SLOTS) {
+      this.uebernehmeSlots();
+      return;
+    }
+    const el = document.createElement("script");
+    el.src = "./slots.js";
+    el.onload = this.uebernehmeSlots;
+    el.onerror = () => console.warn("[Nail Alchemist] slots.js nicht gefunden - Terminliste bleibt leer.");
+    document.head.appendChild(el);
+  }
+
+  uebernehmeSlots = () => {
+    const daten = window.NA_SLOTS;
+    if (!daten) return;
+    this.setState({
+      slots: Array.isArray(daten.slots) ? daten.slots : [],
+      stand: daten.stand || "",
+      demo: !!daten.demo,
+    });
+  };
+
+  /* Die Seite ist englisch, das Skript liefert deutsche Wochentage.
+     Deshalb wird das Label aus dem ISO-Wert neu formatiert.
+     Angezeigt wird nur Tag + Startuhrzeit — keine Dauer, weil jede
+     Behandlung unterschiedlich lang dauert. */
+  formatSlot = (slot) => {
+    const d = new Date(slot.iso);
+    if (isNaN(d.getTime())) return slot.wochentag + ", " + slot.datum + " " + slot.zeit;
+    const tag = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+    return tag + " · " + slot.zeit;
+  };
+
+  feldWert = (id) => {
+    const el = document.getElementById(id);
+    return el && el.value ? String(el.value).trim() : "";
+  };
+
+  feldAn = (id) => {
+    const el = document.getElementById(id);
+    return !!(el && el.checked);
+  };
+
+  /* Pflichtfelder. Die drei Zustimmungen und die Foto-Antwort muessen
+     bewusst gesetzt werden - genau das ist der Zweck einer Einwilligung,
+     ein Haekchen im Voraus waere keine. "No" bei den Fotos ist eine
+     vollwertige Antwort und blockiert nichts. */
+  fehlendeAngaben = () => {
+    const fehlt = [];
+    if (!this.feldWert("c-first")) fehlt.push("your first name");
+    if (!this.feldWert("c-last")) fehlt.push("your surname");
+    if (!this.feldWert("c-allergy")) fehlt.push("allergies, nail or skin conditions (write “none” if there are none)");
+    if (!this.feldAn("c-consent-correct")) fehlt.push("the confirmation that your details are correct");
+    if (!this.feldAn("c-consent-terms")) fehlt.push("your agreement to the Terms & Conditions and Studio Policies");
+    if (!this.feldAn("c-consent-privacy")) fehlt.push("your agreement to the Privacy Policy and data processing");
+    if (!this.feldAn("c-photo-yes") && !this.feldAn("c-photo-no")) fehlt.push("your answer about photo consent");
+    return fehlt;
+  };
+
+  baueNachricht = () => {
+    const slot = this.state.slots.find((s) => s.iso === this.state.slotIso);
+    const zeilen = [
+      slot
+        ? "Hi! I'd like to book the appointment on " + this.formatSlot(slot) + "."
+        : "Hi! I'd like to book an appointment.",
+      "",
+      "Name: " + (this.feldWert("c-first") + " " + this.feldWert("c-last")).trim(),
+    ];
+    const optional = [["Phone", "c-phone"], ["Email", "c-email"]];
+    for (const [beschriftung, id] of optional) {
+      const wert = this.feldWert(id);
+      if (wert) zeilen.push(beschriftung + ": " + wert);
+    }
+    zeilen.push("Service: " + this.state.service);
+    zeilen.push("Allergies / nail or skin conditions: " + this.feldWert("c-allergy"));
+    const notiz = this.feldWert("c-message");
+    if (notiz) zeilen.push("Notes: " + notiz);
+    /* Die Zustimmungen stehen hier als bestaetigte Saetze, weil ohne sie
+       gar kein Text entsteht - siehe fehlendeAngaben(). Sie mitzuschicken
+       gibt ihr einen Beleg im Chatverlauf. */
+    zeilen.push(
+      "",
+      "Consent:",
+      "- I confirm that all information provided is correct.",
+      "- I have read and agree to the Terms & Conditions and Studio Policies.",
+      "- I agree to the Privacy Policy and data processing.",
+      "Photos/videos for social media: " + (this.feldAn("c-photo-yes") ? "yes" : "no")
+    );
+    return zeilen.join("\n");
+  };
+
+  /* Zuerst der alte execCommand-Weg: er ist synchron und funktioniert
+     auch bei "file://"-Doppelklick, wo es navigator.clipboard gar nicht
+     gibt (kein sicherer Kontext). Der moderne Weg laeuft danach als
+     Nachbesserung und darf das Ergebnis nur noch verbessern. */
+  kopiere = (text) => {
+    let ok = false;
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e) {
+      ok = false;
+    }
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(
+          () => this.setState({ kopiert: true }),
+          () => {}
+        );
+      }
+    } catch (e) {
+      /* absichtlich still - der sichtbare Text im Feld bleibt der Notausgang */
+    }
+    return ok;
+  };
+
+  nochmalKopieren = () => {
+    const ok = this.kopiere(this.state.dmText);
+    this.setState({ kopiert: ok });
+  };
+
+  handleSubmit = () => {
+    const fehlt = this.fehlendeAngaben();
+    if (fehlt.length) {
+      this.setState({
+        fehler: "Please add " + fehlt.join(" · ") + ".",
+        dmOffen: false,
+      });
+      return;
+    }
+
+    const text = this.baueNachricht();
+    const aktion = this.props.submitAction ?? "instagram";
+
+    if (aktion === "whatsapp" && WHATSAPP_READY) {
+      this.setState({ fehler: "", dmOffen: false });
+      window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+      return;
+    }
+
+    if (aktion === "mailto" || (aktion === "whatsapp" && !WHATSAPP_READY)) {
+      if (aktion === "whatsapp") {
+        console.warn("[Nail Alchemist] WhatsApp-Nummer fehlt in contact.dc.html - Anfrage geht per E-Mail raus.");
+      }
+      const slot = this.state.slots.find((s) => s.iso === this.state.slotIso);
+      const betreff = slot ? "Booking request: " + this.formatSlot(slot) : "Booking request";
+      this.setState({ fehler: "", dmOffen: false });
+      window.location.href =
+        "mailto:ella.cerveniova@gmail.com?subject=" + encodeURIComponent(betreff) + "&body=" + encodeURIComponent(text);
+      return;
+    }
+
+    /* Instagram - Standardweg. Kopieren passiert im selben Klick wie das
+       Oeffnen, sonst wertet der Browser es nicht mehr als Nutzergeste. */
+    const kopiert = this.kopiere(text);
+    window.open(INSTAGRAM_DM, "_blank", "noopener");
+    this.setState({ fehler: "", dmText: text, dmOffen: true, kopiert }, () => {
+      const el = document.getElementById("na-dm-panel");
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  };
+
+  renderVals() {
+    const showMap = this.props.showMap ?? true;
+    /* {{ }} kann kein "&&" - siehe resolve() in support.js. Deshalb hier
+       vorrechnen statt im Template zu verknuepfen (gleiche Regel wie bei
+       den WhatsApp-Links, siehe Anleitung "Warum die Links vorberechnet werden"). */
+    const showMapPlaceholder = showMap && !this.state.mapLoaded;
+    const showMapEmbed = showMap && this.state.mapLoaded;
+    const aktion = this.props.submitAction ?? "instagram";
+    const submitLabel =
+      aktion === "whatsapp" && WHATSAPP_READY ? "Request on WhatsApp"
+      : aktion === "mailto" ? "Send request by email"
+      : aktion === "whatsapp" ? "Send request"
+      : "Copy request & open Instagram";
+
+    const serviceOptions = this.serviceList.map((label) => ({
+      label,
+      bg: label === this.state.service ? "var(--color-accent-2-100)" : "transparent",
+      select: () => this.setState({ service: label, serviceOpen: false }),
+    }));
+
+    const slots = this.state.slots;
+    const slotOptions = slots.map((slot) => ({
+      label: this.formatSlot(slot),
+      bg: slot.iso === this.state.slotIso ? "var(--color-accent-2-100)" : "transparent",
+      select: () => this.setState({ slotIso: slot.iso, slotOpen: false }),
+    }));
+    const gewaehlt = slots.find((s) => s.iso === this.state.slotIso);
+
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: this.toggleMenu,
+      showMapPlaceholder,
+      showMapEmbed,
+      loadMap: this.loadMap,
+      submitLabel,
+      handleSubmit: this.handleSubmit,
+      hasFehler: this.state.fehler.length > 0,
+      fehler: this.state.fehler,
+      dmOffen: this.state.dmOffen,
+      dmText: this.state.dmText,
+      dmLink: INSTAGRAM_DM,
+      dmHinweis: this.state.kopiert
+        ? "Your request is copied. Open the DM and paste it in — that is everything I need from you."
+        : "Your browser would not let me copy it. Tap the text below to select it, copy it, then open the DM and paste it in.",
+      nochmalKopieren: this.nochmalKopieren,
+      serviceLabel: this.state.service,
+      serviceOpen: this.state.serviceOpen,
+      serviceOptions,
+      toggleService: () => this.setState((s) => ({ serviceOpen: !s.serviceOpen, slotOpen: false })),
+      hasSlots: slots.length > 0,
+      demo: this.state.demo,
+      slotOptions,
+      slotOpen: this.state.slotOpen,
+      slotLabel: gewaehlt ? this.formatSlot(gewaehlt) : "Select an appointment",
+      slotHint:
+        (this.state.stand ? "Updated " + this.state.stand + " · " : "") +
+        "An appointment is only booked once I confirm it.",
+      emptyText:
+        "No open appointments right now. Booking opens at the end of the month for the following month — announced in my Instagram story.",
+      toggleSlot: () => this.setState((s) => ({ slotOpen: !s.slotOpen, serviceOpen: false })),
+    };
+  }
+}</script>
+</body>
+</html>

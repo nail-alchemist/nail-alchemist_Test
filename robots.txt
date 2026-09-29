@@ -1,0 +1,4 @@
+# Wegwerf-Testseite, nicht der oeffentliche Auftritt.
+# Erzeugt von paket-bauen.py --test
+User-agent: *
+Disallow: /
