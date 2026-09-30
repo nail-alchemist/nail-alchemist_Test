@@ -4,29 +4,8 @@
 <meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./turntable.js"></script>
 <script src="./support.js"></script>
-<script>
-/* Wer im Betriebssystem "Bewegung reduzieren" eingeschaltet hat, bekommt das
-   Prozess-Video nicht von selbst abgespielt, sondern das stehende Posterbild.
-   Ueber die Bedienelemente laesst es sich trotzdem jederzeit starten.
-
-   Warum ein Ereignis-Lauscher am Dokument und kein Code neben dem <video>:
-   Die dc-Runtime baut die Seite erst beim Rendern zusammen, das Element gibt es
-   zum Zeitpunkt dieses Skripts noch gar nicht. Der Lauscher in der Capture-Phase
-   greift deshalb unabhaengig davon, wann die Runtime das Video einhaengt.
-
-   Der erste Abspielversuch ist immer der automatische - nur der wird gestoppt.
-   Danach steht die Markierung, und ein Klick der Besucherin laeuft normal durch. */
-document.addEventListener('play', function (e) {
-  var v = e.target;
-  if (!v || v.tagName !== 'VIDEO' || v.dataset.naAutoplayGeprueft) return;
-  v.dataset.naAutoplayGeprueft = '1';
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    v.pause();
-    v.currentTime = 0;
-  }
-}, true);
-</script>
 </head>
 <body>
 <x-dc>
@@ -34,9 +13,84 @@ document.addEventListener('play', function (e) {
 <helmet>
   <link rel="stylesheet" href="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/styles.css">
   <script src="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/_ds_bundle.js"></script>
-  <script src="./image-slot.js"></script>
   <style>
     body { margin: 0; }
+    /* The runtime pins its host to height:100%, which caps the sticky nav's
+       containing block at one screen — the nav would scroll away inside the
+       tall turntable track. Let the host grow with the page instead. */
+    #dc-root > .sc-host { height: auto; min-height: 100%; }
+
+    /* ---- Turntable scroll story --------------------------------------
+       The track is tall; the stage inside it sticks to the viewport while
+       <nail-turntable> (turntable.js) scrubs the frames and writes
+       --turn (0…1) and data-beat (0…2) back onto the track. */
+    /* --nav-h wird von dem kleinen Skript am Seitenende gemessen und auf <html>
+       gesetzt. Der Ruecklaufwert 73px gilt nur, solange noch nicht gemessen ist:
+       gemessen am 30.09.2026 ist die Leiste bei 375px und breiter 73px hoch,
+       bei 320px und 360px aber 82px - ein fester Wert waere dort um 9px daneben. */
+    .spin-track { --turn: 0; position: relative; height: 320vh; margin-top: calc(-1 * var(--nav-h, 73px)); }
+    .spin-stage {
+      position: sticky; top: 0; height: 100vh; height: 100svh; box-sizing: border-box;
+      padding: calc(var(--nav-h, 73px) + var(--space-4)) clamp(20px,5vw,72px) var(--space-6);
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: minmax(0,5fr) minmax(0,6fr);
+      grid-template-areas: "copy art"; align-items: center; gap: clamp(24px,4vw,56px);
+    }
+
+    .spin-art { grid-area: art; position: relative; justify-self: center; width: min(100%, 74svh); aspect-ratio: 1; }
+    .spin-art nail-turntable { position: relative; z-index: 2; width: 100%; height: 100%; }
+    .spin-halo { position: absolute; z-index: 0; left: 9%; top: 9%; width: 82%; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent-2-200); }
+    .spin-dot {
+      position: absolute; z-index: 1; right: 2%; top: 4%; width: 20%; aspect-ratio: 1; border-radius: 50%;
+      background: var(--color-accent-300); transform: translateY(calc(var(--turn) * 48px));
+    }
+    .spin-floor {
+      position: absolute; z-index: 1; left: 8%; top: 82%; width: 84%; height: 14%;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent-900) 30%, transparent), transparent);
+    }
+
+    .spin-copy { grid-area: copy; display: flex; flex-direction: column; gap: var(--space-6); }
+    .spin-beats { display: grid; }
+    .spin-beat {
+      grid-area: 1 / 1; align-self: end; opacity: 0; transform: translateY(14px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .spin-track:not([data-beat]) .beat-0,
+    .spin-track[data-beat="0"] .beat-0,
+    .spin-track[data-beat="1"] .beat-1,
+    .spin-track[data-beat="2"] .beat-2 { opacity: 1; transform: none; }
+
+    .spin-kicker {
+      display: inline-flex; align-items: center; gap: 6px; margin-bottom: var(--space-4);
+      font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; color: var(--color-accent-700);
+    }
+    .spin-beat h1, .spin-beat h2 { font-size: clamp(34px,4.6vw,60px); line-height: 1.08; max-width: 13ch; margin: 0 0 var(--space-4); }
+    .spin-beat p { font-size: 17px; line-height: 1.65; max-width: 40ch; margin: 0; color: color-mix(in srgb, var(--color-text) 80%, transparent); }
+
+    .spin-progress { display: flex; align-items: center; gap: var(--space-3); font-size: 13px; font-weight: 600; color: var(--color-accent-700); }
+    .spin-bar { position: relative; flex: 0 1 180px; height: 6px; border-radius: 999px; background: var(--color-accent-200); overflow: hidden; }
+    .spin-bar::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: var(--color-accent); transform-origin: left; transform: scaleX(var(--turn)); }
+    .spin-hint { display: inline-flex; align-items: center; gap: 6px; opacity: calc(1 - var(--turn) * 10); }
+    .spin-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    @media (max-width: 859px) {
+      .spin-track { height: 280vh; }
+      .spin-stage {
+        grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto;
+        grid-template-areas: "art" "copy"; align-content: center; gap: var(--space-4);
+      }
+      .spin-art { width: min(100%, 46svh); }
+      .spin-beat h1, .spin-beat h2 { font-size: clamp(28px,7.5vw,40px); max-width: 16ch; margin-bottom: var(--space-2); }
+      .spin-beat p { font-size: 15.5px; }
+      .spin-kicker { margin-bottom: var(--space-2); }
+      .spin-copy { gap: var(--space-4); }
+    }
+
+    /* The set still turns with the scroll (it only moves when the visitor
+       scrolls) — only the self-running caption fade is dropped. */
+    @media (prefers-reduced-motion: reduce) {
+      .spin-beat { transition: none; transform: none; }
+    }
   </style>
 </helmet>
 
@@ -53,7 +107,7 @@ document.addEventListener('play', function (e) {
       </button>
       <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
         <div class="card elev-md" style="position:absolute;top:calc(100% + 10px);right:0;min-width:230px;z-index:30;padding:8px;display:flex;flex-direction:column;gap:2px">
-        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;color:var(--color-text);background:var(--color-accent-2-100)" style-hover="background:var(--color-accent-2-100)">Home</a>
+        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Home</a>
         <a href="about.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">About</a>
         <a href="services.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Services</a>
         <a href="gallery.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Gallery</a>
@@ -69,86 +123,87 @@ document.addEventListener('play', function (e) {
   </div>
 </nav>
 
-<div style="position:relative;overflow:hidden">
-  <div style="position:absolute;right:-140px;top:-180px;width:380px;height:380px;border-radius:50%;background:var(--color-accent-2-200);z-index:0"></div>
-  <section style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(20px,5vw,72px) clamp(40px,6vw,72px);position:relative;z-index:1">
-    <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:16px">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
-      Nail studio · Vienna
-    </span>
-    <h1 style="font-size:clamp(40px,5.5vw,68px);line-height:1.08;max-width:14ch;margin:0 0 20px">Nails, mixed like a little potion.</h1>
-    <p style="font-size:17px;line-height:1.65;max-width:52ch;color:color-mix(in srgb, var(--color-text) 80%, transparent);margin:0 0 28px">Nail Alchemist is a one-chair studio in Vienna's 9th district, where color, care and a steady hand turn into something you want to look at all day. Book a session and see what I mix up for you.</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
-      <a href="gallery.dc.html" class="btn btn-ghost">See the gallery</a>
+<section class="spin-track" data-turntable-track="" data-beats="3">
+  <div class="spin-stage">
+    <div class="spin-art">
+      <div class="spin-halo"></div>
+      <div class="spin-dot"></div>
+      <div class="spin-floor"></div>
+      <nail-turntable path="media/turntable/nails_" frames="120" role="img" aria-label="A full set of long almond gel nails on a black marble display stand with gold trim, turning as you scroll: blush-to-green ombré with raised pink lilies and gold beads"></nail-turntable>
     </div>
-  </section>
-</div>
 
-<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 64px">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
-    <div class="card elev-sm">
-      <div class="card-kicker">Every visit</div>
-      <div class="card-title">One artist, one chair</div>
-      <p class="card-body">You always work with the same hands and the same eye for what suits you, no rotating staff, no repeating your story.</p>
-    </div>
-    <div class="card elev-sm">
-      <div class="card-kicker">On your nails</div>
-      <div class="card-title">Care before color</div>
-      <p class="card-body">Gentle prep, breathable gels, and honest advice about what your nails need to recover between sets.</p>
-    </div>
-    <div class="card elev-sm">
-      <div class="card-kicker">Made to order</div>
-      <div class="card-title">Color mixed on the spot</div>
-      <p class="card-body">When nothing on the wall is quite right, we blend a custom shade until it is.</p>
+    <div class="spin-copy">
+      <div class="spin-beats">
+        <div class="spin-beat beat-0">
+          <span class="spin-kicker">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+            Nail studio · Vienna
+          </span>
+          <h1>A full set, finished from every side.</h1>
+          <p>Long almonds, sculpted in gel and built to be looked at up close. Scroll to turn the stand.</p>
+        </div>
+        <div class="spin-beat beat-1">
+          <span class="spin-kicker">The details</span>
+          <h2>Lilies you can feel.</h2>
+          <p>3D gel petals, hand-painted veins and little gold beads, built up one layer at a time so nothing snags and everything catches the light.</p>
+        </div>
+        <div class="spin-beat beat-2">
+          <span class="spin-kicker">Your shade</span>
+          <h2>Mixed until it's exactly right.</h2>
+          <p>Blush melting into fresh green, like a stem into a bloom. When nothing on the wall is quite right, we blend a custom shade on the spot.</p>
+        </div>
+      </div>
+
+      <div class="spin-progress" aria-hidden="true">
+        <span class="spin-bar"></span>
+        <span class="spin-hint">
+          Scroll to turn
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
+        </span>
+      </div>
+
+      <div class="spin-actions">
+        <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+        <a href="services.dc.html" class="btn btn-ghost">Services &amp; prices</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px">
-  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:10px">How a set comes together</span>
-  <h2 style="font-size:30px;line-height:1.2;margin:0 0 14px">From bare nails to wearable art</h2>
-  <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:52ch;margin:0 0 24px">Long almonds, hand-painted patterns, 3D gel flowers and charms: every step of a full set, in under a minute.</p>
-  <!-- controls ist keine Kosmetik: Bewegtbild, das laenger als 5 Sekunden
-       automatisch laeuft, braucht eine Moeglichkeit zum Anhalten (WCAG 2.2.2).
-       Das Video laeuft 57 Sekunden in Schleife.
-       aspect-ratio haelt den Platz schon vor dem Laden frei, damit beim
-       Nachladen nichts auf der Seite springt. -->
-  <video src="media/nageldesign-prozess.mp4" poster="media/nageldesign-prozess-poster.jpg" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" controls="controls" preload="metadata" aria-label="Illustrated animation of a full nail set, from consultation and extensions to hand-painted art, 3D flowers, charms and top coat" style="display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);background:var(--color-accent-2-100)"></video>
-</section>
-
-<section style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 72px">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,48px);align-items:center">
-    <figure class="washed" style="margin:0;border-radius:clamp(28px,5vw,56px);overflow:hidden">
-      <image-slot id="home-artist" shape="rect" placeholder="Studio or artist photo" style="width:100%;aspect-ratio:4/3"></image-slot>
-    </figure>
-    <div>
-      <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:10px">The studio</span>
-      <h2 style="font-size:30px;line-height:1.2;margin:0 0 14px">A small space, built for slow appointments</h2>
-      <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:44ch;margin:0 0 18px">Every booking gets a full chair and a full hour of attention<br>&nbsp;no double-booked slots, no rush at the end.</p>
-      <a href="about.dc.html" class="btn btn-secondary">Meet the artist</a>
+<section style="max-width:1200px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px) 56px">
+  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:10px">Gel-X extensions</span>
+  <h2 style="font-size:30px;line-height:1.2;margin:0 0 14px">Four levels, one chair</h2>
+  <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:52ch;margin:0 0 28px">Lightweight, full-cover gel extensions for length, strength and a natural-looking finish. Every first visit starts with a short, free consult on shape, length and color.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
+    <div class="card elev-sm">
+      <div class="card-kicker">Minimal</div>
+      <div class="card-title">€80</div>
+      <p class="card-body">Clean and simple designs with little detail. Perfect for a natural or elegant look.</p>
+    </div>
+    <div class="card elev-sm">
+      <div class="card-kicker">Simple</div>
+      <div class="card-title">€90</div>
+      <p class="card-body">A touch more creativity with a few design elements.</p>
+    </div>
+    <div class="card elev-sm">
+      <div class="card-kicker">Medium</div>
+      <div class="card-title">€100</div>
+      <p class="card-body">More detailed nail art with multiple design elements and techniques.</p>
+    </div>
+    <div class="card elev-sm">
+      <div class="card-kicker">Advanced</div>
+      <div class="card-title">€110</div>
+      <p class="card-body">Highly detailed, intricate nail art with extensive customization and time-intensive work.</p>
     </div>
   </div>
-</section>
-
-<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 72px">
-  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:24px;flex-wrap:wrap">
-    <h2 style="font-size:28px;margin:0">A peek at the work</h2>
-    <a href="gallery.dc.html" class="btn btn-ghost">View full gallery<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">
-    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-1" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
-    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-2" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
-    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-3" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
-    <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden"><image-slot id="home-gal-4" shape="rect" placeholder="Nail art photo" style="width:100%;aspect-ratio:1/1"></image-slot></figure>
-  </div>
+  <a href="services.dc.html" class="btn btn-ghost" style="margin-top:20px">All services &amp; removal<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
 </section>
 
 <section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 80px">
   <div style="background:var(--color-accent-2-200);border-radius:clamp(28px,5vw,56px);padding:clamp(28px,4vw,48px) clamp(24px,4vw,64px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
     <div>
       <h3 style="font-size:26px;margin:0 0 8px">Ready for your next set?</h3>
-      <p style="font-size:15.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0;max-width:46ch">Book online, or DM <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> on Instagram!<br>We'll sort a time either way.</p>
+      <p style="font-size:15.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0;max-width:46ch">Book online, or DM <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist_</a> on Instagram!<br>We'll sort a time either way.</p>
     </div>
     <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
   </div>
@@ -157,7 +212,7 @@ document.addEventListener('play', function (e) {
 <footer style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-size:13px;color:color-mix(in srgb, var(--color-text) 65%, transparent);border-top:1px solid var(--color-divider)">
   <div style="display:flex;flex-direction:column;gap:6px">
     <span class="nav-brand" style="font-size:16px">Nail Alchemist</span>
-    <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+    <span>Hebragasse 7/1, 1090 Vienna</span>
   </div>
   <div style="display:flex;gap:20px;flex-wrap:wrap">
     <a href="about.dc.html">About</a>
@@ -174,7 +229,7 @@ document.addEventListener('play', function (e) {
   </div>
   <div style="display:flex;gap:16px">
     <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
-    <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+    <a href="mailto:hello@nailalchemist.at">hello@nailalchemist.at</a>
   </div>
 </footer>
 
@@ -186,6 +241,33 @@ document.addEventListener('play', function (e) {
     return { menuOpen: this.state.menuOpen, toggleMenu: this.toggleMenu };
   }
 }
+</script>
+<script>
+/* Misst die Hoehe der Kopfleiste und schreibt sie als --nav-h auf <html>.
+   Bewusst auf <html> und nicht in die Seite hinein: die dc-Runtime rendert den
+   Seiteninhalt neu (z.B. beim Oeffnen des Menues) und wuerde einen Wert dort
+   verwerfen - <html> fasst sie nicht an, der Messwert ueberlebt das Rendern.
+   Darum genuegen die vier Ausloeser unten, ganz ohne Beobachter. */
+(function () {
+  var root = document.documentElement, pending = false;
+  function apply() {
+    pending = false;
+    var nav = document.querySelector('nav.nav');
+    if (!nav) return;
+    var h = Math.round(nav.getBoundingClientRect().height);
+    if (h) root.style.setProperty('--nav-h', h + 'px');
+  }
+  function measure() {
+    if (pending) return;            // Layout nur einmal pro Bild anfassen
+    pending = true;
+    requestAnimationFrame(apply);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', measure);
+  else measure();
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+})();
 </script>
 </body>
 </html>
