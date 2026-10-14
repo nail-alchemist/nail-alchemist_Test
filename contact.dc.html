@@ -11,111 +11,113 @@
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/styles.css">
-  <script src="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="_ds/dopamine/styles.css">
   <script src="./image-slot.js"></script>
   <style>
-    body { margin: 0; }
-    /* Checkbox im Stil des Design-Systems. Das System liefert nur .radio
-       (runder Punkt, Einfachauswahl) - fuer die Zustimmungen braucht es
-       Kaestchen zum Mehrfach-Anhaken. Ausschliesslich DS-Variablen,
-       keine festen Farben, keine eigene Schrift. */
-    .na-check { display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:14px; line-height:1.5; }
-    .na-check input { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
-    .na-check .box {
-      width:18px; height:18px; flex:none; margin-top:2px; border-radius:6px;
-      border:1.5px solid var(--color-divider); background:var(--color-surface);
-      display:flex; align-items:center; justify-content:center;
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: clamp(40px, 6vw, 80px); align-items: start; }
+    .contact-grid > .form { grid-column: span 1; }
+    @media (min-width: 1000px) { .contact-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
+
+    .contact-info { --tilt: 1.2deg; gap: var(--space-8); }
+    .contact-info h2 { font-size: 24px; margin-bottom: var(--space-2); }
+    .contact-info p { margin: 0; color: var(--color-text-soft); }
+    .map-ph {
+      margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4);
+      aspect-ratio: 16 / 10; padding: var(--space-6); text-align: center;
+      border: var(--border) dashed var(--clash); border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--clash) 10%, transparent);
     }
-    .na-check .box svg { width:12px; height:12px; opacity:0; color:var(--color-bg); }
-    .na-check:hover .box { border-color: var(--color-accent); }
-    .na-check input:checked + .box { border-color: var(--color-accent); background: var(--color-accent); }
-    .na-check input:checked + .box svg { opacity:1; }
-    .na-check input:focus-visible + .box { outline:2px solid var(--color-accent); outline-offset:2px; }
-    /* Auf Finger-Geraeten fehlten dem Kaestchen 2 px auf das 44-px-Daumenziel
-       (Mobil-Test 25.09.2026: 42 px gemessen). Gleiche Begruendung und gleiche
-       Bedingung wie der Block am Ende von styles.css - hier lokal, weil
-       .na-check eine Klasse dieser Seite ist und nicht des Design-Systems.
-       align-items bleibt bewusst flex-start: Die Zustimmungstexte brechen am
-       Handy um, das Kaestchen gehoert dann an die erste Zeile. */
-    @media (pointer: coarse) { .na-check { min-height:44px; } }
-    .na-fieldset {
-      border:1px solid var(--color-divider); border-radius:var(--radius-md);
-      margin:0; padding:16px 18px; display:flex; flex-direction:column; gap:12px;
-    }
-    .na-fieldset > legend {
-      font-size:12px; padding:0 6px;
-      color: color-mix(in srgb, var(--color-text) 70%, transparent);
-    }
-    .na-sub {
-      display:block; margin-left:28px; font-size:12.5px; line-height:1.5;
-      color: color-mix(in srgb, var(--color-text) 65%, transparent);
+    .map-ph p { font-size: 15px; max-width: 34ch; }
+    .map-ph .icon-badge { --tone: var(--clash); margin: 0; }
+    .map-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
+    @media (max-width: 479px) { .map-ph { aspect-ratio: auto; } }
+
+    .dm-panel { gap: var(--space-4); }
+    .dm-panel h2 { font-size: 28px; margin: 0; }
+    .dm-panel p { margin: 0; color: var(--color-text-soft); }
+    /* user-select:all -> ein Klick markiert alles. Bewusst ohne Hoehenbegrenzung:
+       wenn die Zwischenablage versagt, muss der ganze Text lesbar sein. */
+    .dm-text {
+      white-space: pre-wrap; font-size: 15px; line-height: 1.55; user-select: all;
+      padding: var(--space-4); border-radius: var(--radius-md);
+      background: var(--color-bg); border: 3px dashed var(--clash);
     }
   </style>
 </helmet>
 
-<nav class="nav" style="padding:14px clamp(16px,5vw,72px);gap:12px;position:sticky;top:0;background:var(--color-bg);z-index:20;border-bottom:1px solid var(--color-divider)">
-  <a href="index.html" class="nav-brand" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+<!-- @nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
     Nail Alchemist
   </a>
-  <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
-    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
-    <div style="position:relative">
-      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" class="btn btn-ghost btn-icon" style="cursor:pointer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+  <div class="nav-actions">
+    <a href="contact.dc.html" class="btn btn-primary btn-sm">Book<span class="nav-cta-more">&nbsp;a session</span></a>
+    <div class="nav-menu-anchor">
+      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" class="btn btn-icon tone-4">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
       </button>
       <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
-        <div class="card elev-md" style="position:absolute;top:calc(100% + 10px);right:0;min-width:230px;z-index:30;padding:8px;display:flex;flex-direction:column;gap:2px">
-        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Home</a>
-        <a href="about.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">About</a>
-        <a href="services.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Services</a>
-        <a href="gallery.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Gallery</a>
-        <a href="contact.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;color:var(--color-text);background:var(--color-accent-2-100)" style-hover="background:var(--color-accent-2-100)">Contact</a>
-        <a href="booking-info.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Booking Information</a>
-        <a href="policies.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Studio Policies</a>
-        <a href="terms.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Terms &amp; Conditions</a>
-        <a href="privacy.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Privacy Policy</a>
-        <a href="imprint.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Imprint</a>
+        <div class="nav-menu tones">
+          <a href="index.html">Home</a>
+          <a href="about.dc.html">About</a>
+          <a href="services.dc.html">Services</a>
+          <a href="gallery.dc.html">Gallery</a>
+          <a href="contact.dc.html" aria-current="page">Contact</a>
+          <hr>
+          <a href="booking-info.dc.html">Booking Information</a>
+          <a href="policies.dc.html">Studio Policies</a>
+          <a href="terms.dc.html">Terms &amp; Conditions</a>
+          <a href="privacy.dc.html">Privacy Policy</a>
+          <a href="imprint.dc.html">Imprint</a>
         </div>
       </sc-if>
     </div>
   </div>
 </nav>
+<!-- /@nav -->
 
-<section style="max-width:1200px;margin:0 auto;padding:clamp(40px,7vw,64px) clamp(20px,5vw,72px) 40px">
-  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:12px">Contact</span>
-  <h1 style="font-size:clamp(34px,4.5vw,52px);line-height:1.12;max-width:18ch;margin:0 0 16px">Contact &amp; booking</h1>
-  <p style="font-size:16px;line-height:1.65;max-width:52ch;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">Fill in the form below. It puts your request together, copies it, and opens a DM to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> &mdash; you only have to paste it in.</p>
-</section>
+<header class="page-head zone mesh tex-dots tone-3">
+  <span class="bg-word" aria-hidden="true">Book</span>
+  <div class="deco deco-ring ph-ring anim-spin" aria-hidden="true"></div>
+  <span class="deco ph-spark anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+  <span class="deco ph-star anim-float-r delay-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+  <div class="wrap">
+    <span class="kicker">Contact</span>
+    <h1>Contact &amp; <span class="grad-text">booking</span></h1>
+    <p class="lede">Fill in the form below. It puts your request together, copies it, and opens a DM to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> &mdash; you only have to paste it in.</p>
+  </div>
+</header>
 
-<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 80px">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,48px);align-items:start">
-    <form style="display:flex;flex-direction:column;gap:16px">
+<section class="zone tex-checker tone-1">
+  <span class="deco deco-emoji at-br anim-wiggle" aria-hidden="true">💌</span>
+  <span class="deco deco-md at-bl anim-float tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+  <div class="wrap contact-grid">
+    <form class="form">
       <sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border-radius:var(--radius-md);background:var(--color-accent-2-100)">
+        <div class="alert tone-2">
           <span class="tag tag-accent-2">Demo</span>
-          <span style="font-size:13.5px;line-height:1.5">Sample appointments from the test calendar &mdash; not real availability.</span>
+          <span>Sample appointments from the test calendar &mdash; not real availability.</span>
         </div>
       </sc-if>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+      <div class="form-row">
         <div class="field"><label for="c-first">First name *</label><input class="input" id="c-first" autocomplete="given-name" placeholder="Your first name"></div>
         <div class="field"><label for="c-last">Surname *</label><input class="input" id="c-last" autocomplete="family-name" placeholder="Your surname"></div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+      <div class="form-row">
         <div class="field"><label for="c-phone">Phone</label><input class="input" id="c-phone" autocomplete="tel" placeholder="+43 …"></div>
         <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
       </div>
       <div class="field"><label>Service</label>
-        <div style="position:relative">
-          <button type="button" onclick="{{ toggleService }}" class="input" style="display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;text-align:left">
+        <div class="dd">
+          <button type="button" onclick="{{ toggleService }}" aria-expanded="{{ serviceOpen }}" class="input dd-toggle">
             <span>{{ serviceLabel }}</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m6 9 6 6 6-6"></path></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
           </button>
           <sc-if value="{{ serviceOpen }}" hint-placeholder-val="{{ false }}">
-            <div class="card elev-md" style="position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:20;padding:8px;display:flex;flex-direction:column;gap:2px;max-height:280px;overflow:auto">
+            <div class="dd-menu">
               <sc-for list="{{ serviceOptions }}" as="opt" hint-placeholder-count="6">
-                <div onclick="{{ opt.select }}" style="padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;background:{{ opt.bg }}" style-hover="background:var(--color-accent-2-100)">{{ opt.label }}</div>
+                <button type="button" class="dd-opt" aria-pressed="{{ opt.selected }}" onclick="{{ opt.select }}">{{ opt.label }}</button>
               </sc-for>
             </div>
           </sc-if>
@@ -123,152 +125,153 @@
       </div>
       <sc-if value="{{ hasSlots }}" hint-placeholder-val="{{ true }}">
         <div class="field"><label>Available appointment</label>
-          <div style="position:relative">
-            <button type="button" onclick="{{ toggleSlot }}" class="input" style="display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;text-align:left">
+          <div class="dd">
+            <button type="button" onclick="{{ toggleSlot }}" aria-expanded="{{ slotOpen }}" class="input dd-toggle">
               <span>{{ slotLabel }}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m6 9 6 6 6-6"></path></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
             </button>
             <sc-if value="{{ slotOpen }}" hint-placeholder-val="{{ false }}">
-              <div class="card elev-md" style="position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:20;padding:8px;display:flex;flex-direction:column;gap:2px;max-height:280px;overflow:auto">
+              <div class="dd-menu">
                 <sc-for list="{{ slotOptions }}" as="opt" hint-placeholder-count="3">
-                  <div onclick="{{ opt.select }}" style="padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;background:{{ opt.bg }}" style-hover="background:var(--color-accent-2-100)">{{ opt.label }}</div>
+                  <button type="button" class="dd-opt" aria-pressed="{{ opt.selected }}" onclick="{{ opt.select }}">{{ opt.label }}</button>
                 </sc-for>
               </div>
             </sc-if>
           </div>
-          <span style="font-size:13px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 65%, transparent)">{{ slotHint }}</span>
+          <span class="form-hint">{{ slotHint }}</span>
         </div>
       </sc-if>
       <sc-if value="{{ !hasSlots }}">
         <div class="field"><label>Available appointments</label>
-          <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">{{ emptyText }}</p>
+          <div class="alert tone-3">{{ emptyText }}</div>
         </div>
       </sc-if>
-      <div class="field"><label for="c-allergy">Allergies, nail or skin conditions *</label><textarea class="input" id="c-allergy" rows="2" placeholder="Anything I should know about — or simply “none”" style="padding: 12px 14px; border-radius: 18px"></textarea></div>
-      <div class="field"><label for="c-message">Anything else?</label><textarea class="input" id="c-message" rows="4" placeholder="Inspiration photos, length, color ideas…" style="padding: 12px 14px; border-radius: 18px"></textarea></div>
+      <div class="field"><label for="c-allergy">Allergies, nail or skin conditions *</label><textarea class="input" id="c-allergy" rows="2" placeholder="Anything I should know about — or simply “none”"></textarea></div>
+      <div class="field"><label for="c-message">Anything else?</label><textarea class="input" id="c-message" rows="4" placeholder="Inspiration photos, length, color ideas…"></textarea></div>
 
-      <fieldset class="na-fieldset">
+      <fieldset class="fieldset tone-4">
         <legend>Consent *</legend>
-        <label class="na-check">
+        <label class="check">
           <input type="checkbox" id="c-consent-correct">
-          <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
           <span>I confirm that all information provided is correct.</span>
         </label>
         <div>
-          <label class="na-check">
+          <label class="check">
             <input type="checkbox" id="c-consent-terms">
-            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
             <span>I have read and agree to the Terms &amp; Conditions and Studio Policies.</span>
           </label>
-          <span class="na-sub">Read them here: <a href="terms.dc.html">Terms &amp; Conditions</a> &middot; <a href="policies.dc.html">Studio Policies</a></span>
+          <span class="check-sub">Read them here: <a href="terms.dc.html">Terms &amp; Conditions</a> &middot; <a href="policies.dc.html">Studio Policies</a></span>
         </div>
         <!-- Erledigt 29.09.2026: Die Datenschutzerklaerung liegt als eigene Seite
              vor und ist hier verlinkt. Vorher zeigte diese Zustimmung auf nichts -
              eine Einwilligung in ein Dokument, das es nicht gibt, ist wertlos. -->
         <div>
-          <label class="na-check">
+          <label class="check">
             <input type="checkbox" id="c-consent-privacy">
-            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
             <span>I agree to the Privacy Policy and data processing.</span>
           </label>
-          <span class="na-sub">Read it here: <a href="privacy.dc.html">Privacy Policy</a> &middot; <a href="imprint.dc.html">Imprint</a></span>
+          <span class="check-sub">Read it here: <a href="privacy.dc.html">Privacy Policy</a> &middot; <a href="imprint.dc.html">Imprint</a></span>
         </div>
       </fieldset>
 
-      <fieldset class="na-fieldset">
+      <fieldset class="fieldset tone-2">
         <legend>Photo consent *</legend>
-        <p style="font-size:14px;line-height:1.55;margin:0">Do you allow me to use photos and videos of your nails for social media?</p>
-        <div class="seg" style="align-self:flex-start">
-          <label class="seg-opt" style="padding:8px 22px"><input type="radio" name="c-photo" id="c-photo-yes">Yes</label>
-          <label class="seg-opt" style="padding:8px 22px"><input type="radio" name="c-photo" id="c-photo-no">No</label>
+        <p>Do you allow me to use photos and videos of your nails for social media?</p>
+        <div class="seg">
+          <label class="seg-opt"><input type="radio" name="c-photo" id="c-photo-yes">Yes</label>
+          <label class="seg-opt"><input type="radio" name="c-photo" id="c-photo-no">No</label>
         </div>
-        <span style="font-size:12.5px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 65%, transparent)">Either answer is fine &mdash; it changes nothing about your appointment.</span>
+        <span class="form-hint">Either answer is fine &mdash; it changes nothing about your appointment.</span>
       </fieldset>
 
       <sc-if value="{{ hasFehler }}" hint-placeholder-val="{{ false }}">
-        <div role="alert" style="padding:14px 16px;border-radius:var(--radius-md);background:var(--color-accent-2-100);border:1px solid var(--color-accent-2);font-size:14px;line-height:1.55">{{ fehler }}</div>
+        <div role="alert" class="alert tone-5">{{ fehler }}</div>
       </sc-if>
 
-      <span style="font-size:12.5px;color:color-mix(in srgb, var(--color-text) 65%, transparent)">* required</span>
-      <button type="button" class="btn btn-primary btn-block" onclick="{{ handleSubmit }}">{{ submitLabel }}</button>
+      <span class="form-hint">* required</span>
+      <button type="button" class="btn btn-primary btn-block anim-pulse" onclick="{{ handleSubmit }}">{{ submitLabel }}</button>
 
       <sc-if value="{{ dmOffen }}" hint-placeholder-val="{{ false }}">
-        <div id="na-dm-panel" class="card elev-sm" style="padding:20px;gap:12px;border:1px solid var(--color-accent)">
-          <h3 style="font-size:17px;margin:0">Almost there</h3>
-          <p style="font-size:14px;line-height:1.6;margin:0;color:color-mix(in srgb, var(--color-text) 78%, transparent)">{{ dmHinweis }}</p>
-          <!-- user-select:all -> ein Klick markiert alles. Bewusst ohne Hoehenbegrenzung:
-               wenn die Zwischenablage versagt, muss der ganze Text lesbar sein. -->
-          <div style="white-space:pre-wrap;font-size:13px;line-height:1.55;background:var(--color-bg);border:1px solid var(--color-divider);border-radius:18px;padding:12px 14px;user-select:all">{{ dmText }}</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div id="na-dm-panel" class="card dm-panel tone-2">
+          <h2>Almost there</h2>
+          <p>{{ dmHinweis }}</p>
+          <div class="dm-text">{{ dmText }}</div>
+          <div class="cta-actions">
             <a class="btn btn-primary" href="{{ dmLink }}" target="_blank" rel="noopener">Open Instagram DM</a>
             <button type="button" class="btn btn-secondary" onclick="{{ nochmalKopieren }}">Copy again</button>
           </div>
-          <span style="font-size:12.5px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 65%, transparent)">If the DM doesn&rsquo;t open, go to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> and send the text from there. Your appointment is only booked once I reply to confirm it.</span>
+          <span class="form-hint">If the DM doesn&rsquo;t open, go to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> and send the text from there. Your appointment is only booked once I reply to confirm it.</span>
         </div>
       </sc-if>
     </form>
 
-    <div class="card elev-sm" style="padding:28px;display:flex;flex-direction:column;gap:24px">
+    <aside class="card card-double contact-info tone-4">
       <div>
-        <h3 style="font-size:18px;margin:0 0 8px">Location</h3>
-        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">Hebragasse 7 Top 1+2<br>1090 Vienna, Austria</p>
+        <h2>Location</h2>
+        <p>Hebragasse 7 Top 1+2<br>1090 Vienna, Austria</p>
       </div>
-        <sc-if value="{{ showMapPlaceholder }}" hint-placeholder-val="{{ true }}">
-          <figure class="card elev-sm" style="margin:0;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;aspect-ratio:16/10;background:var(--color-accent-2-100);text-align:center;padding:24px">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-700);flex:none"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            <p style="font-size:13.5px;line-height:1.5;max-width:32ch;margin:0;color:color-mix(in srgb, var(--color-text) 78%, transparent)">Loading the map connects to Google and sets cookies. Click to load it, or open the address directly instead.</p>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-              <button type="button" class="btn btn-primary" onclick="{{ loadMap }}">Show map</button>
-              <a class="btn btn-ghost" href="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17" target="_blank" rel="noopener">Open in Google Maps</a>
-            </div>
-          </figure>
-        </sc-if>
-        <sc-if value="{{ showMapEmbed }}" hint-placeholder-val="{{ false }}">
-          <figure class="washed" style="margin:0;border-radius:24px;overflow:hidden">
-            <iframe
-              src="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17&output=embed"
-              title="Karte: Hebragasse 7 Top 1+2, 1090 Wien"
-              style="width:100%;aspect-ratio:16/10;border:0;display:block"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen></iframe>
-          </figure>
-        </sc-if>
+      <sc-if value="{{ showMapPlaceholder }}" hint-placeholder-val="{{ true }}">
+        <figure class="map-ph">
+          <span class="icon-badge" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+          <p>Loading the map connects to Google and sets cookies. Click to load it, or open the address directly instead.</p>
+          <div class="map-actions">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="{{ loadMap }}">Show map</button>
+            <a class="btn btn-ghost btn-sm" href="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17" target="_blank" rel="noopener">Open in Google Maps</a>
+          </div>
+        </figure>
+      </sc-if>
+      <sc-if value="{{ showMapEmbed }}" hint-placeholder-val="{{ false }}">
+        <figure class="photo photo-wide washed">
+          <iframe
+            src="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17&output=embed"
+            title="Karte: Hebragasse 7 Top 1+2, 1090 Wien"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </figure>
+      </sc-if>
       <div>
-        <h3 style="font-size:18px;margin:0 0 8px">Get in touch</h3>
-        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">
+        <h2>Get in touch</h2>
+        <p>
           <a href="tel:+4316000000">+43 1 600 00 00</a><br>
           <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a><br>
           <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a>
         </p>
       </div>
-    </div>
+    </aside>
   </div>
 </section>
 
-<footer style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-size:13px;color:color-mix(in srgb, var(--color-text) 65%, transparent);border-top:1px solid var(--color-divider)">
-  <div style="display:flex;flex-direction:column;gap:6px">
-    <span class="nav-brand" style="font-size:16px">Nail Alchemist</span>
-    <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
-  </div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <a href="about.dc.html">About</a>
-    <a href="services.dc.html">Services</a>
-    <a href="gallery.dc.html">Gallery</a>
-    <a href="contact.dc.html">Contact</a>
-  </div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <a href="booking-info.dc.html">Booking Information</a>
-    <a href="policies.dc.html">Studio Policies</a>
-    <a href="terms.dc.html">Terms &amp; Conditions</a>
-    <a href="privacy.dc.html">Privacy Policy</a>
-    <a href="imprint.dc.html">Imprint</a>
-  </div>
-  <div style="display:flex;gap:16px">
-    <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
-    <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+<!-- @footer -->
+<footer class="site-footer tone-2">
+  <div class="wrap">
+    <div class="footer-id">
+      <span class="nav-brand">Nail Alchemist</span>
+      <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+    </div>
+    <div class="footer-col">
+      <a href="about.dc.html">About</a>
+      <a href="services.dc.html">Services</a>
+      <a href="gallery.dc.html">Gallery</a>
+      <a href="contact.dc.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <a href="booking-info.dc.html">Booking Information</a>
+      <a href="policies.dc.html">Studio Policies</a>
+      <a href="terms.dc.html">Terms &amp; Conditions</a>
+      <a href="privacy.dc.html">Privacy Policy</a>
+      <a href="imprint.dc.html">Imprint</a>
+    </div>
+    <div class="footer-col">
+      <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+    </div>
   </div>
 </footer>
+<!-- /@footer -->
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showMap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contact page&quot;},&quot;submitAction&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;instagram&quot;,&quot;options&quot;:[&quot;instagram&quot;,&quot;whatsapp&quot;,&quot;mailto&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact page&quot;}}">/* ------------------------------------------------------------------
@@ -516,14 +519,14 @@ class Component extends DCLogic {
 
     const serviceOptions = this.serviceList.map((label) => ({
       label,
-      bg: label === this.state.service ? "var(--color-accent-2-100)" : "transparent",
+      selected: label === this.state.service,
       select: () => this.setState({ service: label, serviceOpen: false }),
     }));
 
     const slots = this.state.slots;
     const slotOptions = slots.map((slot) => ({
       label: this.formatSlot(slot),
-      bg: slot.iso === this.state.slotIso ? "var(--color-accent-2-100)" : "transparent",
+      selected: slot.iso === this.state.slotIso,
       select: () => this.setState({ slotIso: slot.iso, slotOpen: false }),
     }));
     const gewaehlt = slots.find((s) => s.iso === this.state.slotIso);

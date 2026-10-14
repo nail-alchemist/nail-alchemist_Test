@@ -11,123 +11,147 @@
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/styles.css">
-  <script src="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="_ds/dopamine/styles.css">
   <style>
-    body { margin: 0; }
-    /* The runtime pins its host to height:100%, which caps the sticky nav's
-       containing block at one screen — the nav would scroll away inside the
-       tall turntable track. Let the host grow with the page instead. */
-    #dc-root > .sc-host { height: auto; min-height: 100%; }
-
     /* ---- Turntable scroll story --------------------------------------
        The track is tall; the stage inside it sticks to the viewport while
        <nail-turntable> (turntable.js) scrubs the frames and writes
        --turn (0…1) and data-beat (0…2) back onto the track. */
     /* --nav-h wird von dem kleinen Skript am Seitenende gemessen und auf <html>
-       gesetzt. Der Ruecklaufwert 73px gilt nur, solange noch nicht gemessen ist:
-       gemessen am 30.09.2026 ist die Leiste bei 375px und breiter 73px hoch,
-       bei 320px und 360px aber 82px - ein fester Wert waere dort um 9px daneben. */
-    .spin-track { --turn: 0; position: relative; height: 320vh; margin-top: calc(-1 * var(--nav-h, 73px)); }
+       gesetzt. Der Ruecklaufwert gilt nur, solange noch nicht gemessen ist. */
+    .spin-track { --turn: 0; height: 320vh; margin-top: calc(-1 * var(--nav-h, 80px)); }
     .spin-stage {
-      position: sticky; top: 0; height: 100vh; height: 100svh; box-sizing: border-box;
-      padding: calc(var(--nav-h, 73px) + var(--space-4)) clamp(20px,5vw,72px) var(--space-6);
-      max-width: 1200px; margin: 0 auto;
+      position: sticky; top: 0; height: 100vh; height: 100svh;
+      padding: calc(var(--nav-h, 80px) + var(--space-6)) var(--gutter) var(--space-8);
+      max-width: var(--page-max); margin: 0 auto;
       display: grid; grid-template-columns: minmax(0,5fr) minmax(0,6fr);
       grid-template-areas: "copy art"; align-items: center; gap: clamp(24px,4vw,56px);
     }
 
-    .spin-art { grid-area: art; position: relative; justify-self: center; width: min(100%, 74svh); aspect-ratio: 1; }
+    /* Background word drifts left as the set turns — scroll-driven, so it
+       moves only when the visitor does. */
+    .spin-word { bottom: 4%; left: 30%; translate: calc(var(--turn) * -55%) 0; }
+
+    .spin-art { grid-area: art; position: relative; justify-self: center; width: min(100%, 72svh); aspect-ratio: 1; }
     .spin-art nail-turntable { position: relative; z-index: 2; width: 100%; height: 100%; }
-    .spin-halo { position: absolute; z-index: 0; left: 9%; top: 9%; width: 82%; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent-2-200); }
-    .spin-dot {
-      position: absolute; z-index: 1; right: 2%; top: 4%; width: 20%; aspect-ratio: 1; border-radius: 50%;
-      background: var(--color-accent-300); transform: translateY(calc(var(--turn) * 48px));
+    .spin-glow {
+      position: absolute; z-index: -1; inset: 6%; border-radius: 50%;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 42%, transparent), color-mix(in srgb, var(--color-accent-4) 26%, transparent) 60%, transparent);
     }
+    .spin-ring   { inset: 4%; position: absolute; }
+    .spin-ring-2 { inset: 13%; position: absolute; border-style: dotted; border-width: 3px; animation-direction: reverse; animation-duration: 32s; }
+    .spin-dot    { width: 14%; right: 3%; top: 6%; translate: 0 calc(var(--turn) * 60px); }
+    .spin-dot-2  { width: 7%; left: 4%; bottom: 18%; translate: 0 calc(var(--turn) * -80px); }
+    .spin-spark-a { width: 11%; aspect-ratio: 1; left: 2%; top: 8%; }
+    .spin-spark-b { width: 7%; aspect-ratio: 1; right: 12%; bottom: 10%; }
+    .spin-star    { width: 6%; aspect-ratio: 1; right: -2%; top: 46%; }
     .spin-floor {
       position: absolute; z-index: 1; left: 8%; top: 82%; width: 84%; height: 14%;
-      background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent-900) 30%, transparent), transparent);
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--color-ink) 70%, transparent), transparent);
     }
 
     .spin-copy { grid-area: copy; display: flex; flex-direction: column; gap: var(--space-6); }
     .spin-beats { display: grid; }
     .spin-beat {
-      grid-area: 1 / 1; align-self: end; opacity: 0; transform: translateY(14px);
-      transition: opacity 0.45s ease, transform 0.45s ease;
+      grid-area: 1 / 1; align-self: end; opacity: 0; transform: translateY(24px) rotate(-1deg);
+      transition: opacity 0.45s ease, transform 0.6s var(--ease-bounce);
     }
     .spin-track:not([data-beat]) .beat-0,
     .spin-track[data-beat="0"] .beat-0,
     .spin-track[data-beat="1"] .beat-1,
     .spin-track[data-beat="2"] .beat-2 { opacity: 1; transform: none; }
+    .spin-beat:nth-child(2) .kicker { --tone: var(--color-accent-2); }
+    .spin-beat:nth-child(3) .kicker { --tone: var(--color-accent-3); }
 
-    .spin-kicker {
-      display: inline-flex; align-items: center; gap: 6px; margin-bottom: var(--space-4);
-      font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; color: var(--color-accent-700);
+    .spin-beat h1, .spin-beat h2 { font-size: clamp(36px, 5vw, 76px); max-width: 12ch; }
+    .spin-beat h2 { text-shadow: var(--ts-mega); }
+    .spin-beat p { font-size: var(--text-lede); max-width: 40ch; margin: 0; color: var(--color-text-soft); }
+
+    .spin-progress { display: flex; align-items: center; gap: var(--space-4); font-size: var(--text-small); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-2); }
+    .spin-bar {
+      position: relative; flex: 0 1 200px; height: 16px; overflow: hidden;
+      border: 3px solid var(--color-accent-4); border-radius: 999px; background: var(--color-surface);
     }
-    .spin-beat h1, .spin-beat h2 { font-size: clamp(34px,4.6vw,60px); line-height: 1.08; max-width: 13ch; margin: 0 0 var(--space-4); }
-    .spin-beat p { font-size: 17px; line-height: 1.65; max-width: 40ch; margin: 0; color: color-mix(in srgb, var(--color-text) 80%, transparent); }
-
-    .spin-progress { display: flex; align-items: center; gap: var(--space-3); font-size: 13px; font-weight: 600; color: var(--color-accent-700); }
-    .spin-bar { position: relative; flex: 0 1 180px; height: 6px; border-radius: 999px; background: var(--color-accent-200); overflow: hidden; }
-    .spin-bar::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: var(--color-accent); transform-origin: left; transform: scaleX(var(--turn)); }
-    .spin-hint { display: inline-flex; align-items: center; gap: 6px; opacity: calc(1 - var(--turn) * 10); }
-    .spin-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .spin-bar::after { content: ""; position: absolute; inset: 0; background: var(--gradient-rainbow); transform-origin: left; transform: scaleX(var(--turn)); }
+    .spin-hint { white-space: nowrap; display: inline-flex; align-items: center; gap: var(--space-2); opacity: calc(1 - var(--turn) * 10); }
+    .spin-actions { display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center; }
 
     @media (max-width: 859px) {
       .spin-track { height: 280vh; }
       .spin-stage {
         grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto;
         grid-template-areas: "art" "copy"; align-content: center; gap: var(--space-4);
+        padding-bottom: var(--space-4);
       }
-      .spin-art { width: min(100%, 46svh); }
-      .spin-beat h1, .spin-beat h2 { font-size: clamp(28px,7.5vw,40px); max-width: 16ch; margin-bottom: var(--space-2); }
-      .spin-beat p { font-size: 15.5px; }
-      .spin-kicker { margin-bottom: var(--space-2); }
+      .spin-art { width: min(100%, 42svh); }
+      .spin-beat h1, .spin-beat h2 { font-size: clamp(28px, 8vw, 44px); max-width: 16ch; margin-bottom: var(--space-2); }
+      /* Small type can't carry the full stack — it smears into the next line. */
+      .spin-beat h1, .spin-beat h2 { text-shadow: var(--ts-2); letter-spacing: 0; line-height: 1.04; }
+      .spin-beat p { font-size: 16px; }
+      .spin-beat .kicker { margin-bottom: var(--space-2); font-size: 12px; }
       .spin-copy { gap: var(--space-4); }
+      .spin-word { bottom: auto; top: 18%; left: 10%; }
+      .spin-actions .btn-ghost { display: none; }   /* one CTA on a phone screen */
     }
 
-    /* The set still turns with the scroll (it only moves when the visitor
-       scrolls) — only the self-running caption fade is dropped. */
-    @media (prefers-reduced-motion: reduce) {
-      .spin-beat { transition: none; transform: none; }
-    }
+    /* ---- Gel-X levels ------------------------------------------------ */
+    .gel-word { top: var(--space-8); right: -6%; rotate: -4deg; }
+    .gel-head { max-width: 760px; margin-bottom: var(--space-16); }
+    .gel-more { margin-top: var(--space-12); }
+    .gel-nail { right: 6%; top: 22%; }
+    .gel-spark { width: 64px; height: 64px; left: 3%; bottom: 8%; }
+    .gel-blob  { width: 120px; right: -40px; bottom: 30%; opacity: 0.5; }
+    .gel-star  { width: 36px; height: 36px; left: 46%; top: 12%; }
+    @media (max-width: 639px) { .gel-nail { top: 3%; right: 4%; } .gel-star { display: none; } }
+
   </style>
 </helmet>
 
-<nav class="nav" style="padding:14px clamp(16px,5vw,72px);gap:12px;position:sticky;top:0;background:var(--color-bg);z-index:20;border-bottom:1px solid var(--color-divider)">
-  <a href="index.html" class="nav-brand" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+<!-- @nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
     Nail Alchemist
   </a>
-  <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
-    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
-    <div style="position:relative">
-      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" class="btn btn-ghost btn-icon" style="cursor:pointer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+  <div class="nav-actions">
+    <a href="contact.dc.html" class="btn btn-primary btn-sm">Book<span class="nav-cta-more">&nbsp;a session</span></a>
+    <div class="nav-menu-anchor">
+      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" class="btn btn-icon tone-4">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
       </button>
       <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
-        <div class="card elev-md" style="position:absolute;top:calc(100% + 10px);right:0;min-width:230px;z-index:30;padding:8px;display:flex;flex-direction:column;gap:2px">
-        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Home</a>
-        <a href="about.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">About</a>
-        <a href="services.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Services</a>
-        <a href="gallery.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Gallery</a>
-        <a href="contact.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Contact</a>
-        <a href="booking-info.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Booking Information</a>
-        <a href="policies.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Studio Policies</a>
-        <a href="terms.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Terms &amp; Conditions</a>
-        <a href="privacy.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Privacy Policy</a>
-        <a href="imprint.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Imprint</a>
+        <div class="nav-menu tones">
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="about.dc.html">About</a>
+          <a href="services.dc.html">Services</a>
+          <a href="gallery.dc.html">Gallery</a>
+          <a href="contact.dc.html">Contact</a>
+          <hr>
+          <a href="booking-info.dc.html">Booking Information</a>
+          <a href="policies.dc.html">Studio Policies</a>
+          <a href="terms.dc.html">Terms &amp; Conditions</a>
+          <a href="privacy.dc.html">Privacy Policy</a>
+          <a href="imprint.dc.html">Imprint</a>
         </div>
       </sc-if>
     </div>
   </div>
 </nav>
+<!-- /@nav -->
 
-<section class="spin-track" data-turntable-track="" data-beats="3">
+<section class="spin-track zone mesh tex-dots tone-1" data-turntable-track="" data-beats="3">
   <div class="spin-stage">
+    <span class="bg-word spin-word tone-4" aria-hidden="true">Alchemy</span>
+
     <div class="spin-art">
-      <div class="spin-halo"></div>
-      <div class="spin-dot"></div>
+      <div class="spin-glow"></div>
+      <div class="deco deco-ring spin-ring anim-spin tone-1" aria-hidden="true"></div>
+      <div class="deco deco-ring spin-ring-2 anim-spin tone-3" aria-hidden="true"></div>
+      <div class="deco deco-blob spin-dot tone-2" aria-hidden="true"></div>
+      <div class="deco deco-blob spin-dot-2 tone-5" aria-hidden="true"></div>
+      <span class="deco spin-spark-a anim-float tone-3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+      <span class="deco spin-spark-b anim-float-r delay-2 tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+      <span class="deco spin-star anim-bounce delay-1 tone-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
       <div class="spin-floor"></div>
       <nail-turntable path="media/turntable/nails_" frames="120" role="img" aria-label="A full set of long almond gel nails on a black marble display stand with gold trim, turning as you scroll: blush-to-green ombré with raised pink lilies and gold beads"></nail-turntable>
     </div>
@@ -135,21 +159,21 @@
     <div class="spin-copy">
       <div class="spin-beats">
         <div class="spin-beat beat-0">
-          <span class="spin-kicker">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+          <span class="kicker">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
             Nail studio · Vienna
           </span>
-          <h1>A full set, finished from every side.</h1>
+          <h1>A full set, <span class="grad-text">finished</span> from every side.</h1>
           <p>Sculpted in gel, shaped to your hand and built to be looked at up close. Scroll to turn the stand.</p>
         </div>
         <div class="spin-beat beat-1">
-          <span class="spin-kicker">The details</span>
-          <h2>Detail you can feel.</h2>
+          <span class="kicker">The details</span>
+          <h2><span class="thin">Detail</span> you can feel.</h2>
           <p>Hand-painted art and sculpted accents, built up one layer at a time so nothing snags and everything catches the light.</p>
         </div>
         <div class="spin-beat beat-2">
-          <span class="spin-kicker">Your shade</span>
-          <h2>Mixed until it's exactly right.</h2>
+          <span class="kicker">Your shade</span>
+          <h2>Mixed until it's <span class="thin">exactly</span> right.</h2>
           <p>Bring a photo, a fabric swatch or just a feeling. When nothing on the wall is quite right, we blend a custom shade on the spot.</p>
         </div>
       </div>
@@ -158,80 +182,102 @@
         <span class="spin-bar"></span>
         <span class="spin-hint">
           Scroll to turn
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" class="anim-bounce"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
         </span>
       </div>
 
       <div class="spin-actions">
-        <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+        <a href="contact.dc.html" class="btn btn-primary anim-pulse">Book a session</a>
         <a href="services.dc.html" class="btn btn-ghost">Services &amp; prices</a>
       </div>
     </div>
   </div>
 </section>
 
-<section style="max-width:1200px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px) 56px">
-  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:10px">Gel-X extensions</span>
-  <h2 style="font-size:30px;line-height:1.2;margin:0 0 14px">Four levels, one chair</h2>
-  <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:52ch;margin:0 0 28px">Lightweight, full-cover gel extensions for length, strength and a natural-looking finish. Every first visit starts with a short, free consult on shape, length and color.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
-    <div class="card elev-sm">
-      <div class="card-kicker">Minimal</div>
-      <div class="card-title">€80</div>
-      <p class="card-body">Clean and simple designs with little detail. Perfect for a natural or elegant look.</p>
+<section class="zone tex-stripes tone-3">
+  <span class="bg-word gel-word tone-3" aria-hidden="true">Gel-X</span>
+  <span class="deco deco-emoji gel-nail anim-wiggle" aria-hidden="true">💅</span>
+  <span class="deco gel-spark anim-float tone-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+  <span class="deco gel-star anim-float-r delay-1 tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+  <div class="deco deco-blob gel-blob tone-4" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="gel-head">
+      <span class="kicker">Gel-X extensions</span>
+      <h2>Four levels, <span class="grad-text">one</span> chair</h2>
+      <p class="lede">Lightweight, full-cover gel extensions for length, strength and a natural-looking finish. Every first visit starts with a short, free consult on shape, length and color.</p>
     </div>
-    <div class="card elev-sm">
-      <div class="card-kicker">Simple</div>
-      <div class="card-title">€90</div>
-      <p class="card-body">A touch more creativity with a few design elements.</p>
+
+    <div class="grid-broken tones">
+      <a href="services.dc.html" class="card">
+        <div class="card-kicker">Minimal</div>
+        <div class="card-title price">€80</div>
+        <p class="card-body">Clean and simple designs with little detail. Perfect for a natural or elegant look.</p>
+      </a>
+      <a href="services.dc.html" class="card card-dashed">
+        <div class="card-kicker">Simple</div>
+        <div class="card-title price">€90</div>
+        <p class="card-body">A touch more creativity with a few design elements.</p>
+      </a>
+      <a href="services.dc.html" class="card card-asym">
+        <div class="card-kicker">Medium</div>
+        <div class="card-title price">€100</div>
+        <p class="card-body">More detailed nail art with multiple design elements and techniques.</p>
+      </a>
+      <a href="services.dc.html" class="card card-double">
+        <span class="sticker" aria-hidden="true">all out ✨</span>
+        <div class="card-kicker">Advanced</div>
+        <div class="card-title price">€110</div>
+        <p class="card-body">Highly detailed, intricate nail art with extensive customization and time-intensive work.</p>
+      </a>
     </div>
-    <div class="card elev-sm">
-      <div class="card-kicker">Medium</div>
-      <div class="card-title">€100</div>
-      <p class="card-body">More detailed nail art with multiple design elements and techniques.</p>
-    </div>
-    <div class="card elev-sm">
-      <div class="card-kicker">Advanced</div>
-      <div class="card-title">€110</div>
-      <p class="card-body">Highly detailed, intricate nail art with extensive customization and time-intensive work.</p>
-    </div>
+
+    <a href="services.dc.html" class="btn btn-ghost gel-more">All services &amp; removal<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
   </div>
-  <a href="services.dc.html" class="btn btn-ghost" style="margin-top:20px">All services &amp; removal<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
 </section>
 
-<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 80px">
-  <div style="background:var(--color-accent-2-200);border-radius:clamp(28px,5vw,56px);padding:clamp(28px,4vw,48px) clamp(24px,4vw,64px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
-    <div>
-      <h3 style="font-size:26px;margin:0 0 8px">Ready for your next set?</h3>
-      <p style="font-size:15.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0;max-width:46ch">Book online, or DM <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist_</a> on Instagram!<br>We'll sort a time either way.</p>
+<section class="cta-zone zone mesh tex-checker tone-5">
+  <div class="deco deco-ring cta-ring anim-spin tone-3" aria-hidden="true"></div>
+  <span class="deco cta-star anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+  <div class="wrap">
+    <div class="cta-band tone-2">
+      <span class="deco-emoji cta-emoji anim-bounce" aria-hidden="true">✨</span>
+      <div>
+        <h2>Ready for your next set?</h2>
+        <p>Book online, or DM <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist_</a> on Instagram!<br>We'll sort a time either way.</p>
+      </div>
+      <a href="contact.dc.html" class="btn btn-ink">Book a session</a>
     </div>
-    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
   </div>
 </section>
 
-<footer style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-size:13px;color:color-mix(in srgb, var(--color-text) 65%, transparent);border-top:1px solid var(--color-divider)">
-  <div style="display:flex;flex-direction:column;gap:6px">
-    <span class="nav-brand" style="font-size:16px">Nail Alchemist</span>
-    <span>Hebragasse 7/1, 1090 Vienna</span>
-  </div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <a href="about.dc.html">About</a>
-    <a href="services.dc.html">Services</a>
-    <a href="gallery.dc.html">Gallery</a>
-    <a href="contact.dc.html">Contact</a>
-  </div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <a href="booking-info.dc.html">Booking Information</a>
-    <a href="policies.dc.html">Studio Policies</a>
-    <a href="terms.dc.html">Terms &amp; Conditions</a>
-    <a href="privacy.dc.html">Privacy Policy</a>
-    <a href="imprint.dc.html">Imprint</a>
-  </div>
-  <div style="display:flex;gap:16px">
-    <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
-    <a href="mailto:hello@nailalchemist.at">hello@nailalchemist.at</a>
+<!-- @footer -->
+<footer class="site-footer tone-2">
+  <div class="wrap">
+    <div class="footer-id">
+      <span class="nav-brand">Nail Alchemist</span>
+      <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+    </div>
+    <div class="footer-col">
+      <a href="about.dc.html">About</a>
+      <a href="services.dc.html">Services</a>
+      <a href="gallery.dc.html">Gallery</a>
+      <a href="contact.dc.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <a href="booking-info.dc.html">Booking Information</a>
+      <a href="policies.dc.html">Studio Policies</a>
+      <a href="terms.dc.html">Terms &amp; Conditions</a>
+      <a href="privacy.dc.html">Privacy Policy</a>
+      <a href="imprint.dc.html">Imprint</a>
+    </div>
+    <div class="footer-col">
+      <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+    </div>
   </div>
 </footer>
+<!-- /@footer -->
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>class Component extends DCLogic {

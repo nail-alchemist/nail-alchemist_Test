@@ -10,112 +10,149 @@
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/styles.css">
-  <script src="_ds/organic-aa9dcf11-f43f-4075-afdc-f854ddeafb73/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="_ds/dopamine/styles.css">
   <script src="./image-slot.js"></script>
-  <style>body { margin: 0; }</style>
+  <style>
+    .intro { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(40px, 6vw, 96px); align-items: center; }
+    .intro-portrait { position: relative; max-width: 460px; }
+    .intro-portrait .photo { --tilt: -2.5deg; }
+    .intro-portrait .sticker { top: auto; bottom: var(--space-8); right: calc(var(--space-6) * -1); z-index: 1; font-size: 20px; rotate: -8deg; }
+    .intro-text p { font-size: clamp(18px, 1.6vw, 21px); line-height: 1.7; color: var(--color-text); max-width: 54ch; }
+    .intro-text p:first-child::first-line { color: var(--color-accent-2); font-weight: 700; }
+  </style>
 </helmet>
 
-<nav class="nav" style="padding:14px clamp(16px,5vw,72px);gap:12px;position:sticky;top:0;background:var(--color-bg);z-index:20;border-bottom:1px solid var(--color-divider)">
-  <a href="index.html" class="nav-brand" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent)"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+<!-- @nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
     Nail Alchemist
   </a>
-  <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
-    <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
-    <div style="position:relative">
-      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" class="btn btn-ghost btn-icon" style="cursor:pointer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+  <div class="nav-actions">
+    <a href="contact.dc.html" class="btn btn-primary btn-sm">Book<span class="nav-cta-more">&nbsp;a session</span></a>
+    <div class="nav-menu-anchor">
+      <button type="button" onclick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" class="btn btn-icon tone-4">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
       </button>
       <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
-        <div class="card elev-md" style="position:absolute;top:calc(100% + 10px);right:0;min-width:230px;z-index:30;padding:8px;display:flex;flex-direction:column;gap:2px">
-        <a href="index.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Home</a>
-        <a href="about.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;color:var(--color-text);background:var(--color-accent-2-100)" style-hover="background:var(--color-accent-2-100)">About</a>
-        <a href="services.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Services</a>
-        <a href="gallery.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Gallery</a>
-        <a href="contact.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Contact</a>
-        <a href="booking-info.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Booking Information</a>
-        <a href="policies.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Studio Policies</a>
-        <a href="terms.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Terms &amp; Conditions</a>
-        <a href="privacy.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Privacy Policy</a>
-        <a href="imprint.dc.html" style="display:block;padding:11px 16px;border-radius:14px;font-size:15px;font-weight:400;text-decoration:none;color:var(--color-text);background:transparent" style-hover="background:var(--color-accent-2-100)">Imprint</a>
+        <div class="nav-menu tones">
+          <a href="index.html">Home</a>
+          <a href="about.dc.html" aria-current="page">About</a>
+          <a href="services.dc.html">Services</a>
+          <a href="gallery.dc.html">Gallery</a>
+          <a href="contact.dc.html">Contact</a>
+          <hr>
+          <a href="booking-info.dc.html">Booking Information</a>
+          <a href="policies.dc.html">Studio Policies</a>
+          <a href="terms.dc.html">Terms &amp; Conditions</a>
+          <a href="privacy.dc.html">Privacy Policy</a>
+          <a href="imprint.dc.html">Imprint</a>
         </div>
       </sc-if>
     </div>
   </div>
 </nav>
+<!-- /@nav -->
 
-<section style="max-width:1200px;margin:0 auto;padding:clamp(40px,7vw,64px) clamp(20px,5vw,72px) 40px">
-  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:12px">About</span>
-  <h1 style="font-size:clamp(34px,4.5vw,52px);line-height:1.12;max-width:16ch;margin:0">The alchemist behind the polish.</h1>
-</section>
-
-<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 72px">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,48px);align-items:center">
-    <figure class="washed" style="margin:0;border-radius:clamp(28px,5vw,56px);overflow:hidden">
-      <image-slot id="about-portrait" shape="rect" placeholder="Portrait of the artist" style="width:100%;aspect-ratio:3/4"></image-slot>
-    </figure>
-    <div>
-      <p style="font-size:17px;line-height:1.7;color:color-mix(in srgb, var(--color-text) 82%, transparent);margin:0 0 18px">Hi, I'm Ella, I started Nail Alchemist after years of doing nails for friends at the kitchen table, mixing polish shades until they matched a mood rather than a chart. Vienna is small enough that I still remember most of the hands that walk through the door.</p>
-      <p style="font-size:17px;line-height:1.7;color:color-mix(in srgb, var(--color-text) 82%, transparent);margin:0">I trained in classic manicure and gel technique, then kept adding what I actually use: freehand nail art, color theory, and a lot of patience for people who "don't really know what they want" and that's most of my favorite appointments.</p>
-    </div>
+<header class="page-head zone mesh tex-checker tone-4">
+  <span class="bg-word" aria-hidden="true">Hello</span>
+  <div class="deco deco-ring ph-ring anim-spin" aria-hidden="true"></div>
+  <span class="deco ph-spark anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+  <span class="deco ph-star anim-float-r delay-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+  <div class="wrap">
+    <span class="kicker">About</span>
+    <h1>The alchemist behind the <span class="grad-text">polish.</span></h1>
   </div>
-</section>
+</header>
 
-<section style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 72px">
-  <span style="display:block;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;color:var(--color-accent-700);margin-bottom:24px">How I work</span>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px">
-    <div>
-      <h3 style="font-size:20px;margin:0 0 8px">One hour, no rush</h3>
-      <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">Every appointment is booked with enough room to actually finish a design properly, even a fiddly one.</p>
+<section class="zone tex-dots tone-3">
+  <div class="deco deco-blob deco-lg at-edge-r tone-1" aria-hidden="true"></div>
+  <span class="deco deco-md at-tr anim-float-r tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+  <div class="wrap intro">
+    <div class="intro-portrait">
+      <figure class="photo photo-portrait washed"><image-slot id="about-portrait" src="bilder/about-portrait.webp" shape="rect" placeholder="Portrait of the artist"></image-slot></figure>
+      <span class="sticker" aria-hidden="true">hi! 👋</span>
     </div>
-    <div>
-      <h3 style="font-size:20px;margin:0 0 8px">Your nails come first</h3>
-      <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">If a shape or a product isn't right for your nails, I'll say so, even if it's not what you asked for.</p>
-    </div>
-    <div>
-      <h3 style="font-size:20px;margin:0 0 8px">Color, considered</h3>
-      <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0">I keep a working library of mixed shades and swatches, bring a photo, a fabric scrap, anything, and we'll find (or mix) the match.</p>
+    <div class="intro-text">
+      <p>Hi, I'm Ella, I started Nail Alchemist after years of doing nails for friends at the kitchen table, mixing polish shades until they matched a mood rather than a chart. Vienna is small enough that I still remember most of the hands that walk through the door.</p>
+      <p>I trained in classic manicure and gel technique, then kept adding what I actually use: freehand nail art, color theory, and a lot of patience for people who "don't really know what they want" and that's most of my favorite appointments.</p>
     </div>
   </div>
 </section>
 
-<section style="max-width:1200px;margin:0 auto;padding:16px clamp(20px,5vw,72px) 80px">
-  <div style="background:var(--color-accent-2-200);border-radius:clamp(28px,5vw,56px);padding:clamp(28px,4vw,48px) clamp(24px,4vw,64px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
-    <div>
-      <h3 style="font-size:26px;margin:0 0 8px">Come sit for a while</h3>
-      <p style="font-size:15.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:0;max-width:46ch">Book a session, or see what's possible first in the gallery.</p>
+<section class="zone tex-stripes tone-1">
+  <span class="deco deco-emoji at-tr anim-wiggle" aria-hidden="true">🎨</span>
+  <span class="deco deco-md at-bl anim-float tone-3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">The approach</span>
+      <h2>How I <span class="grad-text">work</span></h2>
     </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <a href="gallery.dc.html" class="btn btn-secondary">See the work</a>
-      <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+    <div class="grid-broken tones">
+      <article class="card">
+        <span class="icon-badge" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
+        <h3 class="card-title">One hour, no rush</h3>
+        <p class="card-body">Every appointment is booked with enough room to actually finish a design properly, even a fiddly one.</p>
+      </article>
+      <article class="card card-dashed">
+        <span class="icon-badge" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg></span>
+        <h3 class="card-title">Your nails come first</h3>
+        <p class="card-body">If a shape or a product isn't right for your nails, I'll say so, even if it's not what you asked for.</p>
+      </article>
+      <article class="card card-asym">
+        <span class="icon-badge" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"></path><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></span>
+        <h3 class="card-title">Color, considered</h3>
+        <p class="card-body">I keep a working library of mixed shades and swatches, bring a photo, a fabric scrap, anything, and we'll find (or mix) the match.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<footer style="max-width:1200px;margin:0 auto;padding:32px clamp(20px,5vw,72px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-size:13px;color:color-mix(in srgb, var(--color-text) 65%, transparent);border-top:1px solid var(--color-divider)">
-  <div style="display:flex;flex-direction:column;gap:6px">
-    <span class="nav-brand" style="font-size:16px">Nail Alchemist</span>
-    <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+<section class="cta-zone zone mesh tex-checker tone-2">
+  <div class="deco deco-ring cta-ring anim-spin tone-1" aria-hidden="true"></div>
+  <span class="deco cta-star anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+  <div class="wrap">
+    <div class="cta-band tone-4">
+      <span class="deco-emoji cta-emoji anim-bounce" aria-hidden="true">🪑</span>
+      <div>
+        <h2>Come sit for a while</h2>
+        <p>Book a session, or see what's possible first in the gallery.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="gallery.dc.html" class="btn btn-secondary">See the work</a>
+        <a href="contact.dc.html" class="btn btn-ink">Book a session</a>
+      </div>
+    </div>
   </div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <a href="about.dc.html">About</a>
-    <a href="services.dc.html">Services</a>
-    <a href="gallery.dc.html">Gallery</a>
-    <a href="contact.dc.html">Contact</a>
-  </div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <a href="booking-info.dc.html">Booking Information</a>
-    <a href="policies.dc.html">Studio Policies</a>
-    <a href="terms.dc.html">Terms &amp; Conditions</a>
-    <a href="privacy.dc.html">Privacy Policy</a>
-    <a href="imprint.dc.html">Imprint</a>
-  </div>
-  <div style="display:flex;gap:16px">
-    <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
-    <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+</section>
+
+<!-- @footer -->
+<footer class="site-footer tone-2">
+  <div class="wrap">
+    <div class="footer-id">
+      <span class="nav-brand">Nail Alchemist</span>
+      <span>Hebragasse 7 Top 1+2, 1090 Vienna</span>
+    </div>
+    <div class="footer-col">
+      <a href="about.dc.html">About</a>
+      <a href="services.dc.html">Services</a>
+      <a href="gallery.dc.html">Gallery</a>
+      <a href="contact.dc.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <a href="booking-info.dc.html">Booking Information</a>
+      <a href="policies.dc.html">Studio Policies</a>
+      <a href="terms.dc.html">Terms &amp; Conditions</a>
+      <a href="privacy.dc.html">Privacy Policy</a>
+      <a href="imprint.dc.html">Imprint</a>
+    </div>
+    <div class="footer-col">
+      <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a>
+    </div>
   </div>
 </footer>
+<!-- /@footer -->
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>class Component extends DCLogic {

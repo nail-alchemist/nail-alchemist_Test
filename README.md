@@ -10,6 +10,7 @@ Statische Website. Wird über **GitHub Pages** ausgeliefert.
 | `*.dc.html` | die übrigen Seiten |
 | `_ds/` | Design-System: Farben, Schriften, Komponenten |
 | `support.js`, `doc-page.js`, `image-slot.js` | Runtime der Seiten |
+| `bilder/` | Fotos der Seite als `.webp` — Dateiname = Bildplatz (`gal-1.webp`, `about-portrait.webp`, …) |
 | `slots.js` | **wird automatisch erzeugt** — freie Termine aus dem iCloud-Kalender |
 | `.nojekyll` | siehe unten — ohne diese Datei fehlt das ganze Design |
 
@@ -44,5 +45,7 @@ mitlesen. Dieses Repository ist öffentlich.
 - [x] ~~Google-Maps-iframe in `contact.dc.html`~~ → **erledigt 17.09.2026.**
       Die Karte lädt jetzt erst nach einem Klick auf „Show map"; beim Seitenaufruf
       geht nichts an Google. Daneben steht ein Direktlink, der gar nichts einbettet.
+- [ ] Dummy-Bilder in `bilder/` durch echte Fotos ersetzen (15 Stück; jeder Dummy
+      zeigt seinen eigenen Dateinamen). `paket-bauen.py` hält Dummies nicht auf.
 - [ ] Impressum (`terms.dc.html`) und Datenschutzerklärung (`policies.dc.html`)
       sind noch Platzhalter. In Österreich Pflicht.
