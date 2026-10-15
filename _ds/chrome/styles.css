@@ -1,0 +1,841 @@
+/* Chrome — Nail Alchemist's tactile pastel design system. Single source of truth
+   for the look: every page links this one file and takes colour, type, space,
+   radius, shadow and motion from the tokens below. See readme.md for the rules.
+
+   Fonts are self-hosted (SIL Open Font License, licences in fonts/). No request
+   leaves the site for a font, so no visitor IP goes to Google. */
+
+/* ── Fonts ──────────────────────────────────────────────────────────────────
+   Archivo is one variable file with weight AND width axes: body text at 100 %,
+   condensed uppercase labels at 75 %. Playfair Display Italic (variable,
+   wght 400–900) is the chrome display face — the liquid-chrome serif italic of
+   2.jpeg; it replaced the Modak bubble letters on 2026-10-15. Instrument Serif
+   Italic stays the sparing accent. Latin + latin-ext subsets. */
+@font-face {
+  font-family: "Archivo"; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-stretch: 62% 125%;
+  src: url("fonts/archivo-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo"; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-stretch: 62% 125%;
+  src: url("fonts/archivo-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Playfair Display"; font-style: italic; font-weight: 400 900; font-display: swap;
+  src: url("fonts/playfair-display-italic-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Playfair Display"; font-style: italic; font-weight: 400 900; font-display: swap;
+  src: url("fonts/playfair-display-italic-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap;
+  src: url("fonts/instrument-serif-italic-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap;
+  src: url("fonts/instrument-serif-italic-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  /* ── Colour ───────────────────────────────────────────────────────────────
+     A soft pastel pink frames every page (3.jpeg). Text is near-black ink.
+     Contrast on --color-bg: ink 13:1, ink-soft 6.6:1, accent 5:1 (all AA). */
+  --color-bg: #f7d8e6;                  /* pastel pink base */
+  --color-bg-deep: #efc0d5;             /* deeper band, starbursts */
+  --color-surface: #fff6fa;             /* paper, polaroids, panels */
+  --color-ink: #1d1620;                 /* body text, outlines */
+  --color-ink-soft: #54465a;            /* secondary text */
+  --color-accent: #b3175f;              /* lily magenta: links, kickers */
+  --color-accent-soft: #f39bc4;         /* fills (tear-off note); ink text only */
+  --color-on-dark: #fff6fa;             /* text on ink fills */
+
+  /* ── Chrome — liquid silver, the one material everything metal shares ─────
+     Stops run highlight → mid → near-black band → blush reflection → highlight.
+     The dark band is not decoration: it is what keeps chrome text above 3:1 on
+     the pink ground. Never build chrome from the light stops alone. */
+  --chrome-hi: #ffffff;
+  --chrome-1: #eceef3;
+  --chrome-2: #c3c5ce;
+  --chrome-3: #8b8d99;
+  --chrome-4: #484955;
+  --chrome-5: #1c1c23;
+  --chrome-blush: #f1c3d7;              /* the pink room reflected in the metal */
+  --chrome-stops:
+      var(--chrome-1) 0%, var(--chrome-hi) 14%, var(--chrome-2) 30%,
+      var(--chrome-4) 44%, var(--chrome-5) 50%, var(--chrome-3) 56%,
+      var(--chrome-blush) 64%, var(--chrome-hi) 72%, var(--chrome-2) 86%, var(--chrome-4) 100%;
+  /* Text gets a darker cut of the same metal: a bright rim on top, then the
+     body sits in the dark band. With the light-heavy stops above, letters
+     washed out on the pale panels (2026-10-15, "not readable"). */
+  --chrome-text-stops:
+      var(--chrome-2) 0%, var(--chrome-hi) 12%, var(--chrome-3) 26%, var(--chrome-4) 38%,
+      var(--chrome-5) 50%, var(--chrome-4) 64%, var(--chrome-3) 80%, var(--chrome-blush) 90%, var(--chrome-4) 100%;
+  --chrome-text: linear-gradient(180deg, var(--chrome-text-stops));
+  --chrome-surface: linear-gradient(160deg,
+      var(--chrome-hi) 0%, var(--chrome-1) 22%, var(--chrome-2) 46%,
+      var(--chrome-3) 54%, var(--chrome-1) 70%, var(--chrome-blush) 84%, var(--chrome-2) 100%);
+  --chrome-ring: conic-gradient(from 200deg,
+      var(--chrome-hi), var(--chrome-3), var(--chrome-1), var(--chrome-5),
+      var(--chrome-2), var(--chrome-hi), var(--chrome-4), var(--chrome-1), var(--chrome-hi));
+  --chrome-sheen: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.85) 50%, transparent 70%);
+  --chrome-filter: url(#chrome-lg);     /* SVG lighting filter, see readme */
+
+  /* ── Type ─────────────────────────────────────────────────────────────── */
+  --font-display: "Playfair Display", Georgia, serif;   /* always italic */
+  --font-body: "Archivo", system-ui, sans-serif;
+  --font-accent: "Instrument Serif", Georgia, serif;
+  --stretch-label: 75%;
+  --stretch-head: 88%;
+
+  --text-mega: clamp(64px, 12vw, 180px);   /* giant chrome section titles */
+  --text-hero: clamp(48px, 8vw, 120px);
+  --text-h2: clamp(44px, 7vw, 104px);
+  --text-h3: clamp(22px, 2.2vw, 28px);
+  --text-lede: clamp(18px, 1.5vw, 21px);
+  --text-body: 17px;
+  --text-small: 14px;
+  --text-label: 12px;
+  --track-label: 0.12em;
+
+  /* ── Space — 4px base (same scale as before) ─────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --gutter: clamp(16px, 5vw, 72px);
+  --page-max: 1280px;
+
+  /* ── Shape ────────────────────────────────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-key: 12px;
+  --radius-pill: 999px;
+  --ring: 2px;                          /* chrome outline on pills & panels */
+  --hairline: 1.5px;
+
+  /* ── Shadows — soft and physical, always two layers ───────────────────── */
+  --shadow-sm: 0 1px 2px rgb(52 18 38 / 0.18), 0 4px 10px rgb(52 18 38 / 0.10);
+  --shadow-md: 0 2px 4px rgb(52 18 38 / 0.16), 0 14px 30px rgb(52 18 38 / 0.16);
+  --shadow-lg: 0 4px 10px rgb(52 18 38 / 0.18), 0 30px 64px rgb(52 18 38 / 0.22);
+  --shadow-object: drop-shadow(0 3px 3px rgb(52 18 38 / 0.25)) drop-shadow(0 14px 16px rgb(52 18 38 / 0.22));
+  --shadow-key: inset 0 2px 0 rgb(255 255 255 / 0.9), inset 0 -3px 0 rgb(28 28 35 / 0.25);
+
+  /* ── Motion ───────────────────────────────────────────────────────────── */
+  --dur-fast: 160ms;
+  --dur: 320ms;
+  --dur-slow: 700ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --marquee-dur: 40s;
+  --float-dur: 7s;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Base
+   ══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h, 80px) + var(--space-4)); }
+body {
+  margin: 0; min-height: 100vh;
+  background: var(--color-bg); color: var(--color-ink);
+  font-family: var(--font-body); font-size: var(--text-body); line-height: 1.6;
+  font-optical-sizing: auto; text-rendering: optimizeLegibility;
+}
+img, picture, svg, video, canvas { display: block; max-width: 100%; }
+figure { margin: 0; }
+/* The dc runtime pins its host to height:100%, which caps the sticky nav's
+   containing block at one screen: on any longer page the nav would scroll
+   away. Let the host grow with the page instead. */
+#dc-root > .sc-host { height: auto; min-height: 100%; }
+a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-thickness: 1.5px; }
+a:hover { color: var(--color-ink); }
+p { margin: 0 0 var(--space-4); }
+::selection { background: var(--color-ink); color: var(--color-bg); }
+
+/* Focus: 3 px dashed ink with offset. The dash is the structural cue, so focus
+   never depends on colour; ink reads on pink, paper, metal and tiles alike. */
+:focus-visible { outline: 3px dashed var(--color-ink); outline-offset: 4px; border-radius: 4px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* The inline SVG that holds the chrome lighting filters (synced after </x-dc>). */
+.chrome-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* ── Headings ────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 { margin: 0 0 var(--space-4); color: var(--color-ink); text-wrap: balance; }
+h3, h4 {
+  font-family: var(--font-body); font-weight: 760; font-stretch: var(--stretch-head);
+  font-size: var(--text-h3); line-height: 1.15; letter-spacing: -0.01em;
+}
+
+/* Chrome headings (approach A): real, selectable text in Playfair Display
+   Italic (2.jpeg), filled with
+   the chrome gradient (one band set per line via 1lh) and lit by the inline
+   SVG filter #chrome-lg / #chrome-sm, which blurs the letter alpha into a
+   height map, adds specular + diffuse lighting and a dark contour.
+   The filter is static on purpose: animating anything inside a filtered
+   element re-runs the lighting every frame. */
+h1, h2, .chrome {
+  font-family: var(--font-display); font-style: italic; font-weight: 700;
+  font-size: var(--text-h2); line-height: 1.02; letter-spacing: -0.015em;
+  color: var(--chrome-4);                           /* fallback if clip fails */
+  background: var(--chrome-text);
+  background-size: 100% 1lh;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: var(--chrome-filter);
+  padding-block: 0.04em 0.08em;                     /* room for the lit rim */
+  padding-inline-end: 0.12em;                       /* the italic leans past its box; keep the overhang inside the filter */
+}
+.chrome-sm { --chrome-filter: url(#chrome-sm); }
+/* .plain: a heading without the chrome treatment — for headings whose look
+   comes from their content (keycaps, beads). */
+.plain { background: none; filter: none; -webkit-text-fill-color: currentColor; color: var(--color-ink); padding-block: 0; }
+h1 { font-size: var(--text-hero); }
+/* .vertical: a tall title reading bottom-to-top (3.jpeg "WHAT I DO"). The
+   chrome bands turn with it so every glyph still gets light → dark → light.
+   No transform: an SVG filter and a rotate on the same element render black
+   in Chrome, so the direction comes from writing-mode alone. Browsers without
+   sideways-lr read it top-to-bottom instead. */
+.vertical {
+  writing-mode: vertical-rl;
+  background-image: linear-gradient(270deg, var(--chrome-text-stops)); background-size: 1lh 100%;
+  padding-block: 0; padding-inline: 0.04em 0.08em;
+}
+@supports (writing-mode: sideways-lr) {
+  .vertical { writing-mode: sideways-lr; background-image: linear-gradient(90deg, var(--chrome-text-stops)); }
+}
+.mega { font-size: var(--text-mega); line-height: 0.95; }
+@media (max-width: 639px) { h1, h2, .chrome { --chrome-filter: url(#chrome-sm); } }
+/* Rendered chrome: wrap the words in <chrome-text> (chrome-text.js). Once all
+   of them exist as Blender renders, the element shows those and sets
+   data-ready; the CSS chrome then steps aside, because the SVG filter would
+   re-light the rendered metal. Until then the CSS chrome above is the fallback. */
+:is(h1, h2, .chrome):has(chrome-text[data-ready]) { background: none; filter: none; -webkit-text-fill-color: currentColor; }
+
+/* Windows high contrast / forced colours: plain system text, no effects. */
+@media (forced-colors: active) {
+  h1, h2, .chrome { background: none; -webkit-text-fill-color: CanvasText; color: CanvasText; filter: none; }
+}
+
+/* ── Supporting type ─────────────────────────────────────────────────────── */
+.label, .kicker {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-body); font-size: var(--text-label); font-weight: 650;
+  font-stretch: var(--stretch-label); letter-spacing: var(--track-label); text-transform: uppercase;
+  color: var(--color-ink);
+}
+.kicker { margin-bottom: var(--space-3); color: var(--color-accent); }
+.accent { font-family: var(--font-accent); font-style: italic; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.lede { font-size: var(--text-lede); line-height: 1.5; color: var(--color-ink-soft); max-width: 46ch; }
+.small { font-size: var(--text-small); }
+
+/* NO. 01 / CATEGORY — numbered labels from 2.jpeg. The number sits in a small
+   chrome-ringed pill so it reads like the circled numeral. */
+.label-no {
+  display: inline-flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;
+  font-size: var(--text-label); font-weight: 650; font-stretch: var(--stretch-label);
+  letter-spacing: var(--track-label); text-transform: uppercase; color: var(--color-ink);
+}
+.label-no .num {
+  display: inline-grid; place-items: center; min-width: 2.6em; height: 1.9em; padding: 0 0.5em;
+  border: var(--hairline) solid transparent; border-radius: var(--radius-pill);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Layout
+   ══════════════════════════════════════════════════════════════════════════ */
+.zone { position: relative; isolation: isolate; overflow: clip; }
+.wrap { max-width: var(--page-max); margin: 0 auto; padding: var(--space-24) var(--gutter); }
+@media (max-width: 639px) { .wrap { padding-block: var(--space-16); } }
+
+/* ── Tactile surfaces ──────────────────────────────────────────────────────
+   A surface is a full-width zone with a photographic texture behind it:
+       <section class="zone surface surface-metal">
+         <picture class="surface-img"> <source type="image/avif" srcset="…">
+           <source type="image/webp" srcset="…"> <img src="…" alt="" loading="lazy">
+         </picture>
+         <div class="wrap">…</div>
+       </section>
+   <picture> rather than background-image so the browser picks the width
+   (srcset), the format (AVIF → WebP) and lazy-loads below the fold natively.
+   ::after lays the scrim between texture and content. */
+.surface { position: relative; isolation: isolate; overflow: clip; }
+.surface-img { position: absolute; inset: 0; z-index: -2; }
+.surface-img img { width: 100%; height: 100%; object-fit: cover; }
+.surface::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.surface-fur::after   { background: radial-gradient(120% 90% at 50% 40%, rgb(247 216 230 / 0.10), rgb(29 22 32 / 0.25)); }
+.surface-metal::after { background: linear-gradient(180deg, rgb(255 246 250 / 0.20), rgb(247 216 230 / 0.10) 60%, rgb(29 22 32 / 0.08)); }
+.surface-paper::after { background: rgb(255 246 250 / 0.18); }
+.surface-tiles::after { background: linear-gradient(180deg, rgb(247 216 230 / 0.35), rgb(247 216 230 / 0.15)); }
+/* .scrim-start: text sits straight on the texture (3.jpeg) — lighten the
+   side the text is on, leave the rest of the surface showing. */
+.surface.scrim-start::after { background: linear-gradient(90deg, rgb(255 246 250 / 0.66), rgb(255 246 250 / 0.38) 50%, rgb(255 246 250 / 0.08) 75%); }
+@media (max-width: 859px) { .surface.scrim-start::after { background: linear-gradient(180deg, rgb(255 246 250 / 0.66), rgb(255 246 250 / 0.5) 55%, rgb(255 246 250 / 0.15)); } }
+/* Soft pink edges so surfaces melt into the pink frame instead of hard cuts. */
+.surface-edge { box-shadow: inset 0 24px 24px -24px var(--color-bg), inset 0 -24px 24px -24px var(--color-bg); }
+
+/* Panel: where text sits on a busy texture. Opaque enough that ink always
+   clears AA; no backdrop-filter (it repaints on every scroll frame). */
+.panel {
+  position: relative;
+  padding: clamp(20px, 3vw, 36px);
+  border: var(--ring) solid transparent; border-radius: var(--radius-lg);
+  background: linear-gradient(rgb(255 246 250 / 0.94), rgb(255 246 250 / 0.94)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: var(--shadow-md);
+}
+.panel-pink { background: linear-gradient(rgb(247 216 230 / 0.95), rgb(247 216 230 / 0.95)) padding-box, var(--chrome-ring) border-box; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Components
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Buttons: outlined pills with a chrome ring ────────────────────────────
+   The ring is a gradient border (padding-box fill + border-box chrome).
+   Hover sweeps a highlight across: ::before translates, nothing repaints. */
+.btn {
+  --btn-fill: var(--color-surface); --btn-text: var(--color-ink);
+  position: relative; overflow: hidden; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 48px; padding: var(--space-2) var(--space-6);
+  border: var(--ring) solid transparent; border-radius: var(--radius-pill);
+  background: linear-gradient(var(--btn-fill), var(--btn-fill)) padding-box, var(--chrome-ring) border-box;
+  color: var(--btn-text);
+  font: 700 14px/1 var(--font-body); font-stretch: 82%; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+}
+.btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--chrome-sheen); transform: translateX(-120%);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.btn:hover { color: var(--btn-text); transform: translateY(-2px) rotate(-1deg); box-shadow: var(--shadow-md); }
+.btn:hover::before { transform: translateX(120%); }
+.btn:active { transform: translateY(1px) scale(0.97); }
+.btn svg { display: block; flex: none; }
+.btn-primary { --btn-fill: var(--color-ink); --btn-text: var(--color-on-dark); }
+.btn-primary::before { opacity: 0.35; }
+.btn-chrome { background: var(--chrome-surface) padding-box, var(--chrome-ring) border-box; }
+.btn-outline { --ring-w: var(--ring); border-width: 0; padding-inline: calc(var(--space-6) + var(--ring)); background: transparent; box-shadow: none; }
+.btn-sm { min-height: 44px; padding: var(--space-2) var(--space-4); font-size: 13px; }
+.btn-icon { width: 48px; padding: 0; }
+.btn-block { width: 100%; }
+
+/* ── Chrome outline that works on any fill, including none ──────────────────
+   The gradient-border trick (padding-box fill over a border-box gradient)
+   needs an opaque fill. For see-through outlines the ring is a ::after with
+   the chrome gradient, masked down to a --ring-w wide frame. */
+.pill::after, .btn-outline::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  padding: var(--ring-w, var(--hairline)); border-radius: inherit;
+  background: var(--chrome-ring);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* ── Pill tags ─────────────────────────────────────────────────────────────── */
+.pill {
+  position: relative;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: 40px; padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--pill-fill, transparent);
+  color: var(--color-ink); white-space: nowrap;
+  font: 600 13px/1 var(--font-body); font-stretch: var(--stretch-label); letter-spacing: 0.1em; text-transform: uppercase;
+}
+.pill.accent { font: italic 400 19px/1 var(--font-accent); letter-spacing: 0; text-transform: none; }
+.pill-icon { width: 56px; justify-content: center; padding: 0; }
+.pill-icon img { width: 30px; height: 30px; filter: var(--shadow-object); }
+.pills { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: 0; margin: 0; list-style: none; }
+.pills.on-surface .pill { --pill-fill: rgb(255 246 250 / 0.85); }
+
+/* ── Marquee — a scrolling row of pills (2.jpeg) ───────────────────────────
+   Markup: .marquee > .marquee-track > ul.pills ×2 (second one aria-hidden).
+   The track moves by -50 % so the duplicate lands exactly where the first
+   started. Hover pauses; reduced motion turns it into a static wrapped row. */
+.marquee { overflow: hidden; padding-block: var(--space-6); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: marquee var(--marquee-dur) linear infinite; }
+.marquee-track .pills { flex-wrap: nowrap; padding-right: var(--space-2); }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ── Keycaps & beads — letters you could press (3.jpeg) ───────────────────
+   .keycaps > .key per letter; .keycaps.beads for round letter beads.
+   Put the word in .sr-only next to it and aria-hidden on .keycaps. */
+.keycaps { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); padding: 0; margin: 0; }
+.key {
+  --r: 0deg;
+  display: inline-grid; place-items: center;
+  width: var(--key-size, clamp(44px, 6vw, 68px)); aspect-ratio: 1;
+  border-radius: var(--radius-key);
+  background: var(--chrome-surface);
+  box-shadow: var(--shadow-key), 0 6px 0 var(--chrome-3), 0 10px 18px rgb(52 18 38 / 0.25);
+  color: var(--color-ink);
+  font: 700 calc(var(--key-size, clamp(44px, 6vw, 68px)) * 0.42)/1 var(--font-body); font-stretch: 90%;
+  text-transform: uppercase;
+  transform: rotate(var(--r));
+  transition: transform var(--dur) var(--ease-spring);
+}
+.keycaps .key:nth-child(3n+1) { --r: -6deg; }
+.keycaps .key:nth-child(3n+2) { --r: 4deg; translate: 0 -6px; }
+.keycaps .key:nth-child(3n)   { --r: -2deg; translate: 0 4px; }
+.key:hover { transform: rotate(0deg) translateY(4px) scale(0.97); }
+.beads .key { border-radius: 50%; box-shadow: var(--shadow-key), 0 4px 0 var(--chrome-3), 0 10px 16px rgb(52 18 38 / 0.22); font-family: var(--font-body); }
+
+/* ── Polaroid with paperclip ─────────────────────────────────────────────── */
+.polaroid {
+  position: relative; margin: 0; padding: var(--space-3) var(--space-3) var(--space-12);
+  background: var(--color-surface); border-radius: 3px; box-shadow: var(--shadow-lg);
+  transform: rotate(var(--tilt, 3deg));
+  transition: transform var(--dur-slow) var(--ease-spring);
+}
+.polaroid:hover { transform: rotate(calc(var(--tilt, 3deg) * -0.4)) translateY(-4px); }
+.polaroid figcaption {
+  position: absolute; left: 0; right: 0; bottom: var(--space-3); text-align: center;
+  font: italic 400 20px/1.2 var(--font-accent); color: var(--color-ink);
+}
+.polaroid .paperclip { position: absolute; top: -46px; right: 16%; width: clamp(44px, 5vw, 64px); z-index: 2; filter: var(--shadow-object); rotate: 8deg; }
+
+/* ── Chrome objects (rendered in Blender, _ds/chrome/obj/) ─────────────────
+   Always aria-hidden decoration. .obj gives them the shared contact shadow. */
+.obj { position: absolute; z-index: 1; pointer-events: none; height: auto; filter: var(--shadow-object); }
+.obj-float { animation: float var(--float-dur) ease-in-out infinite; }
+.obj-float-r { animation: float var(--float-dur) ease-in-out infinite reverse; animation-delay: -2s; }
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(4deg); } }
+
+/* Gentle scroll parallax for scattered objects and cards (where supported). */
+@supports (animation-timeline: view()) {
+  .parallax { animation: parallax linear both; animation-timeline: view(); }
+  .parallax-slow { animation: parallax-slow linear both; animation-timeline: view(); }
+  @keyframes parallax { from { translate: 0 40px; } to { translate: 0 -40px; } }
+  @keyframes parallax-slow { from { translate: 0 18px; } to { translate: 0 -18px; } }
+}
+
+/* ── Starburst — the big soft shape behind a section (3.jpeg) ─────────────── */
+.burst {
+  position: absolute; z-index: -1; aspect-ratio: 1; pointer-events: none;
+  background: var(--color-bg-deep);
+  clip-path: polygon(50% 0%, 56% 34%, 79% 6%, 64% 39%, 98% 24%, 69% 48%, 100% 58%, 66% 60%, 86% 88%, 57% 67%, 50% 100%, 43% 68%, 16% 90%, 34% 60%, 0% 60%, 31% 49%, 4% 26%, 36% 39%, 20% 6%, 44% 34%);
+}
+
+/* ── Hand-drawn arrows ────────────────────────────────────────────────────
+   Inline SVG paths (see index.dc.html); they draw themselves in as they
+   scroll into view where scroll timelines exist. */
+.arrow-hand { fill: none; stroke: var(--color-ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+@supports (animation-timeline: view()) {
+  .arrow-hand path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+}
+
+/* ── Numbered steps ───────────────────────────────────────────────────────── */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.step h3 { margin-bottom: var(--space-2); font-size: clamp(18px, 1.8vw, 22px); text-transform: uppercase; letter-spacing: 0.02em; }
+.step p { margin: 0; color: var(--color-ink-soft); }
+
+/* ── Tear-off note — the contact section (3.jpeg) ──────────────────────────
+   .tearoff > .tearoff-body + ul.tearoff-strips > li > a. Strips are links;
+   one is already "torn off" (.is-torn) for the hand-made look. */
+.tearoff {
+  position: relative; max-width: 560px; margin-inline: auto;
+  background: var(--color-accent-soft); color: var(--color-ink);
+  box-shadow: var(--shadow-lg);
+  transform: rotate(-1.5deg);
+}
+.tearoff-body { padding: clamp(32px, 5vw, 56px) clamp(24px, 5vw, 48px) var(--space-8); }
+.tearoff-body h2 { margin-bottom: var(--space-4); }
+.tearoff-body p { color: var(--color-ink); }
+.tearoff-body a:not(.btn) { color: var(--color-ink); font-weight: 650; }
+.tearoff-pin { position: absolute; top: -16px; left: 50%; width: 34px; translate: -50% 0; filter: var(--shadow-object); }
+.tearoff-strips { display: flex; margin: 0; padding: 0; list-style: none; }
+.tearoff-strips li { flex: 1; border-left: 2px dashed rgb(29 22 32 / 0.35); }
+.tearoff-strips li:first-child { border-left: 0; }
+.tearoff-strips a {
+  display: grid; place-items: center; min-height: 128px; padding: var(--space-3) var(--space-1);
+  background: var(--color-accent-soft); color: var(--color-ink); text-decoration: none;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font: 600 13px/1 var(--font-body); font-stretch: var(--stretch-label); letter-spacing: 0.1em; text-transform: uppercase;
+  border-top: 2px dashed rgb(29 22 32 / 0.35);
+  transition: transform var(--dur) var(--ease-spring);
+}
+.tearoff-strips a:hover { transform: rotate(180deg) translateY(-6px); }
+.tearoff-strips .is-torn a { transform: rotate(187deg) translate(-6px, -16px); box-shadow: var(--shadow-sm); }
+.tearoff-strips .is-torn a:hover { transform: rotate(182deg) translate(-2px, -22px); }
+
+/* ── Photos ─────────────────────────────────────────────────────────────────
+   A <figure class="photo"> around an <image-slot>, <img> or <iframe>. The
+   ratio comes from --ratio (default square). height:auto matters: image-slot
+   defaults to height:100% in its own shadow styles, which would stretch it to
+   whatever height its grid cell happens to have. */
+.photo { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius-sm); background: var(--color-surface); }
+.photo > image-slot, .photo > img, .photo > iframe { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio, 1 / 1); object-fit: cover; border: 0; }
+.photo-portrait { --ratio: 3 / 4; }
+.photo-wide { --ratio: 16 / 10; }
+.washed { box-shadow: var(--shadow-sm); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Page recipes — the building blocks of the subpages
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Page header ───────────────────────────────────────────────────────────
+   <header class="page-head zone"> > .burst + two .obj (.ph-a, .ph-b) + .wrap
+   (.kicker, h1, optional .lede). Pink ground; the page's first surface
+   section follows it. Objects sit at fixed spots, so no page CSS is needed. */
+.page-head .wrap { padding-top: clamp(48px, 8vw, 104px); padding-bottom: clamp(48px, 6vw, 80px); }
+.page-head h1 { max-width: 14ch; margin-bottom: 0; }
+.page-head .lede { margin: var(--space-6) 0 0; }
+.page-head .burst { width: clamp(320px, 46vw, 640px); right: -8%; top: 50%; translate: 0 -50%; }
+.page-head .ph-a { width: clamp(64px, 9vw, 130px); right: 16%; top: 22%; }
+.page-head .ph-b { width: clamp(36px, 4.5vw, 64px); right: 5%; bottom: 12%; }
+@media (max-width: 639px) {
+  .page-head .burst { width: 300px; right: -120px; }
+  .page-head .ph-a { right: 6%; top: 10%; width: 56px; }
+  .page-head .ph-b { display: none; }
+}
+
+/* ── Section heading ─────────────────────────────────────────────────────── */
+.section-head { max-width: 760px; margin-bottom: var(--space-12); }
+.section-head h2 { margin-bottom: var(--space-4); }
+
+/* ── Cards — panels for grouped content ────────────────────────────────────
+   Same chrome ring as .panel, plus a slight tilt (--tilt). a.card lifts. */
+.card {
+  --tilt: 0deg;
+  position: relative; display: flex; flex-direction: column; gap: var(--space-3);
+  padding: clamp(20px, 2.6vw, 32px);
+  border: var(--ring) solid transparent; border-radius: var(--radius-lg);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: var(--shadow-md);
+  rotate: var(--tilt);
+  transition: rotate var(--dur) var(--ease-spring), translate var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+}
+.card-kicker { font-size: var(--text-label); font-weight: 650; font-stretch: var(--stretch-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--color-accent); }
+.card-title { margin: 0; font-family: var(--font-body); font-weight: 760; font-stretch: var(--stretch-head); font-size: var(--text-h3); line-height: 1.15; color: var(--color-ink); }
+.card-body { margin: 0; flex: 1; color: var(--color-ink-soft); }
+.card .photo { margin-bottom: var(--space-2); }
+.price { font-size: clamp(48px, 5vw, 72px); line-height: 1; }
+a.card { color: inherit; text-decoration: none; }
+a.card:hover { rotate: 0deg; translate: 0 -4px; box-shadow: var(--shadow-lg); }
+.sticker {
+  position: absolute; top: calc(var(--space-4) * -1); right: var(--space-4); z-index: 2;
+  padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill);
+  background: var(--color-accent-soft); color: var(--color-ink); box-shadow: var(--shadow-sm);
+  font: italic 400 19px/1 var(--font-accent); rotate: 6deg;
+}
+/* Icon badge — a Lucide icon on a chrome bead. */
+.icon-badge {
+  display: grid; place-items: center; width: 64px; aspect-ratio: 1; border-radius: 50%;
+  background: var(--chrome-surface); color: var(--color-ink);
+  box-shadow: var(--shadow-key), 0 4px 0 var(--chrome-3), 0 8px 14px rgb(52 18 38 / 0.2);
+  transition: rotate var(--dur) var(--ease-spring);
+}
+.card:hover .icon-badge { rotate: -12deg; }
+
+/* Broken grid — auto-fit columns; when items sit side by side, every other
+   one drops and they all tilt a little. */
+.grid-broken { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-8); align-items: start; }
+.grid-broken > :nth-child(4n+1) { --tilt: -1.2deg; }
+.grid-broken > :nth-child(4n+2) { --tilt: 1deg; }
+.grid-broken > :nth-child(4n+3) { --tilt: -0.5deg; }
+.grid-broken > :nth-child(4n+4) { --tilt: 1.5deg; }
+@media (min-width: 640px) {
+  .grid-broken > :nth-child(even) { translate: 0 var(--space-12); }
+  .grid-broken > a:nth-child(even):hover { translate: 0 calc(var(--space-12) - 4px); }
+  .grid-broken { padding-bottom: var(--space-12); }
+}
+
+/* ── Rules — numbered list, each item its own strip with a chrome bead ─────
+   Works with <sc-if> around items: the runtime renders sc-if as a fragment,
+   so nth-child still counts right. */
+.rules { list-style: none; margin: 0; padding: 0; counter-reset: rule; display: flex; flex-direction: column; gap: var(--space-6); max-width: 860px; }
+.rules > li {
+  counter-increment: rule; position: relative;
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: var(--space-4) var(--space-8) var(--space-4) var(--space-4);
+  font-size: var(--text-lede); line-height: 1.5; font-weight: 500; color: var(--color-ink);
+  border: var(--ring) solid transparent; border-radius: var(--radius-pill);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: var(--shadow-md);
+}
+.rules > li:nth-child(odd)  { rotate: -0.5deg; }
+.rules > li:nth-child(even) { rotate: 0.4deg; margin-left: clamp(0px, 4vw, 48px); }
+.rules > li::before {
+  content: counter(rule, decimal-leading-zero); flex: none;
+  display: grid; place-items: center; width: 56px; aspect-ratio: 1; border-radius: 50%;
+  font: 700 19px/1 var(--font-body); font-stretch: 85%; color: var(--color-ink);
+  background: var(--chrome-surface);
+  box-shadow: var(--shadow-key), 0 3px 0 var(--chrome-3);
+}
+@media (max-width: 479px) {
+  .rules > li { gap: var(--space-3); padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3); font-size: 16px; border-radius: var(--radius-lg); }
+  .rules > li::before { width: 44px; font-size: 16px; }
+}
+
+/* ── Reading: .card.paper.prose (legal text) and .facts (imprint) ───────── */
+.paper { --tilt: 0deg; max-width: 860px; padding: clamp(24px, 4vw, 48px); }
+.prose { font-size: var(--text-body); line-height: 1.7; color: var(--color-ink-soft); }
+.prose > * + * { margin-top: var(--space-8); }
+.prose p { margin: 0; }
+/* Headings inside running text are reading aids, not display type. */
+.prose h2 {
+  margin: 0 0 var(--space-3); padding: 0; background: none; filter: none;
+  -webkit-text-fill-color: currentColor; color: var(--color-ink);
+  font-family: var(--font-body); font-weight: 760; font-stretch: var(--stretch-head); font-size: var(--text-h3); line-height: 1.2;
+}
+.prose ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.prose li { position: relative; padding-left: var(--space-8); }
+.prose li::before { content: "✦"; position: absolute; left: 0; color: var(--color-accent); }
+.facts { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4) var(--space-8); align-items: baseline; }
+.facts dt { font-size: var(--text-label); font-weight: 650; font-stretch: var(--stretch-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--color-accent); white-space: nowrap; }
+.facts dd { margin: 0; color: var(--color-ink); overflow-wrap: anywhere; }
+.facts dt, .facts dd { padding-bottom: var(--space-4); border-bottom: var(--hairline) dashed var(--chrome-3); }
+@media (max-width: 479px) {
+  .facts { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .facts dt { border-bottom: 0; padding-bottom: 0; }
+  .facts dd { margin-bottom: var(--space-3); }
+}
+
+/* ── Gallery — groups of five: one 2×2 feature tile + four singles ────────
+   A group is 8 cells: exactly 4 rows of 2 or 2 rows of 4, so the column
+   count is fixed to 2 or 4. Never auto-fill (3 or 5 columns can't close a
+   group). Add photos in fives. Each photo is a white-framed print. */
+.gallery {
+  --gap: var(--space-6);
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: dense; gap: var(--gap); align-items: start;
+}
+.gallery > .photo { padding: 6px; border-radius: 4px; box-shadow: var(--shadow-md); rotate: var(--tilt, 0deg); transition: rotate var(--dur) var(--ease-spring), scale var(--dur) var(--ease-spring), box-shadow var(--dur); }
+.gallery > .photo:nth-child(5n+1):nth-last-child(n+5) { grid-column: 1 / -1; grid-row: span 2; }
+@media (min-width: 720px) {
+  .gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .gallery > .photo:nth-child(10n+1):nth-last-child(n+5) { grid-column: 1 / span 2; }
+  .gallery > .photo:nth-child(10n+6):nth-last-child(n+5) { grid-column: 3 / span 2; }
+}
+@media (min-width: 1100px) { .gallery { --gap: var(--space-8); } }
+.gallery > .photo:nth-child(4n+1) { --tilt: -1.4deg; }
+.gallery > .photo:nth-child(4n+2) { --tilt: 1.1deg; }
+.gallery > .photo:nth-child(4n+3) { --tilt: -0.5deg; }
+.gallery > .photo:nth-child(4n+4) { --tilt: 1.8deg; }
+.gallery > .photo:hover { rotate: 0deg; scale: 1.03; z-index: 1; box-shadow: var(--shadow-lg); }
+
+/* ── Booking band — a pinned pink note with a chrome headline ──────────── */
+.cta-zone .wrap { padding-block: clamp(72px, 10vw, 128px); }
+.cta-band {
+  position: relative;
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-8); flex-wrap: wrap;
+  max-width: 1040px; margin-inline: auto;
+  padding: clamp(32px, 5vw, 56px);
+  background: var(--color-accent-soft); color: var(--color-ink);
+  box-shadow: var(--shadow-lg);
+  rotate: -1deg;
+}
+.cta-band h2 { font-size: clamp(36px, 4.8vw, 64px); max-width: 14ch; margin-bottom: var(--space-3); }
+.cta-band p { font-size: var(--text-lede); margin: 0; max-width: 46ch; }
+.cta-band a:not(.btn) { color: var(--color-ink); font-weight: 650; }
+.cta-band .pin { position: absolute; top: -16px; left: 50%; width: 34px; translate: -50% 0; filter: var(--shadow-object); }
+.cta-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+/* ── Tags ─────────────────────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill); background: var(--color-ink); color: var(--color-on-dark);
+  font-size: var(--text-label); font-weight: 700; font-stretch: var(--stretch-label); letter-spacing: var(--track-label); text-transform: uppercase;
+}
+.tag-accent { background: var(--color-accent-soft); color: var(--color-ink); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Forms — pill inputs with a chrome ring, ink everywhere
+   ══════════════════════════════════════════════════════════════════════════ */
+.form { display: flex; flex-direction: column; gap: var(--space-6); }
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6); }
+.field > label {
+  display: inline-block; margin-bottom: var(--space-2);
+  font-size: var(--text-small); font-weight: 650; font-stretch: var(--stretch-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink);
+}
+.form-hint { display: block; margin-top: var(--space-2); font-size: var(--text-small); line-height: 1.5; color: var(--color-ink-soft); }
+.input {
+  width: 100%; min-height: 56px; padding: var(--space-3) var(--space-6);
+  font: inherit; font-size: 17px; color: var(--color-ink); caret-color: var(--color-accent);
+  border: var(--ring) solid transparent; border-radius: var(--radius-pill);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: inset 0 2px 4px rgb(52 18 38 / 0.08);
+  transition: box-shadow var(--dur);
+}
+.input::placeholder { color: var(--color-ink-soft); opacity: 0.75; }
+.input:hover { box-shadow: inset 0 2px 4px rgb(52 18 38 / 0.08), 0 0 0 3px var(--color-bg-deep); }
+.input:focus-visible { outline: 3px dashed var(--color-ink); outline-offset: 3px; }
+textarea.input { min-height: 120px; border-radius: var(--radius-lg); resize: vertical; }
+
+/* Custom dropdown (button.input.dd-toggle + .dd-menu of .dd-opt buttons). */
+.dd { position: relative; }
+.dd-toggle { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); cursor: pointer; text-align: left; }
+.dd-toggle svg { flex: none; transition: rotate var(--dur) var(--ease-spring); }
+.dd-toggle[aria-expanded="true"] svg { rotate: 180deg; }
+.dd-menu {
+  position: absolute; top: calc(100% + var(--space-2)); left: 0; right: 0; z-index: 20;
+  display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-2);
+  max-height: 300px; overflow: auto;
+  border: var(--ring) solid transparent; border-radius: var(--radius-lg);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: var(--shadow-lg);
+}
+.dd-opt {
+  display: block; width: 100%; min-height: 44px; padding: var(--space-2) var(--space-4);
+  border: var(--hairline) solid transparent; border-radius: var(--radius-pill);
+  font: inherit; font-size: 16px; text-align: left; color: var(--color-ink); background: transparent; cursor: pointer;
+}
+.dd-opt:hover { background: var(--color-bg); }
+.dd-opt[aria-pressed="true"] { border-color: var(--color-ink); font-weight: 700; }
+
+/* Checkbox */
+.check { display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer; line-height: 1.5; }
+.check input, .seg-opt input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+.check .box {
+  width: 28px; height: 28px; flex: none; margin-top: -1px; border-radius: 9px;
+  display: grid; place-items: center;
+  background: var(--chrome-surface); box-shadow: var(--shadow-key), 0 2px 0 var(--chrome-3);
+  transition: rotate var(--dur-fast) var(--ease-spring), background var(--dur-fast);
+}
+.check .box svg { width: 16px; height: 16px; opacity: 0; color: var(--color-on-dark); }
+.check input:checked + .box { background: var(--color-ink); rotate: -6deg; }
+.check input:checked + .box svg { opacity: 1; }
+.check input:focus-visible + .box { outline: 3px dashed var(--color-ink); outline-offset: 3px; }
+.check-sub { display: block; margin: var(--space-1) 0 0 calc(28px + var(--space-3)); font-size: 15px; color: var(--color-ink-soft); }
+
+/* Fieldset with an italic-serif legend. */
+.fieldset {
+  margin: 0; padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4);
+  border: var(--hairline) dashed var(--color-ink); border-radius: var(--radius-lg);
+  background: rgb(255 246 250 / 0.7);
+}
+.fieldset > .seg { align-self: flex-start; }
+.fieldset > p { margin: 0; }
+.fieldset > legend { padding: 0 var(--space-2); font: italic 400 22px/1 var(--font-accent); color: var(--color-ink); }
+
+/* Segmented choice — a pill with a chrome ring; the chosen half fills ink. */
+.seg {
+  display: inline-flex; padding: 3px; gap: 3px;
+  border: var(--ring) solid transparent; border-radius: var(--radius-pill);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+}
+.seg-opt { display: inline-flex; align-items: center; min-height: 44px; padding: var(--space-2) var(--space-6); border-radius: var(--radius-pill); font-weight: 650; cursor: pointer; }
+.seg-opt:has(input:checked) { background: var(--color-ink); color: var(--color-on-dark); }
+.seg-opt:not(:has(input:checked)):hover { background: var(--color-bg); }
+.seg-opt:has(input:focus-visible) { outline: 3px dashed var(--color-ink); outline-offset: 2px; }
+
+/* Notice / error box. */
+.alert {
+  display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
+  padding: var(--space-4) var(--space-6); border-radius: var(--radius-lg);
+  background: var(--color-accent-soft); color: var(--color-ink); box-shadow: var(--shadow-sm);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Navigation — a compact floating pill (3.jpeg)
+   Markup is shared and synced by Werkzeuge/kopf-fuss-abgleichen.py.
+   ══════════════════════════════════════════════════════════════════════════ */
+.nav {
+  position: sticky; top: var(--space-3); z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  width: min(calc(100% - 2 * var(--gutter)), 960px); margin: var(--space-3) auto 0;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-6);
+  border: var(--ring) solid transparent; border-radius: var(--radius-pill);
+  background: linear-gradient(rgb(255 246 250 / 0.92), rgb(255 246 250 / 0.92)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: var(--shadow-md);
+}
+.nav-brand {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  color: var(--color-ink); text-decoration: none; white-space: nowrap;
+  font-family: var(--font-display); font-style: italic; font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: -0.01em;
+}
+.nav-brand svg { color: var(--color-accent); transition: rotate var(--dur-slow) var(--ease-spring); }
+.nav-brand:hover { color: var(--color-ink); }
+.nav-brand:hover svg { rotate: 90deg; }
+.nav-actions { display: flex; align-items: center; gap: var(--space-2); }
+.nav .btn { white-space: nowrap; box-shadow: none; }
+.nav-menu-anchor { position: relative; }
+.nav-menu {
+  position: absolute; right: 0; top: calc(100% + var(--space-3)); z-index: 60;
+  display: flex; flex-direction: column; gap: var(--space-1);
+  min-width: 248px; padding: var(--space-3);
+  border: var(--ring) solid transparent; border-radius: var(--radius-lg);
+  background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
+  box-shadow: var(--shadow-lg);
+}
+.nav-menu { animation: menu-pop 240ms var(--ease-spring); }
+@keyframes menu-pop { from { opacity: 0; transform: translateY(-8px) scale(0.96); } }
+.nav-menu a {
+  display: flex; align-items: center; min-height: 44px; padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill); color: var(--color-ink); text-decoration: none; font-weight: 550;
+  transition: background var(--dur-fast), translate var(--dur) var(--ease-spring);
+}
+.nav-menu a:hover { background: var(--color-bg); translate: var(--space-1) 0; }
+.nav-menu a[aria-current="page"] { border: var(--hairline) solid var(--color-ink); }
+.nav-menu hr { width: 100%; height: 0; margin: var(--space-2) 0; border: 0; border-top: var(--hairline) dashed var(--chrome-3); }
+@media (max-width: 479px) {
+  .nav { padding-left: var(--space-4); gap: var(--space-2); }
+  .nav-cta-more { display: none; }
+  .nav-brand { font-size: 21px; }
+}
+@media (max-width: 359px) { .nav-brand svg { display: none; } }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.site-footer { border-top: var(--hairline) solid var(--color-ink); background: var(--color-bg); }
+.site-footer .wrap {
+  display: grid; gap: var(--space-8); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding-block: var(--space-12);
+}
+.site-footer .footer-id { display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-ink-soft); }
+.site-footer .footer-id .nav-brand { font-size: 32px; }
+.site-footer .footer-col { display: flex; flex-direction: column; gap: var(--space-1); align-items: flex-start; }
+.site-footer a {
+  display: inline-flex; align-items: center; min-height: 32px;
+  color: var(--color-ink); text-decoration: none; font-size: var(--text-small); font-weight: 550;
+  overflow-wrap: anywhere;
+}
+.site-footer .footer-col a:hover { text-decoration: underline; color: var(--color-accent); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Motion & input preferences
+   ══════════════════════════════════════════════════════════════════════════ */
+/* Self-running and decorative scroll motion stops. The turntable is the only
+   exception: it is content, driven by the visitor's own scrolling (see
+   turntable.js). Hover feedback stays, shortened. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; width: auto; }
+  .marquee-track .pills { flex-wrap: wrap; justify-content: center; }
+  .marquee-track .pills[aria-hidden="true"] { display: none; }
+  .marquee { mask-image: none; }
+  .obj-float, .obj-float-r, .parallax, .parallax-slow { animation: none; }
+  .arrow-hand path { animation: none; stroke-dashoffset: 0; }
+  .nav-menu { animation: none; }
+  .btn, .key, .polaroid, .tearoff-strips a, .card, .gallery > .photo { transition-duration: 120ms; }
+  .btn::before { transition: none; }
+}
+
+/* Touch sizes go by pointer, not width. */
+@media (pointer: coarse) {
+  .btn, .btn-sm { min-height: 48px; }
+  .site-footer a { min-height: 44px; }
+}

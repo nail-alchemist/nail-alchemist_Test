@@ -4,21 +4,26 @@
 <meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_ds/chrome/schrift/woerter.js"></script>
+<script src="./chrome-text.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/dopamine/styles.css">
+  <link rel="stylesheet" href="_ds/chrome/styles.css">
   <script src="./image-slot.js"></script>
   <style>
-    .intro { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(40px, 6vw, 96px); align-items: center; }
-    .intro-portrait { position: relative; max-width: 460px; }
-    .intro-portrait .photo { --tilt: -2.5deg; }
-    .intro-portrait .sticker { top: auto; bottom: var(--space-8); right: calc(var(--space-6) * -1); z-index: 1; font-size: 20px; rotate: -8deg; }
-    .intro-text p { font-size: clamp(18px, 1.6vw, 21px); line-height: 1.7; color: var(--color-text); max-width: 54ch; }
-    .intro-text p:first-child::first-line { color: var(--color-accent-2); font-weight: 700; }
+    .intro { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
+    .intro-portrait { justify-self: center; width: min(100%, 420px); --tilt: -2.5deg; }
+    .intro-portrait .sticker { top: auto; bottom: var(--space-12); right: calc(var(--space-6) * -1); font-size: 22px; rotate: -8deg; }
+    .intro-text p { font-size: clamp(18px, 1.6vw, 21px); line-height: 1.7; color: var(--color-ink); max-width: 54ch; }
+    .intro-text p:first-child::first-line { color: var(--color-accent); font-weight: 700; }
+    @media (max-width: 859px) { .intro { grid-template-columns: minmax(0, 1fr); } .intro-portrait { width: min(86%, 360px); } }
+    .cta-a { width: clamp(44px, 5vw, 72px); left: 8%; top: 14%; }
+    .cta-b { width: clamp(60px, 8vw, 110px); right: 7%; bottom: 10%; rotate: -12deg; }
+    @media (max-width: 639px) { .cta-a { display: none; } }
   </style>
 </helmet>
 
@@ -54,52 +59,58 @@
 </nav>
 <!-- /@nav -->
 
-<header class="page-head zone mesh tex-checker tone-4">
-  <span class="bg-word" aria-hidden="true">Hello</span>
-  <div class="deco deco-ring ph-ring anim-spin" aria-hidden="true"></div>
-  <span class="deco ph-spark anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
-  <span class="deco ph-star anim-float-r delay-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<header class="page-head zone">
+  <div class="burst" aria-hidden="true"></div>
+  <img class="obj ph-a obj-float" src="_ds/chrome/obj/lilie-300.webp" srcset="_ds/chrome/obj/lilie-300.webp 300w, _ds/chrome/obj/lilie-600.webp 600w" sizes="130px" alt="" aria-hidden="true">
+  <img class="obj ph-b obj-float-r" src="_ds/chrome/obj/funkeln-300.webp" srcset="_ds/chrome/obj/funkeln-300.webp 300w, _ds/chrome/obj/funkeln-600.webp 600w" sizes="64px" alt="" aria-hidden="true">
   <div class="wrap">
     <span class="kicker">About</span>
-    <h1>The alchemist behind the <span class="grad-text">polish.</span></h1>
+    <h1><chrome-text>The alchemist behind the polish.</chrome-text></h1>
   </div>
 </header>
 
-<section class="zone tex-dots tone-3">
-  <div class="deco deco-blob deco-lg at-edge-r tone-1" aria-hidden="true"></div>
-  <span class="deco deco-md at-tr anim-float-r tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<section class="zone surface surface-metal surface-edge scrim-start">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/metall-800.avif 800w, _ds/chrome/tex/metall-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/metall-800.webp 800w, _ds/chrome/tex/metall-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/metall-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
   <div class="wrap intro">
-    <div class="intro-portrait">
-      <figure class="photo photo-portrait washed"><image-slot id="about-portrait" src="bilder/about-portrait.webp" shape="rect" placeholder="Portrait of the artist"></image-slot></figure>
-      <span class="sticker" aria-hidden="true">hi! 👋</span>
-    </div>
     <div class="intro-text">
       <p>Hi, I'm Ella, I started Nail Alchemist after years of doing nails for friends at the kitchen table, mixing polish shades until they matched a mood rather than a chart. Vienna is small enough that I still remember most of the hands that walk through the door.</p>
       <p>I trained in classic manicure and gel technique, then kept adding what I actually use: freehand nail art, color theory, and a lot of patience for people who "don't really know what they want" and that's most of my favorite appointments.</p>
     </div>
+    <figure class="polaroid intro-portrait">
+      <img class="paperclip" src="_ds/chrome/obj/klammer-200.webp" srcset="_ds/chrome/obj/klammer-200.webp 200w, _ds/chrome/obj/klammer-400.webp 400w" sizes="64px" alt="" aria-hidden="true" loading="lazy">
+      <div class="photo photo-portrait"><image-slot id="about-portrait" src="bilder/about-portrait.webp" shape="rect" placeholder="Portrait of the artist"></image-slot></div>
+      <span class="sticker" aria-hidden="true">hi! 👋</span>
+    </figure>
   </div>
 </section>
 
-<section class="zone tex-stripes tone-1">
-  <span class="deco deco-emoji at-tr anim-wiggle" aria-hidden="true">🎨</span>
-  <span class="deco deco-md at-bl anim-float tone-3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+<section class="zone surface surface-paper surface-edge">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/papier-800.avif 800w, _ds/chrome/tex/papier-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/papier-800.webp 800w, _ds/chrome/tex/papier-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/papier-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
   <div class="wrap">
     <div class="section-head">
       <span class="kicker">The approach</span>
-      <h2>How I <span class="grad-text">work</span></h2>
+      <h2><chrome-text>How I work</chrome-text></h2>
     </div>
-    <div class="grid-broken tones">
+    <div class="grid-broken">
       <article class="card">
         <span class="icon-badge" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
         <h3 class="card-title">One hour, no rush</h3>
         <p class="card-body">Every appointment is booked with enough room to actually finish a design properly, even a fiddly one.</p>
       </article>
-      <article class="card card-dashed">
+      <article class="card">
         <span class="icon-badge" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg></span>
         <h3 class="card-title">Your nails come first</h3>
         <p class="card-body">If a shape or a product isn't right for your nails, I'll say so, even if it's not what you asked for.</p>
       </article>
-      <article class="card card-asym">
+      <article class="card">
         <span class="icon-badge" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"></path><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></span>
         <h3 class="card-title">Color, considered</h3>
         <p class="card-body">I keep a working library of mixed shades and swatches, bring a photo, a fabric scrap, anything, and we'll find (or mix) the match.</p>
@@ -108,19 +119,24 @@
   </div>
 </section>
 
-<section class="cta-zone zone mesh tex-checker tone-2">
-  <div class="deco deco-ring cta-ring anim-spin tone-1" aria-hidden="true"></div>
-  <span class="deco cta-star anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<section class="cta-zone zone surface surface-fur">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/fell-800.avif 800w, _ds/chrome/tex/fell-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/fell-800.webp 800w, _ds/chrome/tex/fell-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/fell-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
+  <img class="obj cta-a obj-float" src="_ds/chrome/obj/funkeln-300.webp" srcset="_ds/chrome/obj/funkeln-300.webp 300w, _ds/chrome/obj/funkeln-600.webp 600w" sizes="72px" alt="" aria-hidden="true" loading="lazy">
+  <img class="obj cta-b obj-float-r" src="_ds/chrome/obj/lilie-300.webp" srcset="_ds/chrome/obj/lilie-300.webp 300w, _ds/chrome/obj/lilie-600.webp 600w" sizes="110px" alt="" aria-hidden="true" loading="lazy">
   <div class="wrap">
-    <div class="cta-band tone-4">
-      <span class="deco-emoji cta-emoji anim-bounce" aria-hidden="true">🪑</span>
+    <div class="cta-band">
+      <img class="pin" src="_ds/chrome/obj/perle-200.webp" alt="" aria-hidden="true" loading="lazy">
       <div>
-        <h2>Come sit for a while</h2>
+        <h2><chrome-text>Come sit for a while</chrome-text></h2>
         <p>Book a session, or see what's possible first in the gallery.</p>
       </div>
       <div class="cta-actions">
-        <a href="gallery.dc.html" class="btn btn-secondary">See the work</a>
-        <a href="contact.dc.html" class="btn btn-ink">Book a session</a>
+        <a href="gallery.dc.html" class="btn btn-outline">See the work</a>
+        <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
       </div>
     </div>
   </div>
@@ -155,6 +171,54 @@
 <!-- /@footer -->
 
 </x-dc>
+<!-- @chrome-defs -->
+<svg class="chrome-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="chrome-lg" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="6" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="6" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="6" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+    <filter id="chrome-sm" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="3.5" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="3.5" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="3" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+  </defs>
+</svg>
+<!-- /@chrome-defs -->
 <script type="text/x-dc" data-dc-script>class Component extends DCLogic {
   state = { menuOpen: false };
   toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen }));

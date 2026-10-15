@@ -5,105 +5,182 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./turntable.js"></script>
+<script src="./_ds/chrome/schrift/woerter.js"></script>
+<script src="./chrome-text.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/dopamine/styles.css">
+  <link rel="stylesheet" href="_ds/chrome/styles.css">
+  <script src="./image-slot.js"></script>
   <style>
-    /* ---- Turntable scroll story --------------------------------------
+    /* ---- Hero: chrome wordmark, turntable scroll story ------------------
        The track is tall; the stage inside it sticks to the viewport while
-       <nail-turntable> (turntable.js) scrubs the frames and writes
-       --turn (0…1) and data-beat (0…2) back onto the track. */
-    /* --nav-h wird von dem kleinen Skript am Seitenende gemessen und auf <html>
-       gesetzt. Der Ruecklaufwert gilt nur, solange noch nicht gemessen ist. */
-    .spin-track { --turn: 0; height: 320vh; margin-top: calc(-1 * var(--nav-h, 80px)); }
+       <nail-turntable> (turntable.js) scrubs the frames and writes --turn
+       (0…1) and data-beat (0…2) back onto the track. The stage sits on the
+       plain pink ground with a starburst behind the stand: the fur fought the
+       marble-and-lily set, so fur only returns further down (contact). */
+    .spin-track { --turn: 0; height: 320vh; margin-top: calc(-1 * (var(--nav-h, 80px) + var(--space-3))); }
     .spin-stage {
       position: sticky; top: 0; height: 100vh; height: 100svh;
-      padding: calc(var(--nav-h, 80px) + var(--space-6)) var(--gutter) var(--space-8);
-      max-width: var(--page-max); margin: 0 auto;
-      display: grid; grid-template-columns: minmax(0,5fr) minmax(0,6fr);
-      grid-template-areas: "copy art"; align-items: center; gap: clamp(24px,4vw,56px);
+      padding: calc(var(--nav-h, 80px) + var(--space-6)) var(--gutter) var(--space-6);
+      display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "mark mark" "copy art";
+      column-gap: clamp(24px, 4vw, 56px); align-items: center; isolation: isolate; overflow: clip;
     }
 
-    /* Background word drifts left as the set turns — scroll-driven, so it
-       moves only when the visitor does. */
-    .spin-word { bottom: 4%; left: 30%; translate: calc(var(--turn) * -55%) 0; }
+    /* Wordmark: live chrome text, the same italic chrome as every heading
+       (2.jpeg). It replaced the Blender bubble-letter render on 2026-10-15. */
+    .hero-mark-wrap { grid-area: mark; position: relative; justify-self: center; max-width: 100%; }
+    .hero-mark { margin: 0; font-size: clamp(56px, 9.5vw, 148px); font-weight: 800; white-space: nowrap; text-align: center; }
+    /* The objects sit outside the lettering; the italic overhangs on the right. */
+    .mark-lily  { width: clamp(44px, 6.5vw, 92px); right: -11%; top: -14%; rotate: 14deg; }
+    .mark-bead  { width: clamp(22px, 2.8vw, 40px); right: -5%; bottom: -2%; }
+    .mark-spark { width: clamp(30px, 4vw, 58px); left: -8%; top: -6%; }
 
-    .spin-art { grid-area: art; position: relative; justify-self: center; width: min(100%, 72svh); aspect-ratio: 1; }
+    .spin-art { grid-area: art; position: relative; justify-self: center; align-self: stretch; height: 100%; max-width: 100%; aspect-ratio: 1; margin-top: calc(-1 * clamp(16px, 3vw, 48px)); }
     .spin-art nail-turntable { position: relative; z-index: 2; width: 100%; height: 100%; }
-    .spin-glow {
-      position: absolute; z-index: -1; inset: 6%; border-radius: 50%;
-      background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 42%, transparent), color-mix(in srgb, var(--color-accent-4) 26%, transparent) 60%, transparent);
-    }
-    .spin-ring   { inset: 4%; position: absolute; }
-    .spin-ring-2 { inset: 13%; position: absolute; border-style: dotted; border-width: 3px; animation-direction: reverse; animation-duration: 32s; }
-    .spin-dot    { width: 14%; right: 3%; top: 6%; translate: 0 calc(var(--turn) * 60px); }
-    .spin-dot-2  { width: 7%; left: 4%; bottom: 18%; translate: 0 calc(var(--turn) * -80px); }
-    .spin-spark-a { width: 11%; aspect-ratio: 1; left: 2%; top: 8%; }
-    .spin-spark-b { width: 7%; aspect-ratio: 1; right: 12%; bottom: 10%; }
-    .spin-star    { width: 6%; aspect-ratio: 1; right: -2%; top: 46%; }
+    .hero-burst { width: 118%; left: 50%; top: 50%; translate: -50% -50%; }
     .spin-floor {
-      position: absolute; z-index: 1; left: 8%; top: 82%; width: 84%; height: 14%;
-      background: radial-gradient(closest-side, color-mix(in srgb, var(--color-ink) 70%, transparent), transparent);
+      position: absolute; z-index: 1; left: 10%; top: 80%; width: 80%; height: 16%;
+      background: radial-gradient(closest-side, var(--color-ink), transparent); opacity: 0.55;
     }
+    .art-star { width: 15%; left: -4%; top: 12%; z-index: 3; translate: 0 calc(var(--turn) * -90px); }
+    .art-spark { width: 9%; right: 2%; bottom: 16%; z-index: 3; translate: 0 calc(var(--turn) * 70px); }
 
-    .spin-copy { grid-area: copy; display: flex; flex-direction: column; gap: var(--space-6); }
+    .spin-copy { grid-area: copy; align-self: center; max-width: 520px; transform: rotate(-1.2deg); }
     .spin-beats { display: grid; }
     .spin-beat {
-      grid-area: 1 / 1; align-self: end; opacity: 0; transform: translateY(24px) rotate(-1deg);
-      transition: opacity 0.45s ease, transform 0.6s var(--ease-bounce);
+      grid-area: 1 / 1; align-self: end; opacity: 0; transform: translateY(18px);
+      transition: opacity 0.45s ease, transform 0.6s var(--ease-spring);
     }
     .spin-track:not([data-beat]) .beat-0,
     .spin-track[data-beat="0"] .beat-0,
     .spin-track[data-beat="1"] .beat-1,
     .spin-track[data-beat="2"] .beat-2 { opacity: 1; transform: none; }
-    .spin-beat:nth-child(2) .kicker { --tone: var(--color-accent-2); }
-    .spin-beat:nth-child(3) .kicker { --tone: var(--color-accent-3); }
-
-    .spin-beat h1, .spin-beat h2 { font-size: clamp(36px, 5vw, 76px); max-width: 12ch; }
-    .spin-beat h2 { text-shadow: var(--ts-mega); }
-    .spin-beat p { font-size: var(--text-lede); max-width: 40ch; margin: 0; color: var(--color-text-soft); }
-
-    .spin-progress { display: flex; align-items: center; gap: var(--space-4); font-size: var(--text-small); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-2); }
+    .spin-beat h2 { font-size: clamp(32px, 3.8vw, 54px); max-width: 13ch; margin-bottom: var(--space-3); }
+    .spin-beat p { margin: 0; max-width: 40ch; color: var(--color-ink-soft); }
+    .spin-progress { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-6); }
     .spin-bar {
-      position: relative; flex: 0 1 200px; height: 16px; overflow: hidden;
-      border: 3px solid var(--color-accent-4); border-radius: 999px; background: var(--color-surface);
+      position: relative; flex: 0 1 180px; height: 12px; overflow: hidden;
+      border: var(--hairline) solid transparent; border-radius: var(--radius-pill);
+      background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box, var(--chrome-ring) border-box;
     }
-    .spin-bar::after { content: ""; position: absolute; inset: 0; background: var(--gradient-rainbow); transform-origin: left; transform: scaleX(var(--turn)); }
-    .spin-hint { white-space: nowrap; display: inline-flex; align-items: center; gap: var(--space-2); opacity: calc(1 - var(--turn) * 10); }
-    .spin-actions { display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center; }
+    .spin-bar::after { content: ""; position: absolute; inset: 0; background: var(--chrome-text); transform-origin: left; transform: scaleX(var(--turn)); }
+    .spin-hint { display: inline-flex; align-items: center; gap: var(--space-1); opacity: calc(1 - var(--turn) * 10); }
+    .spin-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 
     @media (max-width: 859px) {
       .spin-track { height: 280vh; }
       .spin-stage {
-        grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto;
-        grid-template-areas: "art" "copy"; align-content: center; gap: var(--space-4);
-        padding-bottom: var(--space-4);
+        grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-areas: "mark" "art" "copy"; row-gap: var(--space-3);
+        padding-top: calc(var(--nav-h, 72px) + var(--space-4)); padding-bottom: var(--space-4);
       }
-      .spin-art { width: min(100%, 42svh); }
-      .spin-beat h1, .spin-beat h2 { font-size: clamp(28px, 8vw, 44px); max-width: 16ch; margin-bottom: var(--space-2); }
-      /* Small type can't carry the full stack — it smears into the next line. */
-      .spin-beat h1, .spin-beat h2 { text-shadow: var(--ts-2); letter-spacing: 0; line-height: 1.04; }
-      .spin-beat p { font-size: 16px; }
-      .spin-beat .kicker { margin-bottom: var(--space-2); font-size: 12px; }
-      .spin-copy { gap: var(--space-4); }
-      .spin-word { bottom: auto; top: 18%; left: 10%; }
-      .spin-actions .btn-ghost { display: none; }   /* one CTA on a phone screen */
+      .hero-mark { font-size: clamp(52px, 17vw, 84px); line-height: 0.92; white-space: normal; }
+      /* Stacked mark: the short first line leaves room beside "Nail". */
+      .mark-lily  { right: 6%; top: 2%; }
+      .mark-spark { left: 8%; top: 4%; }
+      .mark-bead  { right: 4%; bottom: -12%; }
+      .spin-art { margin-top: calc(-1 * var(--space-4)); }
+      .spin-copy { max-width: none; transform: none; }
+      .spin-copy.panel { padding: var(--space-4) var(--space-4) var(--space-4); }
+      .spin-beat h2 { font-size: clamp(26px, 7.5vw, 34px); margin-bottom: var(--space-1); }
+      .spin-beat p { font-size: 15px; line-height: 1.45; }
+      .spin-progress { display: none; }
+      .spin-actions { margin-top: var(--space-3); }
+      .spin-actions .btn-outline { display: none; }   /* one CTA on a phone screen */
+    }
+    @media (max-width: 859px) and (max-height: 700px) { .spin-beat p { display: none; } }
+
+    /* ---- Marquee ------------------------------------------------------- */
+    .strip { border-block: var(--hairline) solid var(--color-ink); background: var(--color-bg); }
+
+    /* ---- Selected sets: scattered cards over a starburst ---------------- */
+    .work .wrap { padding-bottom: clamp(64px, 10vw, 140px); }
+    .work-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-12); }
+    .work-head h2 { margin: 0; }
+    .work-gap { display: inline-block; width: 1.4em; margin-inline: 0.15em; border-bottom: 0.08em solid var(--color-ink); }
+    .work-burst { width: min(90vw, 760px); left: 50%; top: 52%; translate: -50% -50%; }
+    .work-star  { width: clamp(70px, 9vw, 130px); right: 4%; top: 18%; }
+    .work-spark { width: clamp(36px, 4vw, 56px); left: 6%; bottom: 10%; }
+    .work-grid { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px); align-items: start; }
+    .work-card {
+      display: flex; flex-direction: column; gap: var(--space-2);
+      padding: var(--space-3); border-radius: var(--radius-md);
+      background: var(--color-surface); box-shadow: var(--shadow-md);
+      color: var(--color-ink); text-decoration: none;
+      transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+    }
+    .work-card:nth-child(1) { transform: translateY(80px) rotate(-3deg); }
+    .work-card:nth-child(2) { transform: translateY(0) rotate(2deg); }
+    .work-card:nth-child(3) { transform: translateY(48px) rotate(-1.5deg); }
+    .work-card:nth-child(4) { transform: translateY(120px) rotate(3deg); }
+    .work-card:hover { color: var(--color-ink); box-shadow: var(--shadow-lg); transform: translateY(var(--lift, 0)) rotate(0deg) scale(1.03); }
+    .work-card .photo { --ratio: 4 / 5; }
+    .work-card image-slot { pointer-events: none; }
+    .work-card .accent { font-size: 19px; line-height: 1.2; }
+    @media (max-width: 859px) {
+      .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .work-card:nth-child(n) { transform: rotate(-2deg); }
+      .work-card:nth-child(even) { transform: translateY(40px) rotate(2deg); }
+      .work .wrap { padding-bottom: var(--space-24); }
     }
 
-    /* ---- Gel-X levels ------------------------------------------------ */
-    .gel-word { top: var(--space-8); right: -6%; rotate: -4deg; }
-    .gel-head { max-width: 760px; margin-bottom: var(--space-16); }
-    .gel-more { margin-top: var(--space-12); }
-    .gel-nail { right: 6%; top: 22%; }
-    .gel-spark { width: 64px; height: 64px; left: 3%; bottom: 8%; }
-    .gel-blob  { width: 120px; right: -40px; bottom: 30%; opacity: 0.5; }
-    .gel-star  { width: 36px; height: 36px; left: 46%; top: 12%; }
-    @media (max-width: 639px) { .gel-nail { top: 3%; right: 4%; } .gel-star { display: none; } }
+    /* ---- About on brushed metal ---------------------------------------- */
+    .about-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
+    .about-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6); }
+    .about-title .hi { font-size: var(--text-h2); line-height: 0.9; }
+    .about-copy p { color: var(--color-ink); max-width: 46ch; }
+    .about-copy .pills { margin: var(--space-6) 0; }
+    .about-photo { position: relative; justify-self: center; width: min(100%, 380px); --tilt: 4deg; }
+    .about-photo .photo { --ratio: 4 / 5; border-radius: 0; }
+    @media (max-width: 859px) { .about-grid { grid-template-columns: minmax(0, 1fr); } .about-photo { width: min(86%, 340px); } }
 
+    /* ---- Services on crumpled paper: a tall vertical title + columns ---- */
+    .svc-grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(24px, 5vw, 72px); align-items: start; }
+    .svc-title { margin: 0; font-size: var(--text-mega); line-height: 0.82; }
+    .svc-intro { max-width: 52ch; margin-bottom: var(--space-8); }
+    .svc-levels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) clamp(24px, 4vw, 56px); margin: 0; padding: 0; list-style: none; }
+    .svc-levels li { padding-top: var(--space-4); border-top: var(--hairline) solid var(--color-ink); }
+    .svc-price { display: block; margin: var(--space-2) 0; font-size: clamp(52px, 6vw, 84px); line-height: 1; }
+    .svc-levels p { margin: 0; color: var(--color-ink-soft); }
+    .svc-more { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-12); }
+    .svc-bead { width: clamp(40px, 5vw, 64px); right: 6%; top: 10%; }
+    @media (max-width: 639px) {
+      .svc-grid { grid-template-columns: minmax(0, 1fr); }
+      .svc-title { writing-mode: horizontal-tb; background-image: var(--chrome-text); background-size: 100% 1lh; padding-block: 0.04em 0.08em; font-size: var(--text-h2); }
+      .svc-levels { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    /* ---- Process on glossy tiles: keycaps + zig-zag steps ---------------- */
+    .proc-title { margin-bottom: var(--space-12); }
+    .proc-title .keycaps { --key-size: clamp(42px, 6vw, 72px); }
+    .proc-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6) clamp(16px, 2.5vw, 36px); }
+    .proc-steps .step { position: relative; }
+    .proc-steps .step:nth-child(even) { margin-top: clamp(80px, 10vw, 150px); }
+    .proc-steps .panel { padding: var(--space-6); }
+    .proc-steps .label-no { margin-bottom: var(--space-3); }
+    .step-arrow { position: absolute; z-index: 2; width: clamp(64px, 8vw, 112px); stroke-width: 3; }
+    .step:nth-child(odd) .step-arrow { right: calc(-1 * clamp(36px, 4.5vw, 64px)); bottom: calc(-1 * clamp(40px, 5vw, 72px)); }
+    .step:nth-child(even) .step-arrow { right: calc(-1 * clamp(36px, 4.5vw, 64px)); top: calc(-1 * clamp(40px, 5vw, 72px)); }
+    @media (max-width: 859px) {
+      .proc-steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-12); max-width: 480px; }
+      .proc-steps .step:nth-child(even) { margin-top: 0; margin-left: 12%; }
+      .proc-steps .step:nth-child(odd) { margin-right: 12%; }
+      .step .step-arrow { top: auto; bottom: calc(-1 * var(--space-12)); width: 56px; }
+      .step:nth-child(odd) .step-arrow { right: 18%; rotate: 50deg; }
+      .step:nth-child(even) .step-arrow { right: auto; left: 18%; rotate: 130deg; scale: 1 -1; }
+    }
+
+    /* ---- Contact: the tear-off note, pinned onto fur -------------------- */
+    .contact .wrap { padding-block: clamp(80px, 12vw, 160px); }
+    .contact-spark { width: clamp(40px, 5vw, 72px); left: 10%; top: 14%; }
+    .contact-lily { width: clamp(60px, 8vw, 110px); right: 9%; bottom: 12%; rotate: -12deg; }
+    .tearoff .spin-actions { margin-top: var(--space-6); }
+    @media (max-width: 639px) { .contact-spark { display: none; } .contact-lily { bottom: 3%; } }
   </style>
 </helmet>
 
@@ -139,114 +216,266 @@
 </nav>
 <!-- /@nav -->
 
-<section class="spin-track zone mesh tex-dots tone-1" data-turntable-track="" data-beats="3">
+<section class="spin-track" data-turntable-track="" data-beats="3">
   <div class="spin-stage">
-    <span class="bg-word spin-word tone-4" aria-hidden="true">Alchemy</span>
+    <div class="hero-mark-wrap">
+      <h1 class="hero-mark"><chrome-text>Nail Alchemist</chrome-text></h1>
+      <img class="obj mark-lily obj-float" src="_ds/chrome/obj/lilie-300.webp" srcset="_ds/chrome/obj/lilie-300.webp 300w, _ds/chrome/obj/lilie-600.webp 600w" sizes="92px" alt="" aria-hidden="true">
+      <img class="obj mark-bead obj-float-r" src="_ds/chrome/obj/perle-200.webp" srcset="_ds/chrome/obj/perle-200.webp 200w, _ds/chrome/obj/perle-400.webp 400w" sizes="40px" alt="" aria-hidden="true">
+      <img class="obj mark-spark obj-float-r" src="_ds/chrome/obj/funkeln-300.webp" srcset="_ds/chrome/obj/funkeln-300.webp 300w, _ds/chrome/obj/funkeln-600.webp 600w" sizes="58px" alt="" aria-hidden="true">
+    </div>
 
     <div class="spin-art">
-      <div class="spin-glow"></div>
-      <div class="deco deco-ring spin-ring anim-spin tone-1" aria-hidden="true"></div>
-      <div class="deco deco-ring spin-ring-2 anim-spin tone-3" aria-hidden="true"></div>
-      <div class="deco deco-blob spin-dot tone-2" aria-hidden="true"></div>
-      <div class="deco deco-blob spin-dot-2 tone-5" aria-hidden="true"></div>
-      <span class="deco spin-spark-a anim-float tone-3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
-      <span class="deco spin-spark-b anim-float-r delay-2 tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
-      <span class="deco spin-star anim-bounce delay-1 tone-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+      <div class="burst hero-burst" aria-hidden="true"></div>
+      <img class="obj art-star" src="_ds/chrome/obj/stern-300.webp" srcset="_ds/chrome/obj/stern-300.webp 300w, _ds/chrome/obj/stern-600.webp 600w" sizes="120px" alt="" aria-hidden="true">
+      <img class="obj art-spark" src="_ds/chrome/obj/funkeln-300.webp" alt="" aria-hidden="true">
       <div class="spin-floor"></div>
       <nail-turntable path="media/turntable/nails_" frames="120" role="img" aria-label="A full set of long almond gel nails on a black marble display stand with gold trim, turning as you scroll: blush-to-green ombré with raised pink lilies and gold beads"></nail-turntable>
     </div>
 
-    <div class="spin-copy">
+    <div class="spin-copy panel">
       <div class="spin-beats">
         <div class="spin-beat beat-0">
-          <span class="kicker">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
-            Nail studio · Vienna
-          </span>
-          <h1>A full set, <span class="grad-text">finished</span> from every side.</h1>
+          <span class="kicker">Nail studio <span class="accent">in</span> Vienna</span>
+          <h2 class="chrome-sm"><chrome-text>A full set, finished from every side.</chrome-text></h2>
           <p>Sculpted in gel, shaped to your hand and built to be looked at up close. Scroll to turn the stand.</p>
         </div>
         <div class="spin-beat beat-1">
           <span class="kicker">The details</span>
-          <h2><span class="thin">Detail</span> you can feel.</h2>
+          <h2 class="chrome-sm"><chrome-text>Detail you can feel.</chrome-text></h2>
           <p>Hand-painted art and sculpted accents, built up one layer at a time so nothing snags and everything catches the light.</p>
         </div>
         <div class="spin-beat beat-2">
           <span class="kicker">Your shade</span>
-          <h2>Mixed until it's <span class="thin">exactly</span> right.</h2>
+          <h2 class="chrome-sm"><chrome-text>Mixed until it's exactly right.</chrome-text></h2>
           <p>Bring a photo, a fabric swatch or just a feeling. When nothing on the wall is quite right, we blend a custom shade on the spot.</p>
         </div>
       </div>
 
-      <div class="spin-progress" aria-hidden="true">
+      <div class="spin-progress label" aria-hidden="true">
         <span class="spin-bar"></span>
         <span class="spin-hint">
           Scroll to turn
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" class="anim-bounce"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
         </span>
       </div>
 
       <div class="spin-actions">
-        <a href="contact.dc.html" class="btn btn-primary anim-pulse">Book a session</a>
-        <a href="services.dc.html" class="btn btn-ghost">Services &amp; prices</a>
+        <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+        <a href="services.dc.html" class="btn btn-outline">Services &amp; prices</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="zone tex-stripes tone-3">
-  <span class="bg-word gel-word tone-3" aria-hidden="true">Gel-X</span>
-  <span class="deco deco-emoji gel-nail anim-wiggle" aria-hidden="true">💅</span>
-  <span class="deco gel-spark anim-float tone-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
-  <span class="deco gel-star anim-float-r delay-1 tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
-  <div class="deco deco-blob gel-blob tone-4" aria-hidden="true"></div>
+<div class="strip marquee" role="region" aria-label="What the studio does">
+  <div class="marquee-track">
+    <ul class="pills">
+      <li class="pill">Gel-X extensions</li>
+      <li class="pill accent">a one-chair studio in Vienna</li>
+      <li class="pill">Hand-painted art</li>
+      <li class="pill pill-icon" aria-hidden="true"><img src="_ds/chrome/obj/funkeln-300.webp" alt=""></li>
+      <li class="pill">Custom-mixed shades</li>
+      <li class="pill">Sculpted accents</li>
+      <li class="pill accent">one hour, no rush</li>
+      <li class="pill">Free first consult</li>
+      <li class="pill pill-icon" aria-hidden="true"><img src="_ds/chrome/obj/perle-200.webp" alt=""></li>
+    </ul>
+    <ul class="pills" aria-hidden="true">
+      <li class="pill">Gel-X extensions</li>
+      <li class="pill accent">a one-chair studio in Vienna</li>
+      <li class="pill">Hand-painted art</li>
+      <li class="pill pill-icon"><img src="_ds/chrome/obj/funkeln-300.webp" alt=""></li>
+      <li class="pill">Custom-mixed shades</li>
+      <li class="pill">Sculpted accents</li>
+      <li class="pill accent">one hour, no rush</li>
+      <li class="pill">Free first consult</li>
+      <li class="pill pill-icon"><img src="_ds/chrome/obj/perle-200.webp" alt=""></li>
+    </ul>
+  </div>
+</div>
 
+<section class="zone work">
+  <div class="burst work-burst parallax-slow" aria-hidden="true"></div>
+  <img class="obj work-star parallax" src="_ds/chrome/obj/stern-300.webp" srcset="_ds/chrome/obj/stern-300.webp 300w, _ds/chrome/obj/stern-600.webp 600w" sizes="130px" alt="" aria-hidden="true" loading="lazy">
+  <img class="obj work-spark obj-float" src="_ds/chrome/obj/funkeln-300.webp" alt="" aria-hidden="true" loading="lazy">
   <div class="wrap">
-    <div class="gel-head">
+    <div class="work-head">
+      <h2><chrome-text>Selected</chrome-text><span class="work-gap" aria-hidden="true"></span><chrome-text>sets</chrome-text></h2>
+      <a href="gallery.dc.html" class="btn btn-outline">Full gallery
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+      </a>
+    </div>
+    <div class="work-grid">
+      <a href="gallery.dc.html" class="work-card">
+        <span class="label-no"><span class="num">No. 01</span>Fresh set</span>
+        <figure class="photo"><image-slot id="gal-1" src="bilder/gal-1.webp" shape="rect" placeholder="Nail art photo"></image-slot></figure>
+        <span class="accent">from the gallery</span>
+      </a>
+      <a href="gallery.dc.html" class="work-card">
+        <span class="label-no"><span class="num">No. 02</span>Fresh set</span>
+        <figure class="photo"><image-slot id="gal-2" src="bilder/gal-2.webp" shape="rect" placeholder="Nail art photo"></image-slot></figure>
+        <span class="accent">from the gallery</span>
+      </a>
+      <a href="gallery.dc.html" class="work-card">
+        <span class="label-no"><span class="num">No. 03</span>Fresh set</span>
+        <figure class="photo"><image-slot id="gal-3" src="bilder/gal-3.webp" shape="rect" placeholder="Nail art photo"></image-slot></figure>
+        <span class="accent">from the gallery</span>
+      </a>
+      <a href="gallery.dc.html" class="work-card">
+        <span class="label-no"><span class="num">No. 04</span>Fresh set</span>
+        <figure class="photo"><image-slot id="gal-4" src="bilder/gal-4.webp" shape="rect" placeholder="Nail art photo"></image-slot></figure>
+        <span class="accent">from the gallery</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="zone surface surface-metal scrim-start surface-edge about">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/metall-800.avif 800w, _ds/chrome/tex/metall-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/metall-800.webp 800w, _ds/chrome/tex/metall-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/metall-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <span class="kicker">About</span>
+      <h2 class="about-title plain">
+        <span class="chrome hi"><chrome-text>Hi, I'm</chrome-text></span>
+        <span class="sr-only">Ella</span>
+        <span class="keycaps beads" aria-hidden="true"><span class="key">E</span><span class="key">L</span><span class="key">L</span><span class="key">A</span></span>
+      </h2>
+      <p class="lede">I started Nail Alchemist after years of doing nails for friends at the kitchen table, mixing polish shades until they matched a mood rather than a chart.</p>
+      <ul class="pills on-surface">
+        <li class="pill">Classic manicure</li>
+        <li class="pill">Gel technique</li>
+        <li class="pill">Freehand nail art</li>
+        <li class="pill">Color theory</li>
+      </ul>
+      <a href="about.dc.html" class="btn btn-primary">More about Ella</a>
+    </div>
+    <figure class="polaroid about-photo">
+      <img class="paperclip" src="_ds/chrome/obj/klammer-200.webp" srcset="_ds/chrome/obj/klammer-200.webp 200w, _ds/chrome/obj/klammer-400.webp 400w" sizes="48px" alt="" aria-hidden="true" loading="lazy">
+      <div class="photo"><image-slot id="about-portrait" src="bilder/about-portrait.webp" shape="rect" placeholder="Portrait of the artist"></image-slot></div>
+      <figcaption>the alchemist behind the polish</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="zone surface surface-paper surface-edge services">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/papier-800.avif 800w, _ds/chrome/tex/papier-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/papier-800.webp 800w, _ds/chrome/tex/papier-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/papier-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
+  <img class="obj svc-bead obj-float" src="_ds/chrome/obj/perle-200.webp" srcset="_ds/chrome/obj/perle-200.webp 200w, _ds/chrome/obj/perle-400.webp 400w" sizes="64px" alt="" aria-hidden="true" loading="lazy">
+  <div class="wrap svc-grid">
+    <h2 class="svc-title vertical"><chrome-text>Services</chrome-text></h2>
+    <div>
       <span class="kicker">Gel-X extensions</span>
-      <h2>Four levels, <span class="grad-text">one</span> chair</h2>
-      <p class="lede">Lightweight, full-cover gel extensions for length, strength and a natural-looking finish. Every first visit starts with a short, free consult on shape, length and color.</p>
+      <p class="lede svc-intro">Lightweight, full-cover gel extensions for length, strength and a natural-looking finish. Every first visit starts with a short, free consult on shape, length and color.</p>
+      <ul class="svc-levels">
+        <li>
+          <span class="label-no"><span class="num">No. 01</span>Minimal</span>
+          <span class="svc-price chrome"><chrome-text>€80</chrome-text></span>
+          <p>Clean and simple designs with little detail. Perfect for a natural or elegant look.</p>
+        </li>
+        <li>
+          <span class="label-no"><span class="num">No. 02</span>Simple</span>
+          <span class="svc-price chrome"><chrome-text>€90</chrome-text></span>
+          <p>A touch more creativity with a few design elements.</p>
+        </li>
+        <li>
+          <span class="label-no"><span class="num">No. 03</span>Medium</span>
+          <span class="svc-price chrome"><chrome-text>€100</chrome-text></span>
+          <p>More detailed nail art with multiple design elements and techniques.</p>
+        </li>
+        <li>
+          <span class="label-no"><span class="num">No. 04</span>Advanced</span>
+          <span class="svc-price chrome"><chrome-text>€110</chrome-text></span>
+          <p>Highly detailed, intricate nail art with extensive customization and time-intensive work.</p>
+        </li>
+      </ul>
+      <div class="svc-more">
+        <a href="services.dc.html" class="btn btn-primary">All services &amp; removal</a>
+        <a href="booking-info.dc.html" class="btn btn-outline">Booking information</a>
+      </div>
     </div>
-
-    <div class="grid-broken tones">
-      <a href="services.dc.html" class="card">
-        <div class="card-kicker">Minimal</div>
-        <div class="card-title price">€80</div>
-        <p class="card-body">Clean and simple designs with little detail. Perfect for a natural or elegant look.</p>
-      </a>
-      <a href="services.dc.html" class="card card-dashed">
-        <div class="card-kicker">Simple</div>
-        <div class="card-title price">€90</div>
-        <p class="card-body">A touch more creativity with a few design elements.</p>
-      </a>
-      <a href="services.dc.html" class="card card-asym">
-        <div class="card-kicker">Medium</div>
-        <div class="card-title price">€100</div>
-        <p class="card-body">More detailed nail art with multiple design elements and techniques.</p>
-      </a>
-      <a href="services.dc.html" class="card card-double">
-        <span class="sticker" aria-hidden="true">all out ✨</span>
-        <div class="card-kicker">Advanced</div>
-        <div class="card-title price">€110</div>
-        <p class="card-body">Highly detailed, intricate nail art with extensive customization and time-intensive work.</p>
-      </a>
-    </div>
-
-    <a href="services.dc.html" class="btn btn-ghost gel-more">All services &amp; removal<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
   </div>
 </section>
 
-<section class="cta-zone zone mesh tex-checker tone-5">
-  <div class="deco deco-ring cta-ring anim-spin tone-3" aria-hidden="true"></div>
-  <span class="deco cta-star anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<section class="zone surface surface-tiles surface-edge process">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/fliesen-800.avif 800w, _ds/chrome/tex/fliesen-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/fliesen-800.webp 800w, _ds/chrome/tex/fliesen-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/fliesen-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
   <div class="wrap">
-    <div class="cta-band tone-2">
-      <span class="deco-emoji cta-emoji anim-bounce" aria-hidden="true">✨</span>
-      <div>
-        <h2>Ready for your next set?</h2>
+    <h2 class="proc-title plain">
+      <span class="sr-only">Process</span>
+      <span class="keycaps" aria-hidden="true"><span class="key">P</span><span class="key">R</span><span class="key">O</span><span class="key">C</span><span class="key">E</span><span class="key">S</span><span class="key">S</span></span>
+    </h2>
+    <ol class="steps proc-steps">
+      <li class="step">
+        <div class="panel">
+          <span class="label-no"><span class="num">01</span>Consult</span>
+          <h3>Shape, length, color</h3>
+          <p>Every first visit starts with a short, free consult on shape, length and color.</p>
+        </div>
+        <svg class="arrow-hand step-arrow" viewBox="0 0 80 60" aria-hidden="true"><path pathLength="1" d="M4 10 C 26 2, 58 12, 70 50"></path><path pathLength="1" d="M57 44 L70 51 L73 36"></path></svg>
+      </li>
+      <li class="step">
+        <div class="panel">
+          <span class="label-no"><span class="num">02</span>Shade</span>
+          <h3>Find or mix the match</h3>
+          <p>Bring a photo, a fabric scrap, anything, and we'll find (or mix) the match.</p>
+        </div>
+        <svg class="arrow-hand step-arrow" viewBox="0 0 80 60" aria-hidden="true"><path pathLength="1" d="M4 50 C 24 58, 58 48, 70 10"></path><path pathLength="1" d="M58 17 L70 9 L74 24"></path></svg>
+      </li>
+      <li class="step">
+        <div class="panel">
+          <span class="label-no"><span class="num">03</span>Build</span>
+          <h3>Layer by layer</h3>
+          <p>Hand-painted art and sculpted accents, built up one layer at a time so nothing snags.</p>
+        </div>
+        <svg class="arrow-hand step-arrow" viewBox="0 0 80 60" aria-hidden="true"><path pathLength="1" d="M4 10 C 26 2, 58 12, 70 50"></path><path pathLength="1" d="M57 44 L70 51 L73 36"></path></svg>
+      </li>
+      <li class="step">
+        <div class="panel">
+          <span class="label-no"><span class="num">04</span>Finish</span>
+          <h3>One hour, no rush</h3>
+          <p>Every appointment is booked with enough room to actually finish a design properly, even a fiddly one.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="zone surface surface-fur contact">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/fell-800.avif 800w, _ds/chrome/tex/fell-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/fell-800.webp 800w, _ds/chrome/tex/fell-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/fell-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
+  <img class="obj contact-spark obj-float" src="_ds/chrome/obj/funkeln-300.webp" alt="" aria-hidden="true" loading="lazy">
+  <img class="obj contact-lily obj-float-r" src="_ds/chrome/obj/lilie-300.webp" srcset="_ds/chrome/obj/lilie-300.webp 300w, _ds/chrome/obj/lilie-600.webp 600w" sizes="110px" alt="" aria-hidden="true" loading="lazy">
+  <div class="wrap">
+    <div class="tearoff">
+      <img class="tearoff-pin" src="_ds/chrome/obj/perle-200.webp" alt="" aria-hidden="true" loading="lazy">
+      <div class="tearoff-body">
+        <h2><chrome-text>Ready for your next set?</chrome-text></h2>
         <p>Book online, or DM <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist_</a> on Instagram!<br>We'll sort a time either way.</p>
+        <div class="spin-actions">
+          <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
+        </div>
       </div>
-      <a href="contact.dc.html" class="btn btn-ink">Book a session</a>
+      <ul class="tearoff-strips" aria-label="More ways in">
+        <li><a href="contact.dc.html">Book online</a></li>
+        <li><a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">Instagram</a></li>
+        <li class="is-torn"><a href="booking-info.dc.html">Booking info</a></li>
+        <li><a href="gallery.dc.html">Gallery</a></li>
+        <li><a href="services.dc.html">Prices</a></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -280,6 +509,54 @@
 <!-- /@footer -->
 
 </x-dc>
+<!-- @chrome-defs -->
+<svg class="chrome-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="chrome-lg" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="6" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="6" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="6" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+    <filter id="chrome-sm" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="3.5" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="3.5" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="3" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+  </defs>
+</svg>
+<!-- /@chrome-defs -->
 <script type="text/x-dc" data-dc-script>class Component extends DCLogic {
   state = { menuOpen: false };
   toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen }));

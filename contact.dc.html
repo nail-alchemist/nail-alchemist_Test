@@ -5,13 +5,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./slots.js"></script>
+<script src="./_ds/chrome/schrift/woerter.js"></script>
+<script src="./chrome-text.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/dopamine/styles.css">
+  <link rel="stylesheet" href="_ds/chrome/styles.css">
   <script src="./image-slot.js"></script>
   <style>
     .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: clamp(40px, 6vw, 80px); align-items: start; }
@@ -19,28 +21,28 @@
     @media (min-width: 1000px) { .contact-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
 
     .contact-info { --tilt: 1.2deg; gap: var(--space-8); }
-    .contact-info h2 { font-size: 24px; margin-bottom: var(--space-2); }
-    .contact-info p { margin: 0; color: var(--color-text-soft); }
+    .contact-info h2 { --chrome-filter: url(#chrome-sm); font-size: 44px; margin-bottom: var(--space-2); }
+    .contact-info p { margin: 0; color: var(--color-ink-soft); }
     .map-ph {
       margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4);
       aspect-ratio: 16 / 10; padding: var(--space-6); text-align: center;
-      border: var(--border) dashed var(--clash); border-radius: var(--radius-md);
-      background: color-mix(in srgb, var(--clash) 10%, transparent);
+      border: var(--hairline) dashed var(--color-ink); border-radius: var(--radius-md);
+      background: var(--color-bg);
     }
     .map-ph p { font-size: 15px; max-width: 34ch; }
-    .map-ph .icon-badge { --tone: var(--clash); margin: 0; }
+    .map-ph .icon-badge { margin: 0; }
     .map-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
     @media (max-width: 479px) { .map-ph { aspect-ratio: auto; } }
 
     .dm-panel { gap: var(--space-4); }
-    .dm-panel h2 { font-size: 28px; margin: 0; }
-    .dm-panel p { margin: 0; color: var(--color-text-soft); }
+    .dm-panel h2 { --chrome-filter: url(#chrome-sm); font-size: 44px; margin: 0; }
+    .dm-panel p { margin: 0; color: var(--color-ink-soft); }
     /* user-select:all -> ein Klick markiert alles. Bewusst ohne Hoehenbegrenzung:
        wenn die Zwischenablage versagt, muss der ganze Text lesbar sein. */
     .dm-text {
       white-space: pre-wrap; font-size: 15px; line-height: 1.55; user-select: all;
       padding: var(--space-4); border-radius: var(--radius-md);
-      background: var(--color-bg); border: 3px dashed var(--clash);
+      background: var(--color-bg); border: var(--hairline) dashed var(--color-ink);
     }
   </style>
 </helmet>
@@ -77,26 +79,28 @@
 </nav>
 <!-- /@nav -->
 
-<header class="page-head zone mesh tex-dots tone-3">
-  <span class="bg-word" aria-hidden="true">Book</span>
-  <div class="deco deco-ring ph-ring anim-spin" aria-hidden="true"></div>
-  <span class="deco ph-spark anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
-  <span class="deco ph-star anim-float-r delay-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<header class="page-head zone">
+  <div class="burst" aria-hidden="true"></div>
+  <img class="obj ph-a obj-float" src="_ds/chrome/obj/lilie-300.webp" srcset="_ds/chrome/obj/lilie-300.webp 300w, _ds/chrome/obj/lilie-600.webp 600w" sizes="130px" alt="" aria-hidden="true">
+  <img class="obj ph-b obj-float-r" src="_ds/chrome/obj/perle-200.webp" srcset="_ds/chrome/obj/perle-200.webp 200w, _ds/chrome/obj/perle-400.webp 400w" sizes="64px" alt="" aria-hidden="true">
   <div class="wrap">
     <span class="kicker">Contact</span>
-    <h1>Contact &amp; <span class="grad-text">booking</span></h1>
+    <h1><chrome-text>Contact &amp; booking</chrome-text></h1>
     <p class="lede">Fill in the form below. It puts your request together, copies it, and opens a DM to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> &mdash; you only have to paste it in.</p>
   </div>
 </header>
 
-<section class="zone tex-checker tone-1">
-  <span class="deco deco-emoji at-br anim-wiggle" aria-hidden="true">💌</span>
-  <span class="deco deco-md at-bl anim-float tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+<section class="zone surface surface-paper surface-edge">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/papier-800.avif 800w, _ds/chrome/tex/papier-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/papier-800.webp 800w, _ds/chrome/tex/papier-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/papier-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
   <div class="wrap contact-grid">
     <form class="form">
       <sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
-        <div class="alert tone-2">
-          <span class="tag tag-accent-2">Demo</span>
+        <div class="alert">
+          <span class="tag">Demo</span>
           <span>Sample appointments from the test calendar &mdash; not real availability.</span>
         </div>
       </sc-if>
@@ -143,13 +147,13 @@
       </sc-if>
       <sc-if value="{{ !hasSlots }}">
         <div class="field"><label>Available appointments</label>
-          <div class="alert tone-3">{{ emptyText }}</div>
+          <div class="alert">{{ emptyText }}</div>
         </div>
       </sc-if>
       <div class="field"><label for="c-allergy">Allergies, nail or skin conditions *</label><textarea class="input" id="c-allergy" rows="2" placeholder="Anything I should know about — or simply “none”"></textarea></div>
       <div class="field"><label for="c-message">Anything else?</label><textarea class="input" id="c-message" rows="4" placeholder="Inspiration photos, length, color ideas…"></textarea></div>
 
-      <fieldset class="fieldset tone-4">
+      <fieldset class="fieldset">
         <legend>Consent *</legend>
         <label class="check">
           <input type="checkbox" id="c-consent-correct">
@@ -177,7 +181,7 @@
         </div>
       </fieldset>
 
-      <fieldset class="fieldset tone-2">
+      <fieldset class="fieldset">
         <legend>Photo consent *</legend>
         <p>Do you allow me to use photos and videos of your nails for social media?</p>
         <div class="seg">
@@ -188,29 +192,29 @@
       </fieldset>
 
       <sc-if value="{{ hasFehler }}" hint-placeholder-val="{{ false }}">
-        <div role="alert" class="alert tone-5">{{ fehler }}</div>
+        <div role="alert" class="alert">{{ fehler }}</div>
       </sc-if>
 
       <span class="form-hint">* required</span>
-      <button type="button" class="btn btn-primary btn-block anim-pulse" onclick="{{ handleSubmit }}">{{ submitLabel }}</button>
+      <button type="button" class="btn btn-primary btn-block" onclick="{{ handleSubmit }}">{{ submitLabel }}</button>
 
       <sc-if value="{{ dmOffen }}" hint-placeholder-val="{{ false }}">
-        <div id="na-dm-panel" class="card dm-panel tone-2">
-          <h2>Almost there</h2>
+        <div id="na-dm-panel" class="card dm-panel">
+          <h2><chrome-text>Almost there</chrome-text></h2>
           <p>{{ dmHinweis }}</p>
           <div class="dm-text">{{ dmText }}</div>
           <div class="cta-actions">
             <a class="btn btn-primary" href="{{ dmLink }}" target="_blank" rel="noopener">Open Instagram DM</a>
-            <button type="button" class="btn btn-secondary" onclick="{{ nochmalKopieren }}">Copy again</button>
+            <button type="button" class="btn btn-outline" onclick="{{ nochmalKopieren }}">Copy again</button>
           </div>
           <span class="form-hint">If the DM doesn&rsquo;t open, go to <a href="https://www.instagram.com/nail_alchemist_/" target="_blank" rel="noopener">@nail_alchemist</a> and send the text from there. Your appointment is only booked once I reply to confirm it.</span>
         </div>
       </sc-if>
     </form>
 
-    <aside class="card card-double contact-info tone-4">
+    <aside class="card contact-info">
       <div>
-        <h2>Location</h2>
+        <h2><chrome-text>Location</chrome-text></h2>
         <p>Hebragasse 7 Top 1+2<br>1090 Vienna, Austria</p>
       </div>
       <sc-if value="{{ showMapPlaceholder }}" hint-placeholder-val="{{ true }}">
@@ -218,8 +222,8 @@
           <span class="icon-badge" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
           <p>Loading the map connects to Google and sets cookies. Click to load it, or open the address directly instead.</p>
           <div class="map-actions">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="{{ loadMap }}">Show map</button>
-            <a class="btn btn-ghost btn-sm" href="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17" target="_blank" rel="noopener">Open in Google Maps</a>
+            <button type="button" class="btn btn-outline btn-sm" onclick="{{ loadMap }}">Show map</button>
+            <a class="btn btn-outline btn-sm" href="https://maps.google.com/maps?q=Hebragasse%207%2F1%2C%201090%20Wien&hl=de&z=17" target="_blank" rel="noopener">Open in Google Maps</a>
           </div>
         </figure>
       </sc-if>
@@ -234,7 +238,7 @@
         </figure>
       </sc-if>
       <div>
-        <h2>Get in touch</h2>
+        <h2><chrome-text>Get in touch</chrome-text></h2>
         <p>
           <a href="tel:+4316000000">+43 1 600 00 00</a><br>
           <a href="mailto:ella.cerveniova@gmail.com">ella.cerveniova@gmail.com</a><br>
@@ -274,6 +278,54 @@
 <!-- /@footer -->
 
 </x-dc>
+<!-- @chrome-defs -->
+<svg class="chrome-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="chrome-lg" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="6" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="6" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="6" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+    <filter id="chrome-sm" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="3.5" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="3.5" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="3" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+  </defs>
+</svg>
+<!-- /@chrome-defs -->
 <script type="text/x-dc" data-dc-script data-props="{&quot;showMap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contact page&quot;},&quot;submitAction&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;instagram&quot;,&quot;options&quot;:[&quot;instagram&quot;,&quot;whatsapp&quot;,&quot;mailto&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact page&quot;}}">/* ------------------------------------------------------------------
    Instagram ist der Hauptkanal (Drop-Modell: Slots werden per Story
    angekuendigt, gebucht wird per DM).

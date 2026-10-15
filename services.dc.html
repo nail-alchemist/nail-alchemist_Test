@@ -4,21 +4,25 @@
 <meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_ds/chrome/schrift/woerter.js"></script>
+<script src="./chrome-text.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 
 <helmet>
-  <link rel="stylesheet" href="_ds/dopamine/styles.css">
+  <link rel="stylesheet" href="_ds/chrome/styles.css">
   <script src="./image-slot.js"></script>
   <style>
-    .svc-nail { right: 5%; top: var(--space-16); }
     .removal {
-      --tilt: 1.5deg; margin-top: var(--space-16); max-width: 440px;
+      --tilt: 1.5deg; margin-top: var(--space-12); max-width: 440px;
       flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-6);
     }
-    .removal .price { font-size: clamp(40px, 4vw, 52px); }
+    .removal .price { font-size: clamp(40px, 4vw, 56px); }
+    .cta-a { width: clamp(44px, 5vw, 72px); left: 8%; top: 14%; }
+    .cta-b { width: clamp(60px, 8vw, 110px); right: 7%; bottom: 10%; rotate: -12deg; }
+    @media (max-width: 639px) { .cta-a { display: none; } }
   </style>
 </helmet>
 
@@ -54,79 +58,85 @@
 </nav>
 <!-- /@nav -->
 
-<header class="page-head zone mesh tex-dots tone-2">
-  <span class="bg-word" aria-hidden="true">Prices</span>
-  <div class="deco deco-ring ph-ring anim-spin" aria-hidden="true"></div>
-  <span class="deco ph-spark anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
-  <span class="deco ph-star anim-float-r delay-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<header class="page-head zone">
+  <div class="burst" aria-hidden="true"></div>
+  <img class="obj ph-a obj-float" src="_ds/chrome/obj/stern-300.webp" srcset="_ds/chrome/obj/stern-300.webp 300w, _ds/chrome/obj/stern-600.webp 600w" sizes="130px" alt="" aria-hidden="true">
+  <img class="obj ph-b obj-float-r" src="_ds/chrome/obj/perle-200.webp" srcset="_ds/chrome/obj/perle-200.webp 200w, _ds/chrome/obj/perle-400.webp 400w" sizes="64px" alt="" aria-hidden="true">
   <div class="wrap">
     <span class="kicker">Services</span>
-    <h1>Services &amp; <span class="grad-text">pricing</span></h1>
+    <h1><chrome-text>Services &amp; pricing</chrome-text></h1>
     <p class="lede">Every first visit starts with a short, free consult on shape, length and color. No surprises once you're in the chair.</p>
   </div>
 </header>
 
-<section class="zone tex-stripes tone-1">
-  <span class="deco deco-emoji svc-nail anim-wiggle" aria-hidden="true">💅</span>
-  <div class="deco deco-blob deco-lg at-edge-r tone-3" aria-hidden="true"></div>
-  <span class="deco deco-md at-bl anim-float tone-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></span>
+<section class="zone surface surface-paper surface-edge">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/papier-800.avif 800w, _ds/chrome/tex/papier-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/papier-800.webp 800w, _ds/chrome/tex/papier-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/papier-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
 
   <div class="wrap">
     <div class="section-head">
       <span class="kicker">Signature service</span>
-      <h2>Gel-X <span class="thin">extensions</span></h2>
+      <h2><chrome-text>Gel-X extensions</chrome-text></h2>
       <p class="lede">Lightweight, full-cover gel extensions that provide length, strength, and a natural-looking finish.</p>
     </div>
 
-    <div class="grid-broken tones">
+    <div class="grid-broken">
       <article class="card">
         <figure class="photo washed"><image-slot id="service-gelx-minimal" src="bilder/service-gelx-minimal.webp" shape="rect" placeholder="Example photo"></image-slot></figure>
         <div class="card-kicker">Minimal</div>
-        <div class="card-title price">€80</div>
+        <div class="price chrome"><chrome-text>€80</chrome-text></div>
         <p class="card-body">Clean and simple designs with little detail. Perfect for a natural or elegant look.</p>
       </article>
-      <article class="card card-dashed">
+      <article class="card">
         <figure class="photo washed"><image-slot id="service-gelx-simple" src="bilder/service-gelx-simple.webp" shape="rect" placeholder="Example photo"></image-slot></figure>
         <div class="card-kicker">Simple</div>
-        <div class="card-title price">€90</div>
+        <div class="price chrome"><chrome-text>€90</chrome-text></div>
         <p class="card-body">A touch more creativity with a few design elements.</p>
       </article>
-      <article class="card card-asym">
+      <article class="card">
         <figure class="photo washed"><image-slot id="service-gelx-medium" src="bilder/service-gelx-medium.webp" shape="rect" placeholder="Example photo"></image-slot></figure>
         <div class="card-kicker">Medium</div>
-        <div class="card-title price">€100</div>
+        <div class="price chrome"><chrome-text>€100</chrome-text></div>
         <p class="card-body">More detailed nail-art with multiple design elements and techniques.</p>
       </article>
-      <article class="card card-double">
+      <article class="card">
         <span class="sticker" aria-hidden="true">all out ✨</span>
         <figure class="photo washed"><image-slot id="service-gelx-advanced" src="bilder/service-gelx-advanced.webp" shape="rect" placeholder="Example photo"></image-slot></figure>
         <div class="card-kicker">Advanced</div>
-        <div class="card-title price">€110</div>
+        <div class="price chrome"><chrome-text>€110</chrome-text></div>
         <p class="card-body">Highly detailed, intricate nail-art with extensive customization and time-intensive work.</p>
       </article>
     </div>
 
-    <div class="card card-dashed removal tone-5">
+    <div class="card removal">
       <div>
         <div class="card-kicker">Gel-X</div>
         <div class="card-title">Removal</div>
       </div>
-      <div class="card-title price">€15</div>
+      <div class="price chrome"><chrome-text>€15</chrome-text></div>
     </div>
   </div>
 </section>
 
-<section class="cta-zone zone mesh tex-checker tone-4">
-  <div class="deco deco-ring cta-ring anim-spin tone-3" aria-hidden="true"></div>
-  <span class="deco cta-star anim-float" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></span>
+<section class="cta-zone zone surface surface-fur">
+  <picture class="surface-img">
+    <source type="image/avif" srcset="_ds/chrome/tex/fell-800.avif 800w, _ds/chrome/tex/fell-1600.avif 1600w" sizes="100vw">
+    <source type="image/webp" srcset="_ds/chrome/tex/fell-800.webp 800w, _ds/chrome/tex/fell-1600.webp 1600w" sizes="100vw">
+    <img src="_ds/chrome/tex/fell-1600.webp" alt="" loading="lazy" decoding="async">
+  </picture>
+  <img class="obj cta-a obj-float" src="_ds/chrome/obj/funkeln-300.webp" srcset="_ds/chrome/obj/funkeln-300.webp 300w, _ds/chrome/obj/funkeln-600.webp 600w" sizes="72px" alt="" aria-hidden="true" loading="lazy">
+  <img class="obj cta-b obj-float-r" src="_ds/chrome/obj/lilie-300.webp" srcset="_ds/chrome/obj/lilie-300.webp 300w, _ds/chrome/obj/lilie-600.webp 600w" sizes="110px" alt="" aria-hidden="true" loading="lazy">
   <div class="wrap">
-    <div class="cta-band tone-3">
-      <span class="deco-emoji cta-emoji anim-bounce" aria-hidden="true">💭</span>
+    <div class="cta-band">
+      <img class="pin" src="_ds/chrome/obj/perle-200.webp" alt="" aria-hidden="true" loading="lazy">
       <div>
-        <h2>Not sure what you need?</h2>
+        <h2><chrome-text>Not sure what you need?</chrome-text></h2>
         <p>Tell us what you're after in the booking form and we'll suggest the right service.</p>
       </div>
-      <a href="contact.dc.html" class="btn btn-ink">Book a session</a>
+      <a href="contact.dc.html" class="btn btn-primary">Book a session</a>
     </div>
   </div>
 </section>
@@ -160,6 +170,54 @@
 <!-- /@footer -->
 
 </x-dc>
+<!-- @chrome-defs -->
+<svg class="chrome-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="chrome-lg" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="6" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="6" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="6" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+    <filter id="chrome-sm" x="-6%" y="-14%" width="112%" height="138%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="hoehe"></feGaussianBlur>
+      <feSpecularLighting in="hoehe" surfaceScale="3.5" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="glanz">
+        <feDistantLight azimuth="235" elevation="50"></feDistantLight>
+      </feSpecularLighting>
+      <feComposite in="glanz" in2="SourceAlpha" operator="in" result="glanzInnen"></feComposite>
+      <feDiffuseLighting in="hoehe" surfaceScale="3.5" diffuseConstant="1.05" lighting-color="#ffffff" result="licht">
+        <feDistantLight azimuth="235" elevation="62"></feDistantLight>
+      </feDiffuseLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtInnen"></feComposite>
+      <feBlend in="SourceGraphic" in2="lichtInnen" mode="multiply" result="schattiert"></feBlend>
+      <feComposite in="glanzInnen" in2="schattiert" operator="arithmetic" k1="0" k2="0.9" k3="1" k4="0" result="chrom"></feComposite>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="dick"></feMorphology>
+      <feFlood flood-color="#1c1c23" result="tinte"></feFlood>
+      <feComposite in="tinte" in2="dick" operator="in" result="kontur"></feComposite>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="weich"></feGaussianBlur>
+      <feOffset in="weich" dy="3" result="fall"></feOffset>
+      <feFlood flood-color="#341226" flood-opacity="0.30"></feFlood>
+      <feComposite in2="fall" operator="in" result="schatten"></feComposite>
+      <feMerge><feMergeNode in="schatten"></feMergeNode><feMergeNode in="kontur"></feMergeNode><feMergeNode in="chrom"></feMergeNode></feMerge>
+    </filter>
+  </defs>
+</svg>
+<!-- /@chrome-defs -->
 <script type="text/x-dc" data-dc-script>class Component extends DCLogic {
   state = { menuOpen: false };
   toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen }));
